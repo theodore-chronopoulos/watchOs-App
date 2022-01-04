@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4789E27845F2D00D1B148 /* MainMenu.swift */; };
+		A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A027845F6500D1B148 /* ContactsView.swift */; };
+		A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A227845FB400D1B148 /* SettingsView.swift */; };
+		A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */; };
 		FAF4F23C2549F8380040ECE1 /* Workout WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FAF4F23B2549F8380040ECE1 /* Workout WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FAF4F2412549F83B0040ECE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAF4F2402549F83B0040ECE1 /* Assets.xcassets */; };
 		FAF4F2482549F83C0040ECE1 /* Workout WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FAF4F2472549F83C0040ECE1 /* Workout WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FAF4F24D2549F83C0040ECE1 /* WorkoutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4F24C2549F83C0040ECE1 /* WorkoutApp.swift */; };
-		FAF4F24F2549F83C0040ECE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4F24E2549F83C0040ECE1 /* ContentView.swift */; };
 		FAF4F2512549F83C0040ECE1 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4F2502549F83C0040ECE1 /* NotificationController.swift */; };
 		FAF4F2532549F83C0040ECE1 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4F2522549F83C0040ECE1 /* NotificationView.swift */; };
 		FAF4F2552549F83C0040ECE1 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4F2542549F83C0040ECE1 /* ComplicationController.swift */; };
@@ -64,13 +67,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A7B4789E27845F2D00D1B148 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		A7B478A027845F6500D1B148 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
+		A7B478A227845FB400D1B148 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMenuView.swift; sourceTree = "<group>"; };
 		FAF4F2372549F8370040ECE1 /* Workout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Workout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF4F23B2549F8380040ECE1 /* Workout WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Workout WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF4F2402549F83B0040ECE1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAF4F2422549F83B0040ECE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAF4F2472549F83C0040ECE1 /* Workout WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Workout WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF4F24C2549F83C0040ECE1 /* WorkoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutApp.swift; sourceTree = "<group>"; };
-		FAF4F24E2549F83C0040ECE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FAF4F2502549F83C0040ECE1 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		FAF4F2522549F83C0040ECE1 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		FAF4F2542549F83C0040ECE1 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
@@ -126,8 +132,11 @@
 			isa = PBXGroup;
 			children = (
 				FAF4F27A254A0BE60040ECE1 /* Workout WatchKit Extension.entitlements */,
+				A7B4789E27845F2D00D1B148 /* MainMenu.swift */,
+				A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */,
+				A7B478A227845FB400D1B148 /* SettingsView.swift */,
+				A7B478A027845F6500D1B148 /* ContactsView.swift */,
 				FAF4F24C2549F83C0040ECE1 /* WorkoutApp.swift */,
-				FAF4F24E2549F83C0040ECE1 /* ContentView.swift */,
 				FAF4F2502549F83C0040ECE1 /* NotificationController.swift */,
 				FAF4F2522549F83C0040ECE1 /* NotificationView.swift */,
 				FAF4F2542549F83C0040ECE1 /* ComplicationController.swift */,
@@ -278,10 +287,13 @@
 				FAF4F273254A05990040ECE1 /* WorkoutView.swift in Sources */,
 				FAF4F2512549F83C0040ECE1 /* NotificationController.swift in Sources */,
 				FAF4F26E2549F9E50040ECE1 /* DataManager.swift in Sources */,
-				FAF4F24F2549F83C0040ECE1 /* ContentView.swift in Sources */,
+				A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */,
+				A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */,
 				FAF4F2552549F83C0040ECE1 /* ComplicationController.swift in Sources */,
+				A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */,
 				FAF4F24D2549F83C0040ECE1 /* WorkoutApp.swift in Sources */,
 				FAF4F2532549F83C0040ECE1 /* NotificationView.swift in Sources */,
+				A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
