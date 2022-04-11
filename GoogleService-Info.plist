@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>102608909034-qe5j0mm5t81qjo86i6chiv3783jhqttl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.102608909034-qe5j0mm5t81qjo86i6chiv3783jhqttl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB1usdEnmh21J_YI6a-Ru5JY_4RGwfEcnM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>102608909034</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mammothinteractive.Workout</string>
+	<key>PROJECT_ID</key>
+	<string>healthwatchapp-e636f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>healthwatchapp-e636f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:102608909034:ios:8bcdd7b24332833c11dd93</string>
+</dict>
+</plist>

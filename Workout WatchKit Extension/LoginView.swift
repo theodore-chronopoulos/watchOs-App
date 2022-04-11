@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import WatchKit
+import Firebase
 
 
 struct LoginView: View {
@@ -23,7 +24,14 @@ struct LoginView: View {
                 SecureField("Password", text: $password)
             }
             Section {
-                NavigationLink(destination: MainMenu()) {
+                NavigationLink(destination: Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    if let e = error {
+                        print(e)
+                    }
+                    else {
+                        MainMenu()
+                    }
+                  }) {
                     LoginButtonView()
                 }
             }.frame(

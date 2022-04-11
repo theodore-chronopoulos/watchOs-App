@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct WorkoutApp: App {
+    init(){
+            FirebaseApp.configure()
+        }
     @SceneBuilder var body: some Scene {
         WindowGroup {
+            
             LoginRegister()
         }
         
