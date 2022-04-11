@@ -11,11 +11,9 @@ import SwiftUI
 struct WorkoutApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            NavigationView {
-                MainMenu()
-            }
+            LoginRegister()
         }
-
+        
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
     }
 }

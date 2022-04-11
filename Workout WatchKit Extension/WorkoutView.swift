@@ -3,7 +3,7 @@ import SwiftUI
 struct WorkoutView: View {
     
     enum DisplayMode {
-        case distance, heartRate
+        case distance, heartRate, bodyTemperature, oxygenSat, bloodPressureSystolic, bloodPressureDiastolic
     }
     
     @State private var displayMode = DisplayMode.distance
@@ -16,8 +16,24 @@ struct WorkoutView: View {
             let kilometers = dataManager.totalDistance / 1000
             
             return String(format: "%.3f", kilometers)
+        case .oxygenSat:
+            let oxygenSat = dataManager.lastOxygenSaturation
+            
+            return String(oxygenSat)
         default:
             return String(Int(dataManager.lastHeartRate))
+//        case .bloodPressureSystolic:
+//            let systolicPressure = dataManager.lastBloodPressureSystolic
+//
+//            return String(systolicPressure)
+//        case .bloodPressureDiastolic:
+//            let diastolicPressure = dataManager.lastBloodPressureDiastolic
+//
+//            return String(diastolicPressure)
+//        case .bodyTemperature:
+//            let bodyCelsius = dataManager.lastBodyTemperature
+//
+//            return String(bodyCelsius)
         }
     }
     
@@ -25,8 +41,16 @@ struct WorkoutView: View {
         switch displayMode {
         case .distance:
             return "km"
+        case .oxygenSat:
+            return "oxygen"
         default:
             return "Beats per minute"
+//        case .bloodPressureSystolic:
+//            return "systolic"
+//        case .bloodPressureDiastolic:
+//            return "diastolic"
+//        case .bodyTemperature:
+//            return "˚Co"
         }
     }
     
@@ -51,8 +75,17 @@ struct WorkoutView: View {
         switch displayMode {
         case .distance:
             displayMode = .heartRate
+        case .heartRate:
+            displayMode = .oxygenSat
+//        case .oxygenSat:
+//            displayMode = .distance
         default:
             displayMode = .distance
+//        case .bodyTemperature:
+//            displayMode = .heartRate
+//        case .bloodPressureSystolic:
+//            displayMode = .bloodPressureDiastolic
+        
         }
     }
 }

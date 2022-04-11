@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A74ECBF22800208A00A3657A /* LoginRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF12800208A00A3657A /* LoginRegister.swift */; };
+		A74ECBF42800237F00A3657A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF32800237F00A3657A /* ButtonView.swift */; };
+		A74ECBF6280023C200A3657A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF5280023C200A3657A /* LoginView.swift */; };
+		A74ECBF828002D7800A3657A /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF728002D7800A3657A /* RegisterView.swift */; };
+		A7AB1D7D27E732AB00588FD1 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */; };
 		A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4789E27845F2D00D1B148 /* MainMenu.swift */; };
 		A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A027845F6500D1B148 /* ContactsView.swift */; };
 		A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A227845FB400D1B148 /* SettingsView.swift */; };
@@ -67,6 +72,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A74ECBF12800208A00A3657A /* LoginRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRegister.swift; sourceTree = "<group>"; };
+		A74ECBF32800237F00A3657A /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		A74ECBF5280023C200A3657A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A74ECBF728002D7800A3657A /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7B4789E27845F2D00D1B148 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		A7B478A027845F6500D1B148 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
 		A7B478A227845FB400D1B148 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -94,18 +104,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7AB1D7D27E732AB00588FD1 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A7AB1D7B27E732AB00588FD1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FAF4F2302549F8370040ECE1 = {
 			isa = PBXGroup;
 			children = (
 				FAF4F23F2549F8380040ECE1 /* Workout WatchKit App */,
 				FAF4F24B2549F83C0040ECE1 /* Workout WatchKit Extension */,
 				FAF4F2382549F8370040ECE1 /* Products */,
+				A7AB1D7B27E732AB00588FD1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +152,10 @@
 			isa = PBXGroup;
 			children = (
 				FAF4F27A254A0BE60040ECE1 /* Workout WatchKit Extension.entitlements */,
+				A74ECBF12800208A00A3657A /* LoginRegister.swift */,
+				A74ECBF5280023C200A3657A /* LoginView.swift */,
+				A74ECBF728002D7800A3657A /* RegisterView.swift */,
+				A74ECBF32800237F00A3657A /* ButtonView.swift */,
 				A7B4789E27845F2D00D1B148 /* MainMenu.swift */,
 				A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */,
 				A7B478A227845FB400D1B148 /* SettingsView.swift */,
@@ -286,6 +310,8 @@
 			files = (
 				FAF4F273254A05990040ECE1 /* WorkoutView.swift in Sources */,
 				FAF4F2512549F83C0040ECE1 /* NotificationController.swift in Sources */,
+				A74ECBF42800237F00A3657A /* ButtonView.swift in Sources */,
+				A74ECBF828002D7800A3657A /* RegisterView.swift in Sources */,
 				FAF4F26E2549F9E50040ECE1 /* DataManager.swift in Sources */,
 				A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */,
 				A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */,
@@ -293,6 +319,8 @@
 				A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */,
 				FAF4F24D2549F83C0040ECE1 /* WorkoutApp.swift in Sources */,
 				FAF4F2532549F83C0040ECE1 /* NotificationView.swift in Sources */,
+				A74ECBF6280023C200A3657A /* LoginView.swift in Sources */,
+				A74ECBF22800208A00A3657A /* LoginRegister.swift in Sources */,
 				A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,6 +462,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Workout WatchKit Extension/Workout WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Workout WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Workout WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -458,6 +487,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Workout WatchKit Extension/Workout WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Workout WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Workout WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -482,6 +512,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				IBSC_MODULE = Workout_WatchKit_Extension;
 				INFOPLIST_FILE = "Workout WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mammothinteractive.Workout.watchkitapp;
@@ -501,6 +532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				IBSC_MODULE = Workout_WatchKit_Extension;
 				INFOPLIST_FILE = "Workout WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mammothinteractive.Workout.watchkitapp;
@@ -518,6 +550,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mammothinteractive.Workout;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -530,6 +563,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8M8AKZY3P2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mammothinteractive.Workout;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -3,6 +3,7 @@ import Foundation
 import HealthKit
 
 class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
+    
     enum WorkoutState {
         case inactive, active, paused
     }
@@ -16,14 +17,24 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     @Published var state = WorkoutState.inactive
     @Published var totalDistance = 0.0
     @Published var lastHeartRate = 0.0
+    @Published var lastOxygenSaturation = 0.0
+//    @Published var lastBodyTemperature = 0.0
+//    @Published var lastBloodPressureDiastolic = 0.0
+//    @Published var lastBloodPressureSystolic = 0.0
+
 
     func start() {
         let sampleTypes: Set<HKSampleType> = [
             .workoutType(),
             .quantityType(forIdentifier: .heartRate)!,
+            .quantityType(forIdentifier: .oxygenSaturation)!,
             .quantityType(forIdentifier: .distanceWalkingRunning)!,
             .quantityType(forIdentifier: .distanceDownhillSnowSports)!,
             .quantityType(forIdentifier: .distanceCycling)!
+//            .quantityType(forIdentifier: .bloodPressureDiastolic)!,
+//            .quantityType(forIdentifier: .bloodPressureSystolic)!,
+//            .quantityType(forIdentifier: .bodyTemperature)!,
+
         ]
         
         healthStore.requestAuthorization(toShare: sampleTypes, read: sampleTypes) { success, error in
@@ -80,10 +91,14 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     }
 
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-
+        //handle errors
     }
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        getOxygenLevel { x,_ in
+            self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
+            print(x ?? "0")
+        }
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { continue }
             guard let statistics = workoutBuilder.statistics(for: quantityType) else { continue }
@@ -93,12 +108,64 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                 case HKQuantityType.quantityType(forIdentifier: .heartRate):
                     let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
                     self.lastHeartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
-
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
+//                case HKQuantityType.quantityType(forIdentifier: .oxygenSaturation):
+//                    print("Im here")
+//                    let oxygenSatUnit = HKUnit.percent()
+//                    self.lastOxygenSaturation = statistics.mostRecentQuantity()?.doubleValue(for: oxygenSatUnit) ?? 0
+//                case HKQuantityType.quantityType(forIdentifier: .bodyTemperature):
+                //                    let bodyTempUnit = HKUnit.count()
+                //                    self.lastBodyTemperature = statistics.mostRecentQuantity()?.doubleValue(for: bodyTempUnit) ?? 0
+//                case HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic):
+//                    let bloodPresSystUnit = HKUnit.millimeterOfMercury()
+//                    self.lastBloodPressureSystolic = statistics.mostRecentQuantity()?.doubleValue(for: bloodPresSystUnit) ?? 0
+//                case HKQuantityType.quantityType(forIdentifier: .bloodPressureDiastolic):
+//                    let bloodPresDiastUnit = HKUnit.millimeterOfMercury()
+//                    self.lastBloodPressureDiastolic = statistics.mostRecentQuantity()?.doubleValue(for: bloodPresDiastUnit) ?? 0
                 }
             }
+        }
+    }
+    public func getOxygenLevel(completion: @escaping (Double?, Error?) -> Void) {
+
+        guard let oxygenQuantityType = HKQuantityType.quantityType(forIdentifier: .oxygenSaturation) else {
+            fatalError("*** Unable to get oxygen saturation on this device ***")
+        }
+        
+        HKHealthStore().requestAuthorization(toShare: nil, read: [oxygenQuantityType]) { (success, error) in
+            
+            guard error == nil, success == true else {
+                completion(nil, error)
+                return
+            }
+                    
+            let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
+            let query = HKStatisticsQuery(quantityType: oxygenQuantityType,
+                                          quantitySamplePredicate: predicate,
+                                          options: .mostRecent) { query, result, error in
+                
+                DispatchQueue.main.async {
+                    
+                    if let err = error {
+                        completion(nil, err)
+                    } else {
+                        guard let level = result, let sum = level.mostRecentQuantity() else {
+                            completion(nil, error)
+                            return
+                        }
+                        print("Quantity : ", sum)   // It prints 97 % and I need 97 only
+                        
+                        let measureUnit0 = HKUnit(from: "%")
+                        let count0 = sum.doubleValue(for: measureUnit0)
+                        print("Count 0 : ", count0)   // It pronts 0.97 and I need 97 only
+
+                        completion(count0 * 100.0, nil)
+                    }
+                }
+            }
+            HKHealthStore().execute(query)
         }
     }
 

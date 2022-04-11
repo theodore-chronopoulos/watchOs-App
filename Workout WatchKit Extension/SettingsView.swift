@@ -42,7 +42,7 @@ struct SettingsView: View {
                         Text("Enabled")
                     }
                     Picker(selection: $previewIndex, label: Text("Show Previews")) {
-                        ForEach(0 ..< previewOptions.count) {
+                        ForEach(0 ..< previewOptions.count, id:\.self) {
                             Text(self.previewOptions[$0])
                         }
                     }

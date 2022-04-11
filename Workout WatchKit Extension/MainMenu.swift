@@ -27,16 +27,11 @@ struct MainMenu: View {
                 Section {
                     Button(action: {
                         print("Perform an action here...")
-                                          }) //                        .setImage(UIImage(systemName: "search"))
+                                          })
                     {
                         Text("History")
                     }
                 }
-//                Section {
-//                    NavigationLink(destination: ContentView()) {
-//                        Text("Settings")
-//                    }
-//                }
                 Section {
                     NavigationLink(destination: ContactsView()) {
                         Text("Contacts")

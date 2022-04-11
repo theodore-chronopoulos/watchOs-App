@@ -21,7 +21,7 @@ struct WorkoutMenuView: View {
             if dataManager.state == .inactive {
                 VStack {
                     Picker("Choose an Activity", selection: $selectedActivity) {
-                        ForEach(0..<activities.count) { i in
+                        ForEach(0..<activities.count, id:\.self) { i in
                             Text(activities[i].name)
                         }
                     }
