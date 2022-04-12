@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,12 +13,12 @@
 		A74ECBF42800237F00A3657A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF32800237F00A3657A /* ButtonView.swift */; };
 		A74ECBF6280023C200A3657A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF5280023C200A3657A /* LoginView.swift */; };
 		A74ECBF828002D7800A3657A /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF728002D7800A3657A /* RegisterView.swift */; };
+		A76F04D9280555E5000E15D8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A76F04D8280555E5000E15D8 /* GoogleService-Info.plist */; };
 		A7AB1D7D27E732AB00588FD1 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */; };
 		A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4789E27845F2D00D1B148 /* MainMenu.swift */; };
 		A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A027845F6500D1B148 /* ContactsView.swift */; };
 		A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A227845FB400D1B148 /* SettingsView.swift */; };
 		A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */; };
-		A7D83BD028042D0100C1F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7D83BCF28042D0100C1F1E1 /* GoogleService-Info.plist */; };
 		ECFD282C1099B73EF520FB4B /* Pods_Workout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262EBF5251725EB8924D3BC /* Pods_Workout.framework */; };
 		FAF4F23C2549F8380040ECE1 /* Workout WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FAF4F23B2549F8380040ECE1 /* Workout WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FAF4F2412549F83B0040ECE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAF4F2402549F83B0040ECE1 /* Assets.xcassets */; };
@@ -87,12 +87,12 @@
 		A74ECBF32800237F00A3657A /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		A74ECBF5280023C200A3657A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A74ECBF728002D7800A3657A /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A76F04D8280555E5000E15D8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7B4789E27845F2D00D1B148 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		A7B478A027845F6500D1B148 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
 		A7B478A227845FB400D1B148 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMenuView.swift; sourceTree = "<group>"; };
-		A7D83BCF28042D0100C1F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E262EBF5251725EB8924D3BC /* Pods_Workout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Workout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84F26957802D47CAF3ED238 /* Pods-Workout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Workout.release.xcconfig"; path = "Target Support Files/Pods-Workout/Pods-Workout.release.xcconfig"; sourceTree = "<group>"; };
 		FAF4F2372549F8370040ECE1 /* Workout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Workout.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,7 +152,6 @@
 				4023F5AEC5D2548EA458177C /* Pods-Workout WatchKit Extension.debug.xcconfig */,
 				73D969FF1A6BEE012AA2431C /* Pods-Workout WatchKit Extension.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -215,7 +214,7 @@
 				FAF4F2542549F83C0040ECE1 /* ComplicationController.swift */,
 				FAF4F2562549F83E0040ECE1 /* Assets.xcassets */,
 				FAF4F25B2549F83E0040ECE1 /* Info.plist */,
-				A7D83BCF28042D0100C1F1E1 /* GoogleService-Info.plist */,
+				A76F04D8280555E5000E15D8 /* GoogleService-Info.plist */,
 				FAF4F25C2549F83E0040ECE1 /* PushNotificationPayload.apns */,
 				FAF4F2582549F83E0040ECE1 /* Preview Content */,
 				FAF4F26D2549F9E50040ECE1 /* DataManager.swift */,
@@ -337,7 +336,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D83BD028042D0100C1F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +353,7 @@
 			files = (
 				FAF4F25A2549F83E0040ECE1 /* Preview Assets.xcassets in Resources */,
 				FAF4F2572549F83E0040ECE1 /* Assets.xcassets in Resources */,
+				A76F04D9280555E5000E15D8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,24 +14,37 @@ import Firebase
 struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
+    @State var mainViewActive = false
+
     
     var body: some View {
         Form {
             Section {
-                TextField("Email", text: $email)
+                if #available(watchOSApplicationExtension 8.0, *) {
+                    TextField("Email", text: $email).disableAutocorrection(true)
+                } else {
+                    // Fallback on earlier versions
+                }
             }
             Section {
                 SecureField("Password", text: $password)
             }
             Section {
-                NavigationLink(destination: Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                    if let e = error {
-                        print(e)
+                Button(action: {
+                    Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                        if let e = error {
+                            print(e)
+                        }
+                        else {
+                            print("email " + email)
+                            print("password " + password)
+                            mainViewActive = true
+                        }
                     }
-                    else {
-                        MainMenu()
+                }) {
+                    NavigationLink(destination: MainMenu(), isActive: $mainViewActive) {
+                        EmptyView()
                     }
-                  }) {
                     LoginButtonView()
                 }
             }.frame(
@@ -39,7 +52,6 @@ struct LoginView: View {
                 maxWidth: .infinity)
         }.navigationBarTitle(Text("Login"))
     }
-    
 }
 
 struct Login_Previews: PreviewProvider {
@@ -49,25 +61,3 @@ struct Login_Previews: PreviewProvider {
         }
     }
 }
-
-
-
-//import UIKit
-//import Firebase
-
-//class LoginViewController: UIViewController {
-//
-//    @IBOutlet weak var emailTextfield: UITextField!
-//    @IBOutlet weak var passwordTextfield: UITextField!
-//    @IBAction func loginPressed(_ sender: UIButton) {
-//        if let email = emailTextfield.text, let password = passwordTextfield.text {
-//            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-//                if let e = error {
-//                    print(e)
-//                } else {
-//                    self.performSegue(withIdentifier: K.loginSegue, sender: self)
-//                }
-//            }
-//        }
-//    }
-//}

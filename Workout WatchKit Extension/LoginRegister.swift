@@ -5,7 +5,7 @@ struct LoginRegister: View {
     var body: some View {
         NavigationView{
             VStack{
-                NavigationLink(destination: MainMenu()) {
+                NavigationLink(destination: RegisterView()) {
                     RegisterButtonView()
                 }
                 NavigationLink(destination: LoginView()) {
