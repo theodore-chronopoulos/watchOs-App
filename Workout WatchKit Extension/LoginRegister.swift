@@ -3,6 +3,7 @@ import SwiftUI
 struct LoginRegister: View {
     
     var body: some View {
+        
         NavigationView{
             VStack{
                 NavigationLink(destination: RegisterView()) {
@@ -13,6 +14,7 @@ struct LoginRegister: View {
                 }
             }
         }.navigationBarTitle(Text("Register - Login"))
+//            .navigationBarBackButtonHidden(true)
     }
 }
 

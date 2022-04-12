@@ -15,7 +15,6 @@ struct WorkoutApp: App {
         }
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            
             LoginRegister()
         }
         
