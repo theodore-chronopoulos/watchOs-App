@@ -23,7 +23,7 @@ struct LoginView: View {
                 if #available(watchOSApplicationExtension 8.0, *) {
                     TextField("Email", text: $email).disableAutocorrection(true)
                 } else {
-                    // Fallback on earlier versions
+                    TextField("Email", text: $email)
                 }
             }
             Section {

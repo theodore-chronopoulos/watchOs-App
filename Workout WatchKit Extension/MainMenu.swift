@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct MainMenu: View {
     
@@ -14,7 +15,8 @@ struct MainMenu: View {
             Form {
                 Section {
                     Button(action: {
-                        print("Perform an action here...")
+                        let userID = Auth.auth().currentUser?.uid
+                        print(userID!)
                     }) {
                         Text("Check-up")
                     }
@@ -25,10 +27,7 @@ struct MainMenu: View {
                     }
                 }
                 Section {
-                    Button(action: {
-                        print("Perform an action here...")
-                                          })
-                    {
+                    NavigationLink(destination: ReceiveMessage()) {
                         Text("History")
                     }
                 }
