@@ -11,6 +11,7 @@
 
 import FirebaseDatabase
 import SwiftUI
+import FirebaseAuth
 
 //struct ReceiveMessage: View {
 //    var messageManager = ApiManager()
@@ -27,6 +28,7 @@ import SwiftUI
 struct ReceiveMessage: View {
 //    var messageManager = ApiManager()
     var ref: DatabaseReference = Database.database().reference();
+    var userID = Auth.auth().currentUser?.uid
 //    lazy var messageRef: DatabaseReference = Database.database().reference().child("/message")
     
     
@@ -38,8 +40,12 @@ struct ReceiveMessage: View {
                   return;
                 }
                 let userName = snapshot.value as? String ?? "Unknown";
-                print(userName)
-            })
+                let time = CFAbsoluteTimeGetCurrent();
+
+                print("username: " + userName);
+                print(time)
+            });
+            ref.child("users/\(userID ?? "N/A")/username").setValue("mitsos")
         }) {
             Text("Check-up")
         }
