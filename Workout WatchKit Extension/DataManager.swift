@@ -9,6 +9,11 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     enum WorkoutState {
         case inactive, active, paused
     }
+    var ref: DatabaseReference = Database.database().reference();
+    var userID = Auth.auth().currentUser?.uid
+    
+    var numbers = [Double]()
+    var counter = 0
     
     var healthStore = HKHealthStore()
     var workoutSession: HKWorkoutSession?
@@ -111,7 +116,19 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                     let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
                     self.lastHeartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
                     let heartTime = CFAbsoluteTimeGetCurrent();
+                    // create tuple with two elements
+                    let product = (heartTime, Int(self.lastHeartRate))
+
+                    // access tuple elements
                     print("(heart time, heart rate) -> (" + String(heartTime) + " , " + String(Int(self.lastHeartRate)) + ")")
+                    print("(heart time, heart rate) -> " + String(product.0) + " " + String(product.1))
+                    self.numbers.append(heartTime)
+                    self.counter += 1
+                    if (self.counter % 5 == 0) {
+                        self.ref.child("users/\(self.userID ?? "N/A")/hearttime").setValue(self.numbers)
+                    }
+                    
+
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
@@ -208,3 +225,9 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
 //
 //    }
 }
+//// create tuple with two elements
+//var product = ("MacBook", 1099.99)
+//
+//// access tuple elements
+//print("Name:", product.0)
+//print("Price:", product.1)

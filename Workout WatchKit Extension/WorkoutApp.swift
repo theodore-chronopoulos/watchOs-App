@@ -15,8 +15,8 @@ struct WorkoutApp: App {
         }
     @SceneBuilder var body: some Scene {
         WindowGroup {
-//            LoginRegister()
-            WorkoutMenuView()
+            LoginRegister()
+//            WorkoutMenuView()
         }
         
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
