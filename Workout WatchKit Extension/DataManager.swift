@@ -25,9 +25,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     @Published var totalDistance = 0.0
     @Published var lastHeartRate = 0.0
     @Published var lastOxygenSaturation = 0.0
-    //    @Published var lastBodyTemperature = 0.0
-    //    @Published var lastBloodPressureDiastolic = 0.0
-    //    @Published var lastBloodPressureSystolic = 0.0
     
     
     func start() {
@@ -38,10 +35,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             .quantityType(forIdentifier: .distanceWalkingRunning)!,
             .quantityType(forIdentifier: .distanceDownhillSnowSports)!,
             .quantityType(forIdentifier: .distanceCycling)!
-            //            .quantityType(forIdentifier: .bloodPressureDiastolic)!,
-            //            .quantityType(forIdentifier: .bloodPressureSystolic)!,
-            //            .quantityType(forIdentifier: .bodyTemperature)!,
-            
         ]
         
         healthStore.requestAuthorization(toShare: sampleTypes, read: sampleTypes) { success, error in
@@ -135,20 +128,7 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                     let kilometers = self.totalDistance / 1000
                     let distanceTime = CFAbsoluteTimeGetCurrent();
                     print("(distance time, distance) -> (" + String(distanceTime) + " , " + String(format: "%.3f", kilometers) + ")")
-                    //                case HKQuantityType.quantityType(forIdentifier: .oxygenSaturation):
-                    //                    print("Im here")
-                    //                    let oxygenSatUnit = HKUnit.percent()
-                    //                    self.lastOxygenSaturation = statistics.mostRecentQuantity()?.doubleValue(for: oxygenSatUnit) ?? 0
-                    //                case HKQuantityType.quantityType(forIdentifier: .bodyTemperature):
-                    //                    let bodyTempUnit = HKUnit.count()
-                    //                    self.lastBodyTemperature = statistics.mostRecentQuantity()?.doubleValue(for: bodyTempUnit) ?? 0
-                    //                case HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic):
-                    //                    let bloodPresSystUnit = HKUnit.millimeterOfMercury()
-                    //                    self.lastBloodPressureSystolic = statistics.mostRecentQuantity()?.doubleValue(for: bloodPresSystUnit) ?? 0
-                    //                case HKQuantityType.quantityType(forIdentifier: .bloodPressureDiastolic):
-                    //                    let bloodPresDiastUnit = HKUnit.millimeterOfMercury()
-                    //                    self.lastBloodPressureDiastolic = statistics.mostRecentQuantity()?.doubleValue(for: bloodPresDiastUnit) ?? 0
-                }
+                    }
             }
         }
     }
@@ -218,13 +198,8 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             }
         }
     }
-//    private func sendData(data: Array<List>) {
-//        var userID = Auth.auth().currentUser?.uid
-//        var ref: DatabaseReference = Database.database().reference();
-//        ref.child("users/\(userID ?? "N/A")/username").setValue(data)
-//
-//    }
 }
+
 //// create tuple with two elements
 //var product = ("MacBook", 1099.99)
 //

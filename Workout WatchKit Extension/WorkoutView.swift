@@ -22,18 +22,6 @@ struct WorkoutView: View {
             return String(oxygenSat)
         default:
             return String(Int(dataManager.lastHeartRate))
-//        case .bloodPressureSystolic:
-//            let systolicPressure = dataManager.lastBloodPressureSystolic
-//
-//            return String(systolicPressure)
-//        case .bloodPressureDiastolic:
-//            let diastolicPressure = dataManager.lastBloodPressureDiastolic
-//
-//            return String(diastolicPressure)
-//        case .bodyTemperature:
-//            let bodyCelsius = dataManager.lastBodyTemperature
-//
-//            return String(bodyCelsius)
         }
     }
     
@@ -45,12 +33,6 @@ struct WorkoutView: View {
             return "oxygen"
         default:
             return "Beats per minute"
-//        case .bloodPressureSystolic:
-//            return "systolic"
-//        case .bloodPressureDiastolic:
-//            return "diastolic"
-//        case .bodyTemperature:
-//            return "˚Co"
         }
     }
     
@@ -77,15 +59,8 @@ struct WorkoutView: View {
             displayMode = .heartRate
         case .heartRate:
             displayMode = .oxygenSat
-//        case .oxygenSat:
-//            displayMode = .distance
         default:
             displayMode = .distance
-//        case .bodyTemperature:
-//            displayMode = .heartRate
-//        case .bloodPressureSystolic:
-//            displayMode = .bloodPressureDiastolic
-        
         }
     }
 }

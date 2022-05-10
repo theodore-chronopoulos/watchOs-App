@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import WatchKit
 import Firebase
-
+import FirebaseDatabase
 
 struct RegisterView: View {
     @State var email: String = ""
@@ -41,6 +41,16 @@ struct RegisterView: View {
                         else {
                             print("email " + email)
                             print("password " + password)
+                            
+                            // Userdefaults helps to store session data locally
+                            let defaults = UserDefaults.standard
+                            defaults.set(email, forKey: "username")
+                            defaults.set(password, forKey: "password")
+                            defaults.synchronize()
+                            let userID = Auth.auth().currentUser?.uid
+                            let ref: DatabaseReference = Database.database().reference()
+                            ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
+                            ref.child("users/\(userID ?? "N/A")/email").setValue(email)
                             mainViewActive = true
                         }
                     }

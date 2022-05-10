@@ -7,18 +7,26 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 @main
 struct WorkoutApp: App {
-    init(){
-            FirebaseApp.configure()
-        }
+    @State var email = UserDefaults.standard.string(forKey: "username") ?? "notanemail"
+    @State var password = UserDefaults.standard.string(forKey: "password")  ?? "notanemail"
+//    print("hello")
+    init() {
+        FirebaseApp.configure()
+    }
+    
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            LoginRegister()
-//            WorkoutMenuView()
+            if email == "notanemail" || password == "notanemail" {
+                LoginRegister()
+            }
+            else {
+                LoginView()
+            }
         }
-        
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
     }
 }

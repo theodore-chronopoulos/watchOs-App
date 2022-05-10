@@ -13,6 +13,8 @@
 		A74ECBF42800237F00A3657A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF32800237F00A3657A /* ButtonView.swift */; };
 		A74ECBF6280023C200A3657A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF5280023C200A3657A /* LoginView.swift */; };
 		A74ECBF828002D7800A3657A /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74ECBF728002D7800A3657A /* RegisterView.swift */; };
+		A752C3ED282929A200C08D65 /* ScheduleNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A752C3EC282929A200C08D65 /* ScheduleNotification.swift */; };
+		A752C3EF282A698600C08D65 /* NotificationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A752C3EE282A698600C08D65 /* NotificationMenu.swift */; };
 		A7AB1D7D27E732AB00588FD1 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */; };
 		A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4789E27845F2D00D1B148 /* MainMenu.swift */; };
 		A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A027845F6500D1B148 /* ContactsView.swift */; };
@@ -89,6 +91,8 @@
 		A74ECBF32800237F00A3657A /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		A74ECBF5280023C200A3657A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A74ECBF728002D7800A3657A /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A752C3EC282929A200C08D65 /* ScheduleNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotification.swift; sourceTree = "<group>"; };
+		A752C3EE282A698600C08D65 /* NotificationMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMenu.swift; sourceTree = "<group>"; };
 		A7AB1D7C27E732AB00588FD1 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7B4789E27845F2D00D1B148 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		A7B478A027845F6500D1B148 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
@@ -211,10 +215,12 @@
 				A74ECBF32800237F00A3657A /* ButtonView.swift */,
 				A7B4789E27845F2D00D1B148 /* MainMenu.swift */,
 				A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */,
+				A752C3EE282A698600C08D65 /* NotificationMenu.swift */,
 				A7B478A227845FB400D1B148 /* SettingsView.swift */,
 				A7B478A027845F6500D1B148 /* ContactsView.swift */,
 				FAF4F24C2549F83C0040ECE1 /* WorkoutApp.swift */,
 				FAF4F2502549F83C0040ECE1 /* NotificationController.swift */,
+				A752C3EC282929A200C08D65 /* ScheduleNotification.swift */,
 				FAF4F2522549F83C0040ECE1 /* NotificationView.swift */,
 				A7F71F552809A2F50007DFE4 /* ReceiveMessage.swift */,
 				FAF4F2542549F83C0040ECE1 /* ComplicationController.swift */,
@@ -457,12 +463,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAF4F273254A05990040ECE1 /* WorkoutView.swift in Sources */,
+				A752C3EF282A698600C08D65 /* NotificationMenu.swift in Sources */,
 				FAF4F2512549F83C0040ECE1 /* NotificationController.swift in Sources */,
 				A74ECBF42800237F00A3657A /* ButtonView.swift in Sources */,
 				A74ECBF828002D7800A3657A /* RegisterView.swift in Sources */,
 				FAF4F26E2549F9E50040ECE1 /* DataManager.swift in Sources */,
 				A7B4789F27845F2D00D1B148 /* MainMenu.swift in Sources */,
 				A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */,
+				A752C3ED282929A200C08D65 /* ScheduleNotification.swift in Sources */,
 				A7F71F562809A2F50007DFE4 /* ReceiveMessage.swift in Sources */,
 				A7F71F542806DDE00007DFE4 /* ApiManager.swift in Sources */,
 				FAF4F2552549F83C0040ECE1 /* ComplicationController.swift in Sources */,

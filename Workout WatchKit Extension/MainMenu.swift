@@ -7,6 +7,8 @@
 
 import SwiftUI
 import FirebaseAuth
+import UserNotifications
+
 
 struct MainMenu: View {
     
@@ -14,11 +16,11 @@ struct MainMenu: View {
         NavigationView {
             Form {
                 Section {
-                    Button(action: {
-                        let userID = Auth.auth().currentUser?.uid
-                        print(userID!)
-                    }) {
-                        Text("Check-up")
+                    NavigationLink(destination: NotificationMenu()) {
+                        //                        let userID = Auth.auth().currentUser?.uid
+                        //                        let email = UserDefaults.standard.string(forKey: "username")
+                        //                        let password = UserDefaults.standard.string(forKey: "password")
+                        Text("Notifications")
                     }
                 }
                 Section {
