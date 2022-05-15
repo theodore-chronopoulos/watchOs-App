@@ -17,9 +17,6 @@ struct MainMenu: View {
             Form {
                 Section {
                     NavigationLink(destination: NotificationMenu()) {
-                        //                        let userID = Auth.auth().currentUser?.uid
-                        //                        let email = UserDefaults.standard.string(forKey: "username")
-                        //                        let password = UserDefaults.standard.string(forKey: "password")
                         Text("Notifications")
                     }
                 }

@@ -46,11 +46,14 @@ struct RegisterView: View {
                             let defaults = UserDefaults.standard
                             defaults.set(email, forKey: "username")
                             defaults.set(password, forKey: "password")
+                            defaults.set(false, forKey: "notifications")
+                            defaults.set(8.0, forKey: "repeat_time")
                             defaults.synchronize()
                             let userID = Auth.auth().currentUser?.uid
                             let ref: DatabaseReference = Database.database().reference()
-                            ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
                             ref.child("users/\(userID ?? "N/A")/email").setValue(email)
+                            ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
+                            ref.child("users/\(userID ?? "N/A")/repeat_time").setValue(8.0)
                             mainViewActive = true
                         }
                     }

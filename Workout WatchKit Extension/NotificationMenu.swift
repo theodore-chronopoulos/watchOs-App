@@ -14,20 +14,31 @@ import FirebaseDatabase
 struct NotificationMenu: View {
     
     @StateObject var notification = createNotification()
-    @State private var isToggled = false
+    @State private var score = 0
+    @State private var repeat_time = UserDefaults.standard.float(forKey: "repeat_time")
+    @State private var flag: Bool = UserDefaults.standard.bool(forKey: "notifications")
+    
+    
+    let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
     
     var body: some View {
         let binding = Binding(
-            get: { self.isToggled },
+            get: { UserDefaults.standard.bool(forKey: "notifications") },
             set: {
                 potentialAsyncFunction($0)
             }
         )
         func potentialAsyncFunction(_ newState: Bool) {
-            //something async
-            self.isToggled = newState
+            self.flag = newState
             let userID = Auth.auth().currentUser?.uid
             let ref: DatabaseReference = Database.database().reference()
+            UserDefaults.standard.set(newState, forKey: "notifications")
+            UserDefaults.standard.synchronize()
+            
             if newState == true {
                 notification.allowNotification()
                 ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("true")
@@ -37,24 +48,31 @@ struct NotificationMenu: View {
                 ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
             }
         }
-        return Toggle("Allow notifications", isOn: binding)
+        return Form {
+            Section {
+                Toggle("Notifications", isOn: binding)
+            }
+            Section {
+                Text("Notify me every " + String(format: "%.0f", repeat_time) + " hours.").disabled(self.flag == false)
+                Slider(
+                    value: Binding(get: {
+                        self.repeat_time
+                    }, set: { (newVal) in
+                        self.repeat_time = newVal
+                        self.sliderChanged()
+                    }),
+                    in: 1...24,
+                    step: 1
+                ).padding(.all).disabled(self.flag == false)
+            }
+        }
+    }
+    func sliderChanged() {
+        //                        notification.scheduleNotification()
+        let userID = Auth.auth().currentUser?.uid
+        let ref: DatabaseReference = Database.database().reference()
+        UserDefaults.standard.set(repeat_time, forKey: "repeat_time")
+        UserDefaults.standard.synchronize()
+        ref.child("users/\(userID ?? "N/A")/repeat_time").setValue(repeat_time)
     }
 }
-
-class InterfaceController: WKInterfaceController {
-    
-    // MARK: - Properties
-    
-    @IBOutlet weak var label: WKInterfaceLabel!
-    @IBOutlet weak var slider: WKInterfaceSlider!
-    
-    // MARK: - Interface Callback Methods
-    
-    @IBAction func sliderValueChanged(value: Float) {
-        let roundedValue = Int(round(value))
-        self.label.setText("\(roundedValue)")
-    }
-}
-
-//let email = UserDefaults.standard.string(forKey: "username")
-//let password = UserDefaults.standard.string(forKey: "password")
