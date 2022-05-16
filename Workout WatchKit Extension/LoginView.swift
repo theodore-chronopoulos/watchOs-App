@@ -9,12 +9,18 @@ import Foundation
 import SwiftUI
 import WatchKit
 import Firebase
+import FirebaseDatabase
+import FirebaseAuth
 
 
 struct LoginView: View {
     @State var email: String = UserDefaults.standard.string(forKey: "username") ?? ""
     @State var password: String = UserDefaults.standard.string(forKey: "password") ?? ""
     @State var mainViewActive = false
+    @State var ref: DatabaseReference = Database.database().reference();
+    @State var userID = Auth.auth().currentUser?.uid ?? "Unknown"
+    @StateObject var notification = createNotification()
+
     
     var body: some View {
         NavigationView{
@@ -40,23 +46,41 @@ struct LoginView: View {
                                 print("password " + password)
                                 // Userdefaults helps to store session data locally
                                 let defaults = UserDefaults.standard
+                                
+                                // check to see if repeat time is correct
+                                let allow_flag: Bool = defaults.bool(forKey: "notifications")
+                                if allow_flag == true {
+                                    // check for time notication etc from database
+                                    print("he allows")
+                                    ref.child("/users/\(userID)/repeat_time").getData(completion:  { error, snapshot in
+                                        guard error == nil else {
+                                          print(error!.localizedDescription)
+                                          return;
+                                        }
+                                        let repeat_time = snapshot.value as? Float ?? 8.0
+                                        print(repeat_time)
+                                        if repeat_time == UserDefaults.standard.float(forKey: "repeat_time"){
+                                            print("saved correctly")
+                                        }
+                                        else {
+                                            print("changed remotely have to set new notification")
+                                            notification.scheduleNotification(repeat_time: repeat_time)
+                                            defaults.set(repeat_time, forKey: "repeat_time")
+                                        }
+                                    });
+                                }
+
                                 defaults.set(email, forKey: "username")
                                 defaults.set(password, forKey: "password")
                                 defaults.synchronize()
                                 mainViewActive = true
-                                print(mainViewActive)
                             }
                         }
-                        if let savedData = UserDefaults.standard.string(forKey: "username") {
-                            print(savedData)
-                            //perform your task on success
-                        }
-                        if let savedData2 = UserDefaults.standard.string(forKey: "password") {
-                            print(savedData2)
-                            //perform your task on success
-                        }
+//                        if let savedData = UserDefaults.standard.string(forKey: "username") {
+//                            print(savedData)
+//                            //perform your task on success
+//                        }
                     }) {
-                        
                         VStack {
                             NavigationLink(destination: MainMenu(), isActive: $mainViewActive) {
                                 LoginButtonView()

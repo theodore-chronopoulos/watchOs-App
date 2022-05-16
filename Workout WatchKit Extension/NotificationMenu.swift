@@ -42,9 +42,10 @@ struct NotificationMenu: View {
             if newState == true {
                 notification.allowNotification()
                 ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("true")
-                //                        notification.scheduleNotification()
+                notification.scheduleNotification(repeat_time: repeat_time)
             }
             else {
+                notification.removeNotification()
                 ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
             }
         }
@@ -68,7 +69,7 @@ struct NotificationMenu: View {
         }
     }
     func sliderChanged() {
-        //                        notification.scheduleNotification()
+        notification.scheduleNotification(repeat_time: repeat_time)
         let userID = Auth.auth().currentUser?.uid
         let ref: DatabaseReference = Database.database().reference()
         UserDefaults.standard.set(repeat_time, forKey: "repeat_time")
