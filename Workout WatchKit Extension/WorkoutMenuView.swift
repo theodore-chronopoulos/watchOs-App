@@ -17,7 +17,6 @@ struct WorkoutMenuView: View {
     
     var body: some View {
         NavigationView {
-            
             if dataManager.state == .inactive {
                 VStack {
                     Picker("Choose an Activity", selection: $selectedActivity) {
@@ -25,21 +24,17 @@ struct WorkoutMenuView: View {
                             Text(activities[i].name)
                         }
                     }
-                    
                     Button("Begin Workout")  {
                         guard HKHealthStore.isHealthDataAvailable() else { return }
-                        
                         dataManager.activity = activities[selectedActivity].type
-                        
                         dataManager.start()
                     }
                 }
-            } else {
+            }
+            else {
                 WorkoutView(dataManager: dataManager)
             }
-            
         }
-
     }
 }
 

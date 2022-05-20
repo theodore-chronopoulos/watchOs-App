@@ -18,6 +18,9 @@ struct NotificationMenu: View {
     @State private var repeat_time = UserDefaults.standard.float(forKey: "repeat_time")
     @State private var flag: Bool = UserDefaults.standard.bool(forKey: "notifications")
     
+    @State private var previewIndex = 0
+    var previewOptions = ["Ring", "Vibrate", "Silent"]
+    
     
     let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -65,6 +68,13 @@ struct NotificationMenu: View {
                     in: 1...24,
                     step: 1
                 ).padding(.all).disabled(self.flag == false)
+            }
+            Section {
+                Picker(selection: $previewIndex, label: Text("Sound Mode")) {
+                    ForEach(0 ..< previewOptions.count, id:\.self) {
+                        Text(self.previewOptions[$0])
+                    }
+                }
             }
         }
     }

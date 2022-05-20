@@ -15,11 +15,6 @@ struct MainMenu: View {
         NavigationView {
             Form {
                 Section {
-                    NavigationLink(destination: NotificationMenu()) {
-                        Text("Notifications")
-                    }
-                }
-                Section {
                     NavigationLink(destination: WorkoutMenuView()) {
                         Text("Workout")
                     }

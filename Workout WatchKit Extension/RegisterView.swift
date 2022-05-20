@@ -18,7 +18,7 @@ struct RegisterView: View {
     
     var body: some View {
         Form {
-            Section {
+            Section(header: Text("EMAIL")) {
                 if #available(watchOSApplicationExtension 8.0, *) {
                     TextField("Email", text: $email).disableAutocorrection(true)
                 } else {
@@ -27,7 +27,7 @@ struct RegisterView: View {
                 Text("Enter a valid email.")
                     .font(.caption2)
             }
-            Section {
+            Section(header: Text("PASSWORD")) {
                 SecureField("Password", text: $password)
                 Text("Password must be 6 characters long or more.")
                     .font(.caption2)

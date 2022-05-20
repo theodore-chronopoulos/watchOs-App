@@ -70,7 +70,6 @@ struct ContactsView: View {
         NavigationView{
             Form {
                 SearchBar(text: $searchText)
-                
                 Section(header: Text("NAME")){
 //                    List(newArr) { contact in
 //                                ContactRow(contact: contact)

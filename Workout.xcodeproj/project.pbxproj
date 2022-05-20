@@ -20,6 +20,7 @@
 		A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A027845F6500D1B148 /* ContactsView.swift */; };
 		A7B478A327845FB400D1B148 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A227845FB400D1B148 /* SettingsView.swift */; };
 		A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */; };
+		A7E8D5262834F065003DE3DD /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8D5252834F065003DE3DD /* TestView.swift */; };
 		A7F71F542806DDE00007DFE4 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F71F532806DDE00007DFE4 /* ApiManager.swift */; };
 		A7F71F562809A2F50007DFE4 /* ReceiveMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F71F552809A2F50007DFE4 /* ReceiveMessage.swift */; };
 		A7F71F582809FBB70007DFE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7F71F572809FBB70007DFE4 /* GoogleService-Info.plist */; };
@@ -98,6 +99,7 @@
 		A7B478A027845F6500D1B148 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
 		A7B478A227845FB400D1B148 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A7B478A6278486E900D1B148 /* WorkoutMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMenuView.swift; sourceTree = "<group>"; };
+		A7E8D5252834F065003DE3DD /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		A7F71F532806DDE00007DFE4 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		A7F71F552809A2F50007DFE4 /* ReceiveMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveMessage.swift; sourceTree = "<group>"; };
 		A7F71F572809FBB70007DFE4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				A7B478A227845FB400D1B148 /* SettingsView.swift */,
 				A7B478A027845F6500D1B148 /* ContactsView.swift */,
 				FAF4F24C2549F83C0040ECE1 /* WorkoutApp.swift */,
+				A7E8D5252834F065003DE3DD /* TestView.swift */,
 				FAF4F2502549F83C0040ECE1 /* NotificationController.swift */,
 				A752C3EC282929A200C08D65 /* ScheduleNotification.swift */,
 				FAF4F2522549F83C0040ECE1 /* NotificationView.swift */,
@@ -477,6 +480,7 @@
 				A7B478A127845F6500D1B148 /* ContactsView.swift in Sources */,
 				FAF4F24D2549F83C0040ECE1 /* WorkoutApp.swift in Sources */,
 				FAF4F2532549F83C0040ECE1 /* NotificationView.swift in Sources */,
+				A7E8D5262834F065003DE3DD /* TestView.swift in Sources */,
 				A74ECBF6280023C200A3657A /* LoginView.swift in Sources */,
 				A74ECBF22800208A00A3657A /* LoginRegister.swift in Sources */,
 				A7B478A7278486E900D1B148 /* WorkoutMenuView.swift in Sources */,

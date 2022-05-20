@@ -25,14 +25,14 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             Form {
-                Section {
+                Section(header: Text("EMAIL")) {
                     if #available(watchOSApplicationExtension 8.0, *) {
                         TextField("Email", text: $email).disableAutocorrection(true)
                     } else {
                         TextField("Email", text: $email)
                     }
                 }
-                Section {
+                Section(header: Text("PASSWORD")) {
                     SecureField("Password", text: $password)
                 }
                 Section {
@@ -69,17 +69,12 @@ struct LoginView: View {
                                         }
                                     });
                                 }
-
                                 defaults.set(email, forKey: "username")
                                 defaults.set(password, forKey: "password")
                                 defaults.synchronize()
                                 mainViewActive = true
                             }
                         }
-//                        if let savedData = UserDefaults.standard.string(forKey: "username") {
-//                            print(savedData)
-//                            //perform your task on success
-//                        }
                     }) {
                         VStack {
                             NavigationLink(destination: MainMenu(), isActive: $mainViewActive) {

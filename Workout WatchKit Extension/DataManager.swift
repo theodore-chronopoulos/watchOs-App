@@ -36,7 +36,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             .quantityType(forIdentifier: .distanceDownhillSnowSports)!,
             .quantityType(forIdentifier: .distanceCycling)!
         ]
-        
         healthStore.requestAuthorization(toShare: sampleTypes, read: sampleTypes) { success, error in
             if success {
                 self.beginWorkout()
@@ -118,7 +117,8 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                     self.numbers.append(heartTime)
                     self.counter += 1
                     if (self.counter % 5 == 0) {
-                        self.ref.child("users/\(self.userID ?? "N/A")/hearttime").setValue(self.numbers)
+                        self.ref.child("users/\(self.userID ?? "N/A")/hearttime").setValue(heartTime)
+                        self.end()
                     }
                     
 

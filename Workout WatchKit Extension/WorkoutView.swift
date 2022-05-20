@@ -2,71 +2,61 @@ import SwiftUI
 
 struct WorkoutView: View {
     
-    enum DisplayMode {
-        case distance, heartRate, bodyTemperature, oxygenSat, bloodPressureSystolic, bloodPressureDiastolic
-    }
-    
-    @State private var displayMode = DisplayMode.distance
-    
     @ObservedObject var dataManager: DataManager
+
+    lazy var oxygen: String = String(dataManager.lastOxygenSaturation)
+    lazy var distance: String = String(format: "%.0f", dataManager.totalDistance)
+    lazy var heartRate: String = String(Int(dataManager.lastHeartRate))
     
-    var quantity: String {
-        switch displayMode {
-        case .distance:
-            let kilometers = dataManager.totalDistance / 1000
-            
-            return String(format: "%.3f", kilometers)
-        case .oxygenSat:
-            let oxygenSat = dataManager.lastOxygenSaturation
-            
-            return String(oxygenSat)
-        default:
-            return String(Int(dataManager.lastHeartRate))
-        }
+    func oxygenValue() -> String {
+        var mutatableSelf = self
+        return mutatableSelf.oxygen
     }
-    
-    var unit: String {
-        switch displayMode {
-        case .distance:
-            return "km"
-        case .oxygenSat:
-            return "oxygen"
-        default:
-            return "Beats per minute"
-        }
+    func distanceValue() -> String {
+        var mutatableSelf = self
+        return mutatableSelf.distance
     }
-    
+    func heartRateValue() -> String {
+        var mutatableSelf = self
+        return mutatableSelf.heartRate
+    }
+    lazy var array:[String] = ["Distance " , distanceValue() , " m"]
+
     var body: some View {
         VStack {
             Group {
-                Text(quantity)
-                Text(unit)
+                HStack {
+                    Text("Distance:")
+                    Spacer()
+                    Text(distanceValue() + " m")
+                }
+                HStack {
+                    Text("Heart rate:")
+                    Spacer()
+                    Text(heartRateValue() + " bpm")
+                }
+                HStack {
+                    Text("Oxygen:")
+                    Spacer()
+                    Text(oxygenValue() + " %")
+                }
             }
-            .onTapGesture(perform: changeDisplayMode)
-            
+            .frame(width: 160.0)
             if dataManager.state == .active {
                 Button("Stop", action: dataManager.pause)
-            } else {
+            }
+            else {
                 Button("Resume", action: dataManager.resume)
                 Button("End", action: dataManager.end)
             }
-        }
-    }
-    
-    func changeDisplayMode() {
-        switch displayMode {
-        case .distance:
-            displayMode = .heartRate
-        case .heartRate:
-            displayMode = .oxygenSat
-        default:
-            displayMode = .distance
         }
     }
 }
 
 struct WorkoutView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutView(dataManager: DataManager())
+        Group {
+            WorkoutView(dataManager: DataManager())
+        }
     }
 }
