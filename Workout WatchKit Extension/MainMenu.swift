@@ -16,7 +16,7 @@ struct MainMenu: View {
             Form {
                 Section {
                     NavigationLink(destination: WorkoutMenuView()) {
-                        Text("Workout")
+                        Text("Measurement")
                     }
                 }
                 Section {
@@ -29,7 +29,6 @@ struct MainMenu: View {
                         Text("Contacts")
                     }
                 }
-                
                 Section {
                     NavigationLink(destination: SettingsView()) {
                         Text("Settings")

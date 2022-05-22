@@ -68,6 +68,21 @@ struct LoginView: View {
                                             defaults.set(repeat_time, forKey: "repeat_time")
                                         }
                                     });
+                                    ref.child("/users/\(userID)/measurement_counter").getData(completion:  { error, snapshot in
+                                        guard error == nil else {
+                                          print(error!.localizedDescription)
+                                          return;
+                                        }
+                                        let measurement_counter = snapshot.value as? Float ?? 8.0
+                                        print(measurement_counter)
+                                        if measurement_counter == UserDefaults.standard.float(forKey: "measurement_counter"){
+                                            print("saved correctly")
+                                        }
+                                        else {
+                                            print("changed remotely have to set new measurement")
+                                            defaults.set(measurement_counter, forKey: "measurement_counter")
+                                        }
+                                    });
                                 }
                                 defaults.set(email, forKey: "username")
                                 defaults.set(password, forKey: "password")

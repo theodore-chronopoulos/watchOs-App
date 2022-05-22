@@ -39,13 +39,11 @@ struct SettingsView: View {
                     }
                     
                 }
-                
                 Section(header: Text("NOTIFICATIONS")) {
                     NavigationLink(destination: NotificationMenu()) {
-                        Text("Notification Settings")
+                        Text("Notification and Measurement")
                     }
                 }
-                
                 Section(header: Text("ABOUT")) {
                     HStack {
                         Text("Version")

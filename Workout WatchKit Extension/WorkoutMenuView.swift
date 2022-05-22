@@ -24,7 +24,7 @@ struct WorkoutMenuView: View {
                             Text(activities[i].name)
                         }
                     }
-                    Button("Begin Workout")  {
+                    Button("Begin Measurement")  {
                         guard HKHealthStore.isHealthDataAvailable() else { return }
                         dataManager.activity = activities[selectedActivity].type
                         dataManager.start()

@@ -16,8 +16,8 @@ struct NotificationMenu: View {
     @StateObject var notification = createNotification()
     @State private var score = 0
     @State private var repeat_time = UserDefaults.standard.float(forKey: "repeat_time")
+    @State private var measurement_counter = UserDefaults.standard.float(forKey: "measurement_counter")
     @State private var flag: Bool = UserDefaults.standard.bool(forKey: "notifications")
-    
     @State private var previewIndex = 0
     var previewOptions = ["Ring", "Vibrate", "Silent"]
     
@@ -53,37 +53,53 @@ struct NotificationMenu: View {
             }
         }
         return Form {
-            Section {
+            Section (header: Text("Notifications")){
                 Toggle("Notifications", isOn: binding)
-            }
-            Section {
                 Text("Notify me every " + String(format: "%.0f", repeat_time) + " hours.").disabled(self.flag == false)
                 Slider(
                     value: Binding(get: {
                         self.repeat_time
                     }, set: { (newVal) in
                         self.repeat_time = newVal
-                        self.sliderChanged()
+                        self.repeatSliderChanged()
                     }),
                     in: 1...24,
                     step: 1
                 ).padding(.all).disabled(self.flag == false)
-            }
-            Section {
                 Picker(selection: $previewIndex, label: Text("Sound Mode")) {
                     ForEach(0 ..< previewOptions.count, id:\.self) {
                         Text(self.previewOptions[$0])
                     }
                 }
             }
+            Section (header: Text("Measurement")){
+                Text("Take " + String(format: "%.0f", self.measurement_counter) + " in every measurement.")
+                Slider(
+                    value: Binding(get: {
+                        self.measurement_counter
+                    }, set: { (newValue) in
+                        self.measurement_counter = newValue
+                        self.measurementSliderChanged()
+                    }),
+                    in: 5...100,
+                    step: 5
+                ).padding(.all)
+            }
         }
     }
-    func sliderChanged() {
+    func repeatSliderChanged() {
         notification.scheduleNotification(repeat_time: repeat_time)
         let userID = Auth.auth().currentUser?.uid
         let ref: DatabaseReference = Database.database().reference()
         UserDefaults.standard.set(repeat_time, forKey: "repeat_time")
         UserDefaults.standard.synchronize()
         ref.child("users/\(userID ?? "N/A")/repeat_time").setValue(repeat_time)
+    }
+    func measurementSliderChanged() {
+        let userID = Auth.auth().currentUser?.uid
+        let ref: DatabaseReference = Database.database().reference()
+        UserDefaults.standard.set(measurement_counter, forKey: "measurement_counter")
+        UserDefaults.standard.synchronize()
+        ref.child("users/\(userID ?? "N/A")/measurement_counter").setValue(measurement_counter)
     }
 }

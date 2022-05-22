@@ -12,8 +12,14 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     var ref: DatabaseReference = Database.database().reference();
     var userID = Auth.auth().currentUser?.uid
     
-    var numbers = [Double]()
-    var counter = 0
+    var heartRate = [Double]()
+    var heartTimesArray = [String]()
+    var heartCounter = 0
+
+    
+    var oxygen = [Double]()
+    var oxygenTimesArray = [String]()
+    var oxygenCounter = 0
     
     var healthStore = HKHealthStore()
     var workoutSession: HKWorkoutSession?
@@ -25,8 +31,8 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     @Published var totalDistance = 0.0
     @Published var lastHeartRate = 0.0
     @Published var lastOxygenSaturation = 0.0
-    
-    
+    @Published var measurement_counter: Float = UserDefaults.standard.float(forKey: "measurement_counter")
+
     func start() {
         let sampleTypes: Set<HKSampleType> = [
             .workoutType(),
@@ -94,10 +100,12 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     }
     
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        
         getOxygenLevel { x,_ in
             self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
             print(x ?? "0")
         }
+        
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { continue }
             guard let statistics = workoutBuilder.statistics(for: quantityType) else { continue }
@@ -107,21 +115,17 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                 case HKQuantityType.quantityType(forIdentifier: .heartRate):
                     let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
                     self.lastHeartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
-                    let heartTime = CFAbsoluteTimeGetCurrent();
-                    // create tuple with two elements
-                    let product = (heartTime, Int(self.lastHeartRate))
 
-                    // access tuple elements
-                    print("(heart time, heart rate) -> (" + String(heartTime) + " , " + String(Int(self.lastHeartRate)) + ")")
-                    print("(heart time, heart rate) -> " + String(product.0) + " " + String(product.1))
-                    self.numbers.append(heartTime)
-                    self.counter += 1
-                    if (self.counter % 5 == 0) {
-                        self.ref.child("users/\(self.userID ?? "N/A")/hearttime").setValue(heartTime)
+                    let today = Date()
+                    self.heartTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
+                    self.heartRate.append(self.lastHeartRate)
+
+                    self.heartCounter += 1
+                    if (self.heartCounter == Int(self.measurement_counter)) {
+                        let even = Dictionary(uniqueKeysWithValues: zip(self.heartTimesArray, self.heartRate))
+                        self.ref.child("users/\(self.userID ?? "N/A")/heartRate").setValue(even)
                         self.end()
                     }
-                    
-
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
@@ -200,9 +204,11 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     }
 }
 
-//// create tuple with two elements
-//var product = ("MacBook", 1099.99)
-//
-//// access tuple elements
-//print("Name:", product.0)
-//print("Price:", product.1)
+extension Date {
+    func toString( dateFormat format  : String ) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
+}
+

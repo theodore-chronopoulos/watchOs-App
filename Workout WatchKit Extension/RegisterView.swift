@@ -18,19 +18,15 @@ struct RegisterView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("EMAIL")) {
+            Section(header: Text("EMAIL"), footer: Text("Enter a valid email.")) {
                 if #available(watchOSApplicationExtension 8.0, *) {
                     TextField("Email", text: $email).disableAutocorrection(true)
                 } else {
                     // Fallback on earlier versions
                 }
-                Text("Enter a valid email.")
-                    .font(.caption2)
             }
-            Section(header: Text("PASSWORD")) {
+            Section(header: Text("PASSWORD"), footer: Text("Password must be 6 characters long or more.")) {
                 SecureField("Password", text: $password)
-                Text("Password must be 6 characters long or more.")
-                    .font(.caption2)
             }
             Section {
                 Button(action: {
@@ -48,12 +44,15 @@ struct RegisterView: View {
                             defaults.set(password, forKey: "password")
                             defaults.set(false, forKey: "notifications")
                             defaults.set(8.0, forKey: "repeat_time")
+                            defaults.set(10.0, forKey: "measurement_counter")
+                            
                             defaults.synchronize()
                             let userID = Auth.auth().currentUser?.uid
                             let ref: DatabaseReference = Database.database().reference()
                             ref.child("users/\(userID ?? "N/A")/email").setValue(email)
                             ref.child("users/\(userID ?? "N/A")/allow_notifications").setValue("false")
                             ref.child("users/\(userID ?? "N/A")/repeat_time").setValue(8.0)
+                            ref.child("users/\(userID ?? "N/A")/measurement_counter").setValue(10.0)
                             mainViewActive = true
                         }
                     }
