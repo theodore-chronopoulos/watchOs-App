@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import getCookie from '../functions/getCookie.js'
 import Swal from 'sweetalert2'
-import logoImg from "../EVlogo2.png";
+import logoImg from "../logos/66.png";
 
 
 
@@ -130,7 +130,7 @@ function logout(){
               <Link to='/'   className='navbar-logo' onClick={closeMobileMenu}>
                 
                 <img src={logoImg} className="logo-img" />    
-                ChargeEvolution
+                &nbsp;<b>MyHealth</b>
     
               </Link>
               <div className='menu-icon' onClick={handleClick}>
