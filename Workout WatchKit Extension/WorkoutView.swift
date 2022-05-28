@@ -7,7 +7,8 @@ struct WorkoutView: View {
     lazy var oxygen: String = String(dataManager.lastOxygenSaturation)
     lazy var distance: String = String(format: "%.0f", dataManager.totalDistance)
     lazy var heartRate: String = String(Int(dataManager.lastHeartRate))
-    
+    lazy var hrv: String = String(Int(dataManager.lastHRV))
+
     func oxygenValue() -> String {
         var mutatableSelf = self
         return mutatableSelf.oxygen
@@ -19,6 +20,10 @@ struct WorkoutView: View {
     func heartRateValue() -> String {
         var mutatableSelf = self
         return mutatableSelf.heartRate
+    }
+    func hrvValue() -> String {
+        var mutatableSelf = self
+        return mutatableSelf.hrv
     }
     lazy var array:[String] = ["Distance " , distanceValue() , " m"]
 
@@ -34,6 +39,11 @@ struct WorkoutView: View {
                     Text("Heart rate:")
                     Spacer()
                     Text(heartRateValue() + " bpm")
+                }
+                HStack {
+                    Text("HRV:")
+                    Spacer()
+                    Text(hrvValue() + " ms")
                 }
                 HStack {
                     Text("Oxygen:")

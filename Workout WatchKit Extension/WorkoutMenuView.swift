@@ -8,6 +8,7 @@ struct WorkoutMenuView: View {
     @StateObject var dataManager = DataManager()
     
     let activities: [(name: String, type: HKWorkoutActivityType)] = [
+        ("Resting", .walking),
         ("Walking", .walking),
         ("Running", .running),
         ("Bike", .cycling),
@@ -26,7 +27,9 @@ struct WorkoutMenuView: View {
                     }
                     Button("Begin Measurement")  {
                         guard HKHealthStore.isHealthDataAvailable() else { return }
+                        
                         dataManager.activity = activities[selectedActivity].type
+                        dataManager.activityString = activities[selectedActivity].name
                         dataManager.start()
                     }
                 }
