@@ -4,26 +4,28 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export class Register extends React.Component {
     render() {
-        let styleObj2 = { lineHeight: 2 }
+        let styleObj2 = { lineHeight: 3 }
         return (
             <div className="base.container">
-                <div className="content">
+                <div style={styleObj2}>
                     <div className="image">
                         <img src={loginImg} />
                     </div>
-                    <div className="form" style={styleObj2}>
-                        <div className="form-group">
+                    <div style={styleObj2} className="form">
+                        <div className="text-login">
                             <label htmlFor="email"> <b> Email </b></label>
+                        </div>
+                        <div className="input-login">
                             <input className="input_field" type="email" name="email" placeholder="email" id="email" />
                         </div>
-                        <div className="form-group">
+                    </div>
+                    <div style={styleObj2} className="form">
+                        <div className="text-login">
                             <label htmlFor="password"> <b>Password</b></label>
+                        </div>
+                        <div className="input-login">
                             <input className="input_field" type="password" name="password" placeholder="password" id="password" />
                         </div>
-                        {/* <div className="form-group">
-                        <label htmlFor="first_name"> <b> First Name &nbsp;</b></label>
-                        <input   className = "input_field" type="first_name" name="first_name" placeholder="first_name" id="first_name" />
-                    </div> */}
                     </div>
                 </div>
                 <div className="footer">
@@ -46,7 +48,7 @@ export class Register extends React.Component {
                 // Signed in 
                 const user = userCredential.user;
                 // document.cookie = "charge_evolution_token=" + result.token;
-                window.location.href = '/';
+                window.location.href = '/home';
                 console.log("new user");
                 // ...
             })

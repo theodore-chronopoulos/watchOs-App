@@ -3,14 +3,9 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import './App.css';
-import Home from './components/pages/Home'
-// import Charge from './components/pages/Charge'
+import Home from './components/Home'
 import LoginRegister from './components/pages/LoginRegister'
-// import RendezVous from './components/pages/RendezVous'
-// import ChargeNow from './components/pages/ChargeNow'
-// import Balance from './components/pages/Balance'
-// import Profile from './components/pages/Profile'
-// import Sessions from './components/pages/Sessions'
+import MyProfile from './components/MyProfile/MyProfile'
 
 
 // Import the functions you need from the SDKs you need
@@ -47,27 +42,11 @@ function App() {
           {<LoginRegister/>}/>
         <Route path='/' element =
         {<Home/>} />
+        <Route path='/home' element =
+        {<Home/>} />
+        <Route path='/myprofile' element =
+        {<MyProfile/>} />
       </Routes>
-      {/* <Route path='/loginregister' exact component=
-        {LoginRegister}/> */}
-      
-      {/* <Switch>
-        <Route path='/' exact component=
-        {Home}/>
-
-        <Route path='/charge' exact component=
-        {Charge}/>
-        <Route path='/profile' exact component=
-        {Profile}/>
-        <Route path='/balance' exact component=
-        {Balance}/>
-        <Route path='/rendezvous' exact component=
-        {RendezVous}/>
-        <Route path='/chargenow' exact component=
-        {ChargeNow}/>
-        <Route path='/sessions' exact component=
-        {Sessions}/>
-      </Switch> */}
       </Router>
 
     </>

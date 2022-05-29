@@ -115,7 +115,6 @@ function Navbar() {
             <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
 
               <img src={logoImg} className="logo-img" />
-              {/* &nbsp;<b>MyHealth</b> */}
               &nbsp;MyHealth
 
             </Link>
@@ -159,7 +158,7 @@ function Navbar() {
         alert(this.validated);
         Swal.fire({
           title: 'Not authenticated',
-          text: 'Please signin',
+          text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
           confirmButtonColor: "#000000"
