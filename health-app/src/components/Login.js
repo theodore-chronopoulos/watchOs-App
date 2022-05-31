@@ -68,10 +68,10 @@ export class Login extends React.Component {
                 const user = userCredential.user;
                 Swal.fire({
                     title: 'Success',
-                    text: "result.msg",
+                    text: "Succesful login!",
                     icon: 'success',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#242424"
+                    confirmButtonColor: "#2a4cd3"
                 }).then(function () {
                     window.location.href = '/home';
                 });
@@ -84,7 +84,7 @@ export class Login extends React.Component {
                     text: errorMessage,
                     icon: 'error',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#242424"
+                    confirmButtonColor: "#2a4cd3"
                 })
             });
     }

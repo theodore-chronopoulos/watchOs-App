@@ -11,14 +11,14 @@ class LoginRegister extends React.Component {
       this.state = {
         isLogginActive: true
       };
-      console.log("hello")
+      // console.log("hello")
       
     }
   
     componentDidMount() {
       //Add .right by default
       this.rightSide.classList.add("right");
-      console.log("hello")
+      // console.log("hello")
     }
   
     changeState() {

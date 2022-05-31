@@ -1,5 +1,6 @@
 import React from "react";
 import loginImg from "../logos/100.png";
+import Swal from 'sweetalert2'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export class Register extends React.Component {
@@ -47,17 +48,29 @@ export class Register extends React.Component {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                // document.cookie = "charge_evolution_token=" + result.token;
-                window.location.href = '/home';
-                console.log("new user");
-                // ...
+                Swal.fire({
+                    title: 'Success',
+                    text: "Succesful register!",
+                    icon: 'success',
+                    customClass: "swal_ok_button",
+                    confirmButtonColor: "#2a4cd3"
+                }).then(function () {
+                    window.location.href = '/additionalinfo';
+                    console.log("new user");
+                });
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(errorMessage);
+                // alert(errorMessage);
                 console.log("fuck");
-                // ..
+                Swal.fire({
+                    title: 'Error!',
+                    text: errorMessage,
+                    icon: 'error',
+                    customClass: "swal_ok_button",
+                    confirmButtonColor: "#2a4cd3"
+                })
             });
     }
 }

@@ -47,6 +47,10 @@
   
   .nav-item {
     height: 80px;
+    margin-top: 10px;
+  }
+  .nav-item2 {
+    height: 80px;
   }
   
   .nav-links {

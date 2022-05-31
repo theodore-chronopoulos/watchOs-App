@@ -5,6 +5,7 @@ import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import './App.css';
 import Home from './components/Home'
 import LoginRegister from './components/pages/LoginRegister'
+import AdditionalInfo from './components/pages/AdditionalInfo'
 import MyProfile from './components/MyProfile/MyProfile'
 
 
@@ -46,6 +47,8 @@ function App() {
         {<Home/>} />
         <Route path='/myprofile' element =
         {<MyProfile/>} />
+        <Route path='/additionalinfo' element =
+        {<AdditionalInfo/>} />
       </Routes>
       </Router>
 

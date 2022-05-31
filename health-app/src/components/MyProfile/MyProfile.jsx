@@ -1,44 +1,91 @@
 import React from 'react';
 import './scss/style.scss';
 import { Link } from 'react-router-dom';
-// import {  show_user } from "../../base_url";
-// import Cookies from "js-cookie";
+import { getDatabase, ref, child, get, onValue } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Swal from 'sweetalert2'
 
-// import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
+
+
 
 class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             click: true,
-            user: {}
+            first_name: "",
+            last_name: "",
+            address: "",
+            city: "",
+            telephone: ""
         };
     }
-      async componentDidMount() {
-        // console.log(Cookies.get("token_id"));
+    async componentDidMount() {
+        if(this.state === undefined) {return}
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                const uid = user.uid;
+                const db = getDatabase();
+                const query = ref(db, 'admins/' + uid);
+                const dbRef = ref(getDatabase());
+                // query.once("value").then(function (snapshot) {
+                // onValue(query, (snapshot) => {
+                //     snapshot.forEach(function (childSnapshot) {
+                //         this.state.first_name = childSnapshot.val().first_name;
+                //         this.state.last_name = childSnapshot.val().last_name;
+                //         this.state.address = childSnapshot.val().address;
+                //         this.state.city = childSnapshot.val().city;
+                //         this.state.telephone = childSnapshot.val().telephone;
+                //         console.log("all good");
+                //     });
+                // });
+                get(child(dbRef, `admins/${uid}`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                      console.log(snapshot.val());
+                      snapshot.forEach(function (childSnapshot) {
+                    //     this.setState({
+                    //     first_name: childSnapshot.val().first_name
+                    //     // this.state.last_name: childSnapshot.val().last_name;
+                    //     // this.state.address = childSnapshot.val().address;
+                    //     // this.state.city = childSnapshot.val().city;
+                    //     // this.state.telephone = childSnapshot.val().telephone;
+                    // })
 
+                        console.log("all good");
+                        
+                    });
+                    } 
+                    else {
+                      console.log("No data available");
+                    }
+                  }).catch((error) => {
+                    console.error(error);
+                  });
+            }
+            else {
+                // User is signed out
+                Swal.fire({
+                    title: 'Not authenticated',
+                    text: 'Please sign in',
+                    icon: 'info',
+                    customClass: "swal_ok_button",
+                    confirmButtonColor: "#2a4cd3"
+                }).then(function () {
+                    window.location.href = '/';
+                    console.log("error here");
+                });
+            }
+        });
 
+        // onValue(starCountRef, (snapshot) => {
+        //     const data = snapshot.val();
+        //     updateStarCount(postElement, data);
+        // });
 
-        // var myHeaders = new Headers();
-        // myHeaders.append("Authorization", "Bearer " + Cookies.get("token_id"));
-        // myHeaders.append("Content-Type", "application/json");
-        
-        // var raw = JSON.stringify({"userId":Cookies.get("user_id")});
-        
-        // var requestOptions = {
-        //   method: 'POST',
-        //   headers: myHeaders,
-        //   body: raw,
-        //   redirect: 'follow'
-        // };
-        
-        // const response = await fetch(show_user + "/user", requestOptions)
-        // const json = await response.json();
-        // console.log(json.result);
-        // await this.setState({
-        //   user: json.result
-        // })
-      }
+    }
 
 
 
@@ -67,7 +114,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="username">Username: {this.state.user.username}</p>
+                            <p id="username">Username: {this.state.first_name}</p>
                         </div>
                         <div className="hero__info">
                             <div className="circle">
@@ -75,7 +122,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="email">Email: {this.state.user.email}</p>
+                            <p id="email">Email: {this.state.last_name}</p>
                         </div>
                         <div className="hero__info">
                             <div className="circle">
@@ -83,7 +130,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="num_of_questions">Number of Questions: {this.state.user.num_of_questions}</p>
+                            <p id="num_of_questions">Number of Questions: {this.state.address}</p>
                         </div>
 
                         <div className="hero__info">
@@ -92,7 +139,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="name">Number of Answers: {this.state.user.num_of_answers}</p>
+                            <p id="name">Number of Answers: {this.state.telephone}</p>
                         </div>
                         <div className="hero__info">
                             <div className="circle">
@@ -100,7 +147,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="address">Upvotes Given: {this.state.user.upvotes_given}</p>
+                            <p id="address">Upvotes Given: {this.state.city}</p>
                         </div>
                         <div className="hero__info">
                             <div className="circle">
@@ -108,7 +155,7 @@ class MyProfile extends React.Component {
 
                                 </div>
                             </div>
-                            <p id="address">Upvotes Received: {this.state.user.upvotes_received}</p>
+                            <p id="address">Upvotes Received: {this.state.last_name}</p>
                         </div>
                     </div>
                 </section>

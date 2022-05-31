@@ -184,7 +184,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             let query = HKStatisticsQuery(quantityType: oxygenQuantityType,
                                           quantitySamplePredicate: predicate,
                                           options: .mostRecent) { query, result, error in
-                
                 DispatchQueue.main.async {
                     
                     if let err = error {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import getCookie from '../functions/getCookie.js'
+// import getCookie from '../functions/getCookie.js'
 import Swal from 'sweetalert2'
 import logoImg from "../logos/66.png";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
@@ -35,7 +35,7 @@ function Navbar() {
         text: 'Logout successful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#000000"
+        confirmButtonColor: "#2a4cd3"
       }).then(function () {
         setValidated(false);
         window.location.href = '/';
@@ -47,7 +47,7 @@ function Navbar() {
         text: 'Logout unsuccessful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#000000"
+        confirmButtonColor: "#2a4cd3"
       })
     });
   }
@@ -60,30 +60,38 @@ function Navbar() {
           <div className='navbar-container'>
             <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
               <img src={logoImg} className="logo-img" />
-              ChargeEvolution
+              &nbsp;MyHealth
             </Link>
             <div className='menu-icon' onClick={handleClick}>
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item'>
-                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                <Link to='/home' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
-
               <li className='nav-item'>
                 <Link
-                  to='/charge'
+                  to='/statistics'
                   className='nav-links'
                   onClick={closeMobileMenu}
                 >
-                  Charge
+                  Statistics
                 </Link>
               </li>
               <li className='nav-item'>
                 <Link
-                  to='/profile'
+                  to='/users'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Users
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  to='/myprofile'
                   className='nav-links'
                   onClick={closeMobileMenu}
                 >
@@ -122,7 +130,7 @@ function Navbar() {
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-              <li className='nav-item'>
+              <li className='nav-item2'>
                 <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
@@ -161,7 +169,7 @@ function Navbar() {
           text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
-          confirmButtonColor: "#000000"
+          confirmButtonColor: "#2a4cd3"
         })
         // User is signed out
         // ...

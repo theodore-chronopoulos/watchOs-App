@@ -171,20 +171,23 @@
 .form{
   display: flex;
   flex-wrap: wrap;
+  // text-align: left;
   // align-content: space-between
 }
 
 .input_field {
-  margin: 8px;
+  margin: 10px;
   padding-left : 15px;
   height:30px;
   border-radius: 4px;
+  // max-width: fit-content;
 }
 .text-login{
-  width: 25%;
+  text-align: left;
+  width: 35%;
 }
 .input-login{
-  width: 75%;
+  width: 65%;
 }
 .logo-img {
   width:80px;
