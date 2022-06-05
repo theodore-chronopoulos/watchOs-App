@@ -133,30 +133,30 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                         if (self.heartCounter == Int(self.measurement_counter)) {
                             let even = Dictionary(uniqueKeysWithValues: zip(self.heartTimesArray, self.heartRate))
                             self.ref.child("users/\(self.userID ?? "N/A")/heartRate/\(self.activityString)").setValue(even)
-                            if (self.hrvCounter == Int(self.measurement_counter)) {
+                            if (self.oxygenCounter == Int(self.measurement_counter)) {
                                 self.end()
                             }
                         }
                     }
-                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
-                    if (self.hrvCounter != Int(self.measurement_counter)) {
-                        let ms = HKUnit.secondUnit(with: .milli)
-                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
-                        
-                        let today = Date()
-                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
-                        self.hrvRate.append(self.lastHRV)
-                        
-                        self.hrvCounter += 1
-                        if (self.hrvCounter == Int(self.measurement_counter)) {
-                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
-                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
-                            if (self.heartCounter == Int(self.measurement_counter)) {
-                                self.end()
-                            }
-                        }
-                    }
+                    //                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
+                    //                    if (self.hrvCounter != Int(self.measurement_counter)) {
+                    //                        let ms = HKUnit.secondUnit(with: .milli)
+                    //                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                    //                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
+                    //
+                    //                        let today = Date()
+                    //                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
+                    //                        self.hrvRate.append(self.lastHRV)
+                    //
+                    //                        self.hrvCounter += 1
+                    //                        if (self.hrvCounter == Int(self.measurement_counter)) {
+                    //                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
+                    //                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
+                    //                            if (self.heartCounter == Int(self.measurement_counter)) {
+                    //                                self.end()
+                    //                            }
+                    //                        }
+                    //                    }
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
@@ -179,6 +179,8 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                 completion(nil, error)
                 return
             }
+            print("mpikame")
+            
             
             let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
             let query = HKStatisticsQuery(quantityType: oxygenQuantityType,
@@ -191,15 +193,29 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                     } else {
                         guard let level = result, let sum = level.mostRecentQuantity() else {
                             completion(nil, error)
+                            print("fuck")
                             return
                         }
-                        print("Quantity : ", sum)   // It prints 97 % and I need 97 only
-                        
-                        let measureUnit0 = HKUnit(from: "%")
-                        let count0 = sum.doubleValue(for: measureUnit0)
-                        print("Count 0 : ", count0)   // It pronts 0.97 and I need 97 only
-                        
-                        completion(count0 * 100.0, nil)
+                        if (self.oxygenCounter != Int(self.measurement_counter)) {
+                            print("Quantity : ", sum)   // It prints 97 % and I need 97 only
+                            
+                            let measureUnit0 = HKUnit(from: "%")
+                            let count0 = sum.doubleValue(for: measureUnit0)
+                            print("Count 0 : ", count0)   // It pronts 0.97 and I need 97 only
+                            let today = Date()
+                            self.oxygenTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
+                            self.oxygen.append(count0 * 100.0)
+                            self.oxygenCounter += 1
+                            if (self.oxygenCounter == Int(self.measurement_counter)) {
+                                let oxygenfinal = Dictionary(uniqueKeysWithValues: zip(self.oxygenTimesArray, self.oxygen))
+                                self.ref.child("users/\(self.userID ?? "N/A")/oxygen/\(self.activityString)").setValue(oxygenfinal)
+                                if (self.heartCounter == Int(self.measurement_counter)) {
+                                    self.end()
+                                }
+                            }
+                            
+                            completion(count0 * 100.0, nil)
+                        }
                     }
                 }
             }

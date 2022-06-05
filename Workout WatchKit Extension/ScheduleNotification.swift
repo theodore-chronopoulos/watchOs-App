@@ -45,13 +45,12 @@ class createNotification: ObservableObject {
         content.userInfo = ["customData": "fizzbuzz"]
         content.sound = UNNotificationSound.default
         
-        var dateComponents = DateComponents()
-        dateComponents.hour = 10
-        dateComponents.minute = 30
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60 * hours, repeats: true)
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
         
-        let request = UNNotificationRequest(identifier: notification_id, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: notification_id,
+                                            content: content,
+                                            trigger: trigger)
         center.add(request)
     }
     

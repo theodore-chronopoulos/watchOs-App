@@ -28,6 +28,17 @@ export class Register extends React.Component {
                             <input className="input_field" type="password" name="password" placeholder="password" id="password" />
                         </div>
                     </div>
+                    <div style={styleObj2} className="form">
+                        <div className="text-login">
+                            <label for="cars"><b>Register as</b></label>
+                        </div>
+                        <div className="input-login">
+                            <select className="input_field2" id="role">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div className="footer">
                     <button type="button" className="btn_teo" onClick={this.handleRegister}>
@@ -41,6 +52,7 @@ export class Register extends React.Component {
     handleRegister() {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
+        var role = document.getElementById("role").value; 
         // var first_name = document.getElementById("first_name").value; 
 
         const auth = getAuth();
@@ -55,8 +67,14 @@ export class Register extends React.Component {
                     customClass: "swal_ok_button",
                     confirmButtonColor: "#2a4cd3"
                 }).then(function () {
-                    window.location.href = '/additionalinfo';
-                    console.log("new user");
+                    if (role == "admin") {
+                        window.location.href = '/additionalinfo';
+                        console.log("new user");
+                    }
+                    else {
+                        window.location.href = '/home';
+                        console.log("new user");
+                    }
                 });
             })
             .catch((error) => {
