@@ -1,0 +1,40 @@
+.section {
+    margin-bottom: 3%;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2%;
+}
+.page-title {
+    color: hsl(233, 26%, 24%);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: 3%;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2%;
+}
+.section_title{
+    color: hsl(233, 26%, 24%);
+    font-size: 1.3rem;
+    margin-bottom: 1%;
+}
+.section-text {
+    color: hsl(200, 26%, 24%);
+    width: 65%;
+    text-align: justify;  /* For Edge */
+    text-align-last: justify;
+}
+.text-image{
+    display: flex;
+}
+.section-image{
+    margin-top: 0.1rem;
+    margin-left: 1rem;
+    width: 100%;
+    height: auto;
+}
+
+.text-image .section-text,
+.text-image .section-image {
+  flex: 1;
+}

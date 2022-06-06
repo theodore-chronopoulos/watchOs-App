@@ -69,10 +69,10 @@ export class Register extends React.Component {
                 }).then(function () {
                     if (role == "admin") {
                         window.location.href = '/additionalinfo';
-                        console.log("new user");
+                        console.log("new amdin");
                     }
                     else {
-                        window.location.href = '/home';
+                        window.location.href = '/homeuser';
                         console.log("new user");
                     }
                 });

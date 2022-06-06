@@ -1,12 +1,12 @@
 import React,{ useState} from 'react';
 // import '../components/Home/scss/style.scss';
-import ChoicesBoxesHome from '../components/ChoicesBoxes/ChoicesHome'
+import ChoicesBoxes from '../components/ChoicesBoxes/Choices'
 // import { Link } from 'react-router-dom';
 import '../App.css';
 // import TotalAnalytics from "../components/TotalAnalytics/TotalAnalytics";
 
 
-class Home extends React.Component  {
+class HomeAdmin extends React.Component  {
 
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class Home extends React.Component  {
     render() {
         return (
             <div>
-                <ChoicesBoxesHome/>
+                <ChoicesBoxes/>
                 {/* <TotalAnalytics /> */}
             </div>
 
@@ -26,4 +26,4 @@ class Home extends React.Component  {
 }
 
 
-export default Home;
+export default HomeAdmin;

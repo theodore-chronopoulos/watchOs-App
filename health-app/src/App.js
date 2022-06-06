@@ -4,9 +4,13 @@ import Navbar from './components/Navbar';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import './App.css';
 import Home from './components/Home'
+import HomeAdmin from './components/HomeAdmin'
+import HomeUser from './components/HomeUser'
 import LoginRegister from './components/pages/LoginRegister'
 import AdditionalInfo from './components/pages/AdditionalInfo'
 import MyProfile from './components/MyProfile/MyProfile'
+import AboutUs from './components/AboutUs/AboutUs'
+import Footer from './components/Footer/Footer';
 
 
 // Import the functions you need from the SDKs you need
@@ -40,16 +44,21 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/loginregister' element =
-          {<LoginRegister/>}/>
+        {<LoginRegister/>}/>
         <Route path='/' element =
         {<Home/>} />
-        <Route path='/home' element =
-        {<Home/>} />
+        <Route path='/homeadmin' element =
+        {<HomeAdmin/>} />
+        <Route path='/homeuser' element =
+        {<HomeUser/>} />
         <Route path='/myprofile' element =
         {<MyProfile/>} />
         <Route path='/additionalinfo' element =
         {<AdditionalInfo/>} />
+        <Route path='/aboutus' element =
+        {<AboutUs/>} />
       </Routes>
+      <Footer/>
       </Router>
 
     </>

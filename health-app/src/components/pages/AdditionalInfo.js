@@ -113,7 +113,7 @@ export class AdditionalInfo extends React.Component {
                                 customClass: "swal_ok_button",
                                 confirmButtonColor: "#2a4cd3"
                             }).then(function () {
-                                window.location.href = '/home';
+                                window.location.href = '/homeadmin';
                                 console.log("new admin");
                             });
                         })

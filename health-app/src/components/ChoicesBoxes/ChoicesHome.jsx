@@ -2,20 +2,15 @@ import React from 'react';
 import './scss/style.scss';
 import aboutus from "../../logos/aboutus.jpeg";
 import statistics from "../../logos/statistics.jpeg";
-import profile from "../../logos/profile.jpeg";
-import users from "../../logos/users.jpeg";
-
-
-
 import { Link } from 'react-router-dom';
 
-class ChoicesBoxes extends React.Component {
+class ChoicesHome extends React.Component {
     render() {
         return (
             <section className="choices">
                 
                 <div className="choice__content container container--nav container--pall">
-                <div className="welcome_title">Welcome to <b>MyHealth</b> admin page!</div>
+                <div className="welcome_title">Welcome to <b>MyHealth</b>!</div>
                     <div className="choice__grid">
                         
                         <a href="#" className="choice__item">
@@ -56,43 +51,6 @@ class ChoicesBoxes extends React.Component {
                             </div>
                             </Link>
                         </a>
-    
-                        <a href="#" className="choice__item">
-                        <Link to='/users'>
-                            <div className="choice__image"
-                                 style={{backgroundImage: `url(${users})`}}>
-                            </div>
-
-                            <div className="choice__text">
-                                <div className="choice__title">
-                                    Users
-                                </div>
-                                <div className="choice__description">
-                                    Search-Add users, view their last 
-                                    measurements and change notifications 
-                                    settings.
-                                </div>
-                            </div>
-                            </Link>
-                        </a>   
-                        
-                        <a href="#" className="choice__item">
-                        <Link to='/myprofile'>
-                            <div className="choice__image"
-                                 style={{backgroundImage: `url(${profile})`}}>
-                            </div>
-
-                            <div className="choice__text">
-                                <div className="choice__title">
-                                    Profile
-                                </div>
-                                <div className="choice__description">
-                                    Change your personal information,
-                                    permissions and contact details.
-                                </div>
-                            </div>
-                            </Link>
-                        </a>
                         
                     </div>
                 </div>
@@ -102,4 +60,4 @@ class ChoicesBoxes extends React.Component {
     }
 }
 
-export default ChoicesBoxes;
+export default ChoicesHome;
