@@ -16,7 +16,7 @@ class AboutUs extends React.Component {
                 <div className='page-title'>
                     <b>About us</b>
                 </div>
-                <div className='section'>
+                {/* <div className='section'>
                     <div className='section_title'>
                         <b>Γενικά</b>
                     </div>
@@ -115,7 +115,7 @@ class AboutUs extends React.Component {
                         <div className="section-image">
                             <img src={sensors} className="section-image" />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 {/* <div className='section'>
                     <div className='section_title'>
