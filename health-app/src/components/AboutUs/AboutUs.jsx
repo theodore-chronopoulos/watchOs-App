@@ -16,12 +16,7 @@ class AboutUs extends React.Component {
                 <div className='page-title'>
                     <b>About us</b>
                 </div>
-
-                {/* <div className='section'>
-                    <div className='section_title'>
-                        <b>Σχετικά με εμάς</b>
-                    </div>
-                </div> */}
+                
                 <ChoicesBoxesLoggedIn />
 
             </div>
