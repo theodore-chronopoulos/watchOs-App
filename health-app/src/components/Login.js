@@ -1,9 +1,8 @@
 import React from "react";
 import loginImg from "../logos/100.png";
-// import { Redirect } from 'react-router-dom';
 import Swal from 'sweetalert2'
-import getCookie from '../functions/getCookie.js'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, child, get, onValue } from "firebase/database";
 
 
 export class Login extends React.Component {
@@ -66,14 +65,36 @@ export class Login extends React.Component {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                Swal.fire({
-                    title: 'Success',
-                    text: "Succesful login!",
-                    icon: 'success',
-                    customClass: "swal_ok_button",
-                    confirmButtonColor: "#2a4cd3"
-                }).then(function () {
-                    window.location.href = '/home';
+                const uid = user.uid;
+                const dbRef = ref(getDatabase());
+                get(child(dbRef, `admins/${uid}`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        console.log(snapshot.val());
+                        console.log("he is an admin");
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Succesful login!",
+                            icon: 'success',
+                            customClass: "swal_ok_button",
+                            confirmButtonColor: "#2a4cd3"
+                        }).then(function () {
+                            window.location.href = '/homeadmin';
+                        });
+                    }
+                    else {
+                        console.log("he is a user");
+                        Swal.fire({
+                            title: 'Success',
+                            text: "Succesful login!",
+                            icon: 'success',
+                            customClass: "swal_ok_button",
+                            confirmButtonColor: "#2a4cd3"
+                        }).then(function () {
+                            window.location.href = '/homeuser';
+                        });
+                    }
+                }).catch((error) => {
+                    console.error(error);
                 });
             })
             .catch((error) => {

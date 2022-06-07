@@ -6,6 +6,7 @@ import './Navbar.css';
 import Swal from 'sweetalert2'
 import logoImg from "../logos/66.png";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, child, get, onValue } from "firebase/database";
 
 
 function Navbar() {
@@ -13,6 +14,7 @@ function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [validated, setValidated] = useState(false);
+  const [adminuser, setAdmin] = useState(false);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -53,12 +55,12 @@ function Navbar() {
   }
 
 
-  const fullNavbar = () => {
+  const fullNavbarUser = () => {
     return (
       <>
         <nav className='navbar'>
           <div className='navbar-container'>
-            <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            <Link to='/homeuser' className='navbar-logo' onClick={closeMobileMenu}>
               <img src={logoImg} className="logo-img" />
               &nbsp;MyHealth
             </Link>
@@ -67,8 +69,79 @@ function Navbar() {
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item'>
-                <Link to='/home' className='nav-links' onClick={closeMobileMenu}>
+                <Link to='/homeuser' className='nav-links' onClick={closeMobileMenu}>
                   Home
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link to='/aboutus' className='nav-links' onClick={closeMobileMenu}>
+                  About us
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  to='/statistics'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Statistics
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  to='/admins'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Admins
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  to='/profile_user'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='/'
+                  className='nav-links-mobile'
+                  onClick={logout}
+                >
+                  Log out
+                </Link>
+              </li>
+            </ul>
+            {button && <Button buttonStyle='btn--outline' onClick={logout}>Log out</Button>}
+          </div>
+        </nav>
+      </>
+    );
+  }
+  const fullNavbarAdmin = () => {
+    return (
+      <>
+        <nav className='navbar'>
+          <div className='navbar-container'>
+            <Link to='/homeadmin' className='navbar-logo' onClick={closeMobileMenu}>
+              <img src={logoImg} className="logo-img" />
+              &nbsp;MyHealth
+            </Link>
+            <div className='menu-icon' onClick={handleClick}>
+              <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+            </div>
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+              <li className='nav-item'>
+                <Link to='/homeadmin' className='nav-links' onClick={closeMobileMenu}>
+                  Home
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link to='/aboutus' className='nav-links' onClick={closeMobileMenu}>
+                  About us
                 </Link>
               </li>
               <li className='nav-item'>
@@ -91,7 +164,7 @@ function Navbar() {
               </li>
               <li className='nav-item'>
                 <Link
-                  to='/myprofile'
+                  to='/profile_admin'
                   className='nav-links'
                   onClick={closeMobileMenu}
                 >
@@ -135,7 +208,20 @@ function Navbar() {
                   Home
                 </Link>
               </li>
-
+              <li className='nav-item2'>
+                <Link to='/aboutus' className='nav-links' onClick={closeMobileMenu}>
+                  About us
+                </Link>
+              </li>
+              <li className='nav-item2'>
+                <Link
+                  to='/statistics'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Statistics
+                </Link>
+              </li>
               <li>
                 <Link
                   to='/loginregister'
@@ -161,8 +247,19 @@ function Navbar() {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
-        // ...
-      } else {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `admins/${uid}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            setAdmin(true);
+          }
+          else {
+            console.log("its a user");
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      }
+      else {
         alert(this.validated);
         Swal.fire({
           title: 'Not authenticated',
@@ -181,8 +278,14 @@ function Navbar() {
   window.addEventListener('resize', showButton);
 
   if (validated) {
-    console.log("VALID");
-    return fullNavbar();
+    if (adminuser) {
+      console.log("VALID ADMIN");
+      return fullNavbarAdmin();
+    }
+    else {
+      console.log("VALID USER");
+      return fullNavbarUser();
+    }
   }
   else {
     console.log("INVVALID");

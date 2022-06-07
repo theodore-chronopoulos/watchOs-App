@@ -8,7 +8,8 @@ import HomeAdmin from './components/HomeAdmin'
 import HomeUser from './components/HomeUser'
 import LoginRegister from './components/pages/LoginRegister'
 import AdditionalInfo from './components/pages/AdditionalInfo'
-import MyProfile from './components/MyProfile/MyProfile'
+import ProfileAdmin from './components/MyProfile/ProfileAdmin'
+import ProfileUser from './components/MyProfile/ProfileUser'
 import AboutUs from './components/AboutUs/AboutUs'
 import Footer from './components/Footer/Footer';
 
@@ -51,8 +52,10 @@ function App() {
         {<HomeAdmin/>} />
         <Route path='/homeuser' element =
         {<HomeUser/>} />
-        <Route path='/myprofile' element =
-        {<MyProfile/>} />
+        <Route path='/profile_admin' element =
+        {<ProfileAdmin/>} />
+        <Route path='/profile_user' element =
+        {<ProfileUser/>} />
         <Route path='/additionalinfo' element =
         {<AdditionalInfo/>} />
         <Route path='/aboutus' element =

@@ -970,4 +970,10 @@ button:hover, .button:hover {
   color: #9698a6;
   font-size: 15px;
 }
+.prof-img img{
+  height: auto;
+  max-width: 2%;
+  margin-left: 10rem;
+  background-size: cover;
+}
 /*# sourceMappingURL=style.css.map */
