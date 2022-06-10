@@ -10,7 +10,7 @@
     @include breakpoint-up(medium) {
         padding: 1rem 2.5rem; 
         height: auto;
-        max-width: 600px;;
+        max-width: 700px;;
         overflow: hidden;
         text-align: center;
         margin-left: auto;
@@ -22,7 +22,7 @@
     &__background {
         background-color: $veryLightGray;
         border: 1px solid #dadce0;
-
+        width: 100%;
         box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
         border-radius: 0.3125rem;
         //padding-bottom: 0.8rem;
@@ -58,7 +58,7 @@
             flex: 20;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
-            font-size: 1rem;
+            font-size: 1.7rem;
             color: $darkBlue;
             align-self: start;
             justify-content: start;
@@ -76,11 +76,11 @@
         justify-content: start;
         margin-left: 2rem; 
         margin-right: 2rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.6rem;
         .circle {
             flex: 1;
             &__one{
-    
+                margin-right: 1.2rem;
                 width: 5px;
                 height: 5px;
                 background: $darkBlue;
@@ -91,7 +91,7 @@
 
         p {
             flex: 22;
-            margin: 0.5rem;
+            margin-left: 0.5rem;
             //margin-top: 3px;
             font-size: 1.2rem;
             font-family: Arial, Helvetica, sans-serif;
@@ -120,3 +120,85 @@
     left: 0px;
     right: 0px;
 }
+
+.up_down_button{
+    font-size: 21px;
+    margin-right: 0.5rem;
+    width: 100px;
+    display: block;
+    height: 50px;
+    padding: 5px 20px;
+    border: 0;
+    background-color: #2a4cd3;
+    color: #fff;
+    border-radius: 6px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+      background-color: #2a4cd3;
+    }
+    &:focus {
+      outline: none;
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 80px;
+    height: 40px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 30px;
+    width: 30px;
+    left: 6px;
+    bottom: 5px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2a4cd3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2a4cd3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(30px);
+    -ms-transform: translateX(30px);
+    transform: translateX(40px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }

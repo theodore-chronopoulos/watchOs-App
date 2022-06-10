@@ -57,7 +57,7 @@ class ChoicesBoxesUser extends React.Component {
                         </a>
     
                         <a href="#" className="choice__item">
-                        <Link to='/users'>
+                        <Link to='/admins'>
                             <div className="choice__image"
                                  style={{backgroundImage: `url(${users})`}}>
                             </div>

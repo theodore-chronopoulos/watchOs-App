@@ -12,6 +12,7 @@ import ProfileAdmin from './components/MyProfile/ProfileAdmin'
 import ProfileUser from './components/MyProfile/ProfileUser'
 import AboutUs from './components/AboutUs/AboutUs'
 import Footer from './components/Footer/Footer';
+import ShowAdmins from './components/Admins/ShowAdmins';
 
 
 // Import the functions you need from the SDKs you need
@@ -60,6 +61,8 @@ function App() {
         {<AdditionalInfo/>} />
         <Route path='/aboutus' element =
         {<AboutUs/>} />
+        <Route path='/admins' element =
+        {<ShowAdmins/>} />
       </Routes>
       <Footer/>
       </Router>

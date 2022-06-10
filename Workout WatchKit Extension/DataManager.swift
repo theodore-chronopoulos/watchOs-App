@@ -109,10 +109,10 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         
-        getOxygenLevel { x,_ in
-            self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
-            print(x ?? "0")
-        }
+        //        getOxygenLevel { x,_ in
+        //            self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
+        //            print(x ?? "0")
+        //        }
         
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { continue }
@@ -138,25 +138,25 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             }
                         }
                     }
-                    //                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
-                    //                    if (self.hrvCounter != Int(self.measurement_counter)) {
-                    //                        let ms = HKUnit.secondUnit(with: .milli)
-                    //                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-                    //                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
-                    //
-                    //                        let today = Date()
-                    //                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
-                    //                        self.hrvRate.append(self.lastHRV)
-                    //
-                    //                        self.hrvCounter += 1
-                    //                        if (self.hrvCounter == Int(self.measurement_counter)) {
-                    //                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
-                    //                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
-                    //                            if (self.heartCounter == Int(self.measurement_counter)) {
-                    //                                self.end()
-                    //                            }
-                    //                        }
-                    //                    }
+                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
+                    if (self.hrvCounter != Int(self.measurement_counter)) {
+                        let ms = HKUnit.secondUnit(with: .milli)
+                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
+                        
+                        let today = Date()
+                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
+                        self.hrvRate.append(self.lastHRV)
+                        
+                        self.hrvCounter += 1
+                        if (self.hrvCounter == Int(self.measurement_counter)) {
+                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
+                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
+                            if (self.heartCounter == Int(self.measurement_counter)) {
+                                self.end()
+                            }
+                        }
+                    }
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0

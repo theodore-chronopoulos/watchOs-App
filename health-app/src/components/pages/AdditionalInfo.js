@@ -59,7 +59,7 @@ export class AdditionalInfo extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="footer">
+                            <div>
                                 <button type="button" className="btn_teo" onClick={this.handleClick}>
                                     Submit
                                 </button>
