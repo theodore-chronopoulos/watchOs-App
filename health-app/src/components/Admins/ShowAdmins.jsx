@@ -1,6 +1,6 @@
 import React from 'react';
 import FeedAdmin from "./FeedAdmin.jsx";
-import search from '../../logos/sensors.png';
+import search from '../../logos/search-icon2.png';
 import Swal from "sweetalert2";
 import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -8,21 +8,21 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 class ShowAdmins extends React.Component {
   constructor(props) {
     super(props);
+    this.changeState = this.changeState.bind(this);
     this.state = {
       click: true,
       admins: [],
-      keywords: [],
+      searchword: "",
       kk: ""
     };
   }
   async componentDidMount() {
-    // if (this.state === undefined) { return }
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
+        // const uid = user.uid;
         const dbRef = ref(getDatabase());
         get(child(dbRef, `admins`)).then((snapshot) => {
           if (snapshot.exists()) {
@@ -65,84 +65,51 @@ class ShowAdmins extends React.Component {
       }
     });
   }
-  // changeState = async (event) =>  {
-  //     const keywords = this.state.keywords;
-  //     let raw = JSON.stringify({
-  //         keywords: keywords
-  //     })
-  //     var myHeaders = new Headers();
-  //     myHeaders.append("Content-Type", "application/json");
-
-  //     let requestOptions;
-  //     let api_request = ""
-  //     const keys = document.getElementById('key_search').value
-  //     if (raw.length === 0 || keys === "") {
-  //         this.setState({
-  //             questions: []
-  //         })
-  //         requestOptions = {
-  //             method: 'GET',
-  //             headers: myHeaders,
-  //             redirect: 'follow'
-  //         };
-  //         api_request = "/question"
-  //     }
-  //     else {
-  //         this.setState({
-  //             questions: []
-  //         })
-  //         requestOptions = {
-  //             method: 'POST',
-  //             headers: myHeaders,
-  //             body: raw,
-  //             redirect: 'follow'
-  //         };
-  //         api_request = "/questions/questionsPerKeyword"
-  //     }
-
-
-  //     await fetch(show_qa_url + api_request, requestOptions)
-  //         .then(response => {
-  //             if (response.status === 200) {
-  //               return response.text();
-  //             } else {
-  //               throw new Error(response.status);
-  //             }
-  //         })
-  //         .then(async result => {
-  //             const json = JSON.parse(result)
-  //             await this.setState({
-  //                 questions: json.result
-
-  //             })
-  //             //this.render()
-  //             console.log(this.state.questions)
-  //             //window.location.replace("/");
-  //             //window.location.reload();
-  //         })
-  //         .catch(error => {
-  //             Swal.fire({
-  //               title: 'Error!',
-  //               text: error,
-  //               icon: 'error',
-  //               customClass: "swal_ok_button",
-  //               confirmButtonColor: "#242424"
-  //             });
-  //         });
-  // }
+  
   closeMobileMenu = () => this.setState({ click: false });
   changeState = async (event) => {
     // this.state.admins.map(admin => console.log(admin))
-    console.log(this.state.admins[0])
+    console.log(this.state.searchword)
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `admins`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        const admins = snapshot.val();
+        console.log(admins)
+        var myArray = []
+        const search_word_lower = this.state.searchword.toLowerCase()
+        for (let el in admins) {
+          console.log(admins[el].last_name);
+          const last_name_lower = admins[el].last_name.toLowerCase()
+          if (last_name_lower.includes(search_word_lower)){
+            myArray.push(el)
+          }
+        }
+        console.log(myArray)
+        this.setState({
+          admins: myArray
+        })
+        // console.log(this.state.admins)
+        // this.state.admins.forEach(admin => console.log(admin))
+        // this.state.admins.map(admin => console.log(admin.address))
+      }
+      else {
+        console.log("No data available");
+        // window.location.href = '/';
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   render() {
     return (
       <div>
-        <div className="answer_title">Answer a question!</div>
+        <div className="answer_title"><b>Professionals</b></div>
         <div className="wrap">
           <div className="search">
-            <input type="text" className="searchTerm" id="key_search" placeholder="Search by keyword, separated by space.." onChange={(e) => { this.setState({ keywords: e.target.value.split(' ') }) }} />
+            <input type="text" className="searchTerm" id="key_search" placeholder="Search by last name..." 
+            onChange={(e) => { this.setState({ searchword: e.target.value})}} />
             <button type="submit" className="searchButton"
               onClick={this.changeState}>
               <img src={search} className="image_search" alt={search} />

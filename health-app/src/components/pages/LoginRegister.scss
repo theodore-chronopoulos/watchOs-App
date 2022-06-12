@@ -70,7 +70,9 @@
     flex-direction: column;
     justify-content: center;
     height: 90%;
-    background-color: #2a4cd3;
+    // background-color: #2a4cd3;
+    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 100%);
+
     width: 100%;
     position: absolute;
     right: -34%;
@@ -115,7 +117,8 @@
   width: 200px;
   height: 50px;
   padding: 5px 20px;
-  background-color: #2a4cd3;
+  background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+  // background-color: #2a4cd3;
   color: #fff;
   border: 0px;
   border-radius: 10px;
@@ -123,7 +126,9 @@
   cursor: pointer;
   &:hover {
     opacity:80%;
-    background-color: #2a4cd3;
+    // background-color: #2a4cd3;
+    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+
   }
   &:focus {
     outline: none;

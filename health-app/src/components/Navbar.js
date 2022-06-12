@@ -93,7 +93,7 @@ function Navbar() {
                   className='nav-links'
                   onClick={closeMobileMenu}
                 >
-                  Admins
+                  Professionals
                 </Link>
               </li>
               <li className='nav-item'>

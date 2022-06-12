@@ -60,7 +60,6 @@ class ProfileUser extends React.Component {
                     else {
                         console.log("No data available");
                         window.location.href = '/profile_admin';
-
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -249,8 +248,8 @@ class ProfileUser extends React.Component {
                                 </div>
                             </div>
                             <p id="measurement_counter">Ammount of measurements: <b>{this.state.measurement_counter}</b></p>
-                            <button className="up_down_button" onClick={this.up_counter}>up</button>
-                            <button className="up_down_button" onClick={this.down_counter}>down</button>
+                            <button className="up_down_button" onClick={this.up_counter}>+</button>
+                            <button className="up_down_button" onClick={this.down_counter}>-</button>
                         </div>
                         <div className="hero__info">
                             <div className="circle">
@@ -259,8 +258,8 @@ class ProfileUser extends React.Component {
                                 </div>
                             </div>
                             <p id="repeat_time">Repeat notification every: <b>{this.state.repeat_time}</b></p>
-                            <button className="up_down_button" onClick={this.up_repeat}>up</button>
-                            <button className="up_down_button" onClick={this.down_repeat}>down</button>
+                            <button className="up_down_button" onClick={this.up_repeat}>+</button>
+                            <button className="up_down_button" onClick={this.down_repeat}>-</button>
                         </div>
                     </div>
                 </section>

@@ -64,11 +64,11 @@ class ChoicesBoxesUser extends React.Component {
 
                             <div className="choice__text">
                                 <div className="choice__title">
-                                    Admins
+                                    Professionals
                                 </div>
                                 <div className="choice__description">
-                                    Search-Add your admin. Authorize him 
-                                    to change your measurement settings
+                                    Search-Add your professional. Authorize 
+                                    him to change your measurement settings
                                     and send you push-notifications. 
                                     View his contact information.
                                 </div>

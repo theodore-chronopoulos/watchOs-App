@@ -1,10 +1,11 @@
 .answer_title{
-    color: #6a98ce;
-    font-size: 2rem;
+    color: hsl(233, 26%, 24%);
+    font-size: 1.8rem;
     line-height: 1.2;
-    margin-left: calc(5% + 50px);
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3%;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2%;
     @include breakpoint-down(medium) {
         font-size: 1.5rem;
     }
@@ -23,18 +24,21 @@
 
     width: 100%;
     height: 50px;
-    border: 3px solid #00B4CC;
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+  // background-color: #2a4cd3;
+    border: 3px solid #2a4cd3;
     border-right: none;
     padding: 1rem;
     //height: 20px;
-    margin-bottom: 1rem;
+    margin-left: 11%;
+    margin-bottom: 3rem;
     border-radius: 5px 0 0 5px;
     outline: none;
     color: #333;
 }
 
 .searchTerm:focus{
-    border-color: #00B4CC;
+    border-color: #5a75e0;
 }
 .image_search {
     height: 30px;
@@ -42,15 +46,21 @@
     position: relative;
     left: -13px;
     top: -5px;
-
+}
+.image_search2 {
+    height: 30px;
+    width: 30px;
+    position: relative;
+    left: 0px;
+    top: 10px;
+    margin-right: 10px;
 }
 .searchButton {
     display: block;
     width: 40px;
     height: 50px;
-
-    border: 1px solid #6a98ce;
-    background: #6a98ce;
+    border: 1px solid #2a4cd3;
+    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
     text-align: center;
     color: #fff;
     border-radius: 0 5px 5px 0;
@@ -83,17 +93,19 @@
 
 }
 .title_of_question1{
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     color: #6a98ce;
     font-weight: bold;
-    margin-left: 0.8rem;
-    margin-top: 0.5rem;
+    margin-left: 1.2rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
 }
-.author{
+.infos{
     font-size: $font-med;
     color: $darkBlue;
     margin-top: 2%;
     display: flex;
+    margin-left: 2rem;
 }
 .those{
     //flex: 1;
@@ -115,10 +127,12 @@
     width: fit-content;
 }
 .box_of_question{
+    // background: linear-gradient(90deg, rgb(42,76,211) 20%, rgb(245, 245, 238) 150%);
+    background: white;
     padding-right: 50px;
     padding-left: 50px;
-    margin-left: 5%;
-    margin-right: 10%;
+    margin-left: 11%;
+    margin-right: 11%;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border: 1.5px solid $darkBlue;

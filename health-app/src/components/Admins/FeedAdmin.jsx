@@ -2,6 +2,10 @@ import React from 'react';
 import './scss/style.scss';
 import { Link } from 'react-router-dom';
 import { getDatabase, ref, child, get, update } from "firebase/database";
+import address from '../../logos/address.png';
+import telephone from '../../logos/telephone.png';
+import email from '../../logos/email.png';
+import doctor from '../../logos/doctor.png';
 
 
 
@@ -15,7 +19,8 @@ class FeedAdmin extends React.Component {
             last_name: "",
             address: "",
             city: "",
-            telephone: ""
+            telephone: "",
+            email: ""
         };
     }
     async componentDidMount() {
@@ -32,7 +37,8 @@ class FeedAdmin extends React.Component {
                     last_name: snapshot.val().last_name,
                     city: snapshot.val().city,
                     telephone: snapshot.val().telephone,
-                    address: snapshot.val().address
+                    address: snapshot.val().address,
+                    email: snapshot.val().email
                 })
             }
             else {
@@ -52,11 +58,24 @@ class FeedAdmin extends React.Component {
                 <div className="box_of_question">
 
                     <div className="title_of_question1">
-                        {this.state.first_name} &nbsp; {this.state.last_name}
+                        <img src={doctor} className="image_search2" alt={doctor} />
+                        {this.state.first_name}&nbsp;{this.state.last_name}
                     </div>
 
-                    <div className="author">
-                        Asked by: {this.state.admin.first_name} &nbsp; {this.state.last_name}
+                    <div className="infos">
+                        <img src={address} className="image_search" alt={address} />
+
+                        {this.state.address}&nbsp;{this.state.city}
+                    </div>
+                    <div className="infos">
+                        <img src={email} className="image_search" alt={email} />
+
+                        {this.state.email}
+                    </div>
+                    <div className="infos">
+                        <img src={telephone} className="image_search" alt={telephone} />
+
+                        {this.state.telephone}
                     </div>
                     {/* <div className="flex">
                             {this.state.keywords.map(keyword =>
@@ -65,11 +84,12 @@ class FeedAdmin extends React.Component {
                                 </div>
                             )}
                         </div> */}
-                    <div className="those">
+                    {/* <div className="those">
                         <div className="num_of_answers">
+                            <img src={address} className="image_search" alt={address} />
                             Answers: {this.state.address}
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
                 {/* </Link> */}

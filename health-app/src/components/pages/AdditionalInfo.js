@@ -58,6 +58,14 @@ export class AdditionalInfo extends React.Component {
                                         <input className="input_field" type="telephone" name="telephone" placeholder="telephone" id="telephone" />
                                     </div>
                                 </div>
+                                <div style={styleObj2} className="form">
+                                    <div className="text-login">
+                                        <label htmlFor="password"> <b>Contact email</b></label>
+                                    </div>
+                                    <div className="input-login">
+                                        <input className="input_field" type="email" name="email" placeholder="email" id="email" />
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <button type="button" className="btn_teo" onClick={this.handleClick}>
@@ -77,9 +85,11 @@ export class AdditionalInfo extends React.Component {
         var address = document.getElementById("address").value;
         var city = document.getElementById("city").value;
         var telephone = document.getElementById("telephone").value;
+        var email = document.getElementById("email").value;
 
         if (first_name == null || first_name == "" || last_name == null || last_name == "" ||
-            address == null || address == "" || city == null || city == "" || telephone == null || telephone == "") {
+        address == null || address == "" || email == null || email == "" || city == null || 
+        city == "" || telephone == null || telephone == "") {
             Swal.fire({
                 title: 'Incorrect Form',
                 text: 'Please complete all the fields.',
@@ -102,7 +112,8 @@ export class AdditionalInfo extends React.Component {
                         last_name: last_name,
                         address: address,
                         city: city,
-                        telephone: telephone
+                        telephone: telephone,
+                        email: email
                     })
                         .then(() => {
                             // Data saved successfully!

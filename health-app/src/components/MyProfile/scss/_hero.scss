@@ -15,8 +15,6 @@
         text-align: center;
         margin-left: auto;
         margin-right: auto;
-       
-        
 
     }
     &__background {
@@ -34,11 +32,9 @@
         
         .bullet {
             flex: 1;
-            
             margin-left: 0.8rem;
             margin-top: 0.5rem;
-                
-        
+
             &__one{
     
                 width: 4px;
@@ -124,18 +120,25 @@
 .up_down_button{
     font-size: 21px;
     margin-right: 0.5rem;
-    width: 100px;
     display: block;
     height: 50px;
     padding: 5px 20px;
     border: 0;
-    background-color: #2a4cd3;
+
+    // background-color: #2a4cd3;
+    // border-radius: 6px;
+    // width: 100px;
+
+    width: 50px;
+    border-radius: 15px;
+    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+
     color: #fff;
-    border-radius: 6px;
     transition: all 250ms ease-in-out;
     cursor: pointer;
     &:hover {
-      background-color: #2a4cd3;
+      // background-color: #2a4cd3;
+      background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
     }
     &:focus {
       outline: none;
