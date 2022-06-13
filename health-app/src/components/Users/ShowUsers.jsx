@@ -1,48 +1,39 @@
 import React from 'react';
-import FeedAdmin from "./FeedAdmin.jsx";
+import FeedUser from "./FeedUser.jsx";
 import search from '../../logos/search-icon2.png';
 import Swal from "sweetalert2";
 import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-class ShowAdmins extends React.Component {
+class ShowUsers extends React.Component {
   constructor(props) {
     super(props);
     this.changeState = this.changeState.bind(this);
     this.state = {
       click: true,
-      admins: [],
+      admin: "",
       searchword: "",
-      user_id: ""
+      users: []
     };
   }
   async componentDidMount() {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    onAuthStateChanged(auth, (admin) => {
+      if (admin) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
+        const admin_id = admin.uid;
         this.setState({
-          user_id: uid
+          admin: admin_id
         })
         const dbRef = ref(getDatabase());
-        get(child(dbRef, `admins`)).then((snapshot) => {
+        get(child(dbRef, `admins/${admin_id}/users`)).then((snapshot) => {
           if (snapshot.exists()) {
-            const admins = snapshot.val();
-            console.log(admins)
-            var myArray = []
-            for (let el in admins) {
-              console.log(typeof el);
-              myArray.push(el)
-            }
-            console.log(myArray)
+            const users = snapshot.val();
+            console.log(users)
             this.setState({
-              admins: myArray
+              users: users
             })
-            console.log(this.state.admins)
-            this.state.admins.forEach(admin => console.log(admin))
-            this.state.admins.map(admin => console.log(admin.address))
           }
           else {
             console.log("No data available");
@@ -91,9 +82,6 @@ class ShowAdmins extends React.Component {
         this.setState({
           admins: myArray
         })
-        // console.log(this.state.admins)
-        // this.state.admins.forEach(admin => console.log(admin))
-        // this.state.admins.map(admin => console.log(admin.address))
       }
       else {
         console.log("No data available");
@@ -107,10 +95,10 @@ class ShowAdmins extends React.Component {
   render() {
     return (
       <div>
-        <div className="answer_title"><b>Professionals</b></div>
+        <div className="answer_title"><b>Users</b></div>
         <div className="wrap">
           <div className="search">
-            <input type="text" className="searchTerm" id="key_search" placeholder="Search by last name..." 
+            <input type="text" className="searchTerm" id="key_search" placeholder="Search user by email..." 
             onChange={(e) => { this.setState({ searchword: e.target.value})}} />
             <button type="submit" className="searchButton"
               onClick={this.changeState}>
@@ -119,9 +107,9 @@ class ShowAdmins extends React.Component {
           </div>
         </div>
         <div className="ppp">
-          {this.state.admins.map(admin =>
-            <div key={admin}>
-              <FeedAdmin admin={admin} user_id={this.state.user_id}/>
+          {this.state.users.map(user =>
+            <div key={user}>
+              <FeedUser admin={this.state.admin} user_id={user}/>
             </div>
           )}
         </div>
@@ -131,4 +119,4 @@ class ShowAdmins extends React.Component {
 }
 
 
-export default ShowAdmins;
+export default ShowUsers;

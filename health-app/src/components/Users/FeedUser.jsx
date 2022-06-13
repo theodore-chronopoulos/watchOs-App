@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 import { getDatabase, ref, child, get, update, remove } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import address from '../../logos/address.png';
-import telephone from '../../logos/telephone.png';
-import email from '../../logos/email.png';
-import doctor from '../../logos/doctor.png';
-import total_users from '../../logos/total_users.png';
+import watch from '../../logos/watch.png';
+import repeat_time from '../../logos/repeat_time.png';
+import notification from '../../logos/notification.png';
+import user from '../../logos/users.png';
 
 
 
-class FeedAdmin extends React.Component {
+class FeedUser extends React.Component {
     constructor(props) {
         super(props);
         this.change = this.change.bind(this);
@@ -21,14 +20,10 @@ class FeedAdmin extends React.Component {
             click: true,
             admin: "",
             user_id: "",
-            first_name: "",
-            last_name: "",
-            address: "",
-            city: "",
-            telephone: "",
             email: "",
-            users: [],
-            total_users: 0
+            allow_notifications: "",
+            measurement_counter: 0,
+            repeat_time: "",
         };
     }
     async componentDidMount() {
@@ -39,39 +34,41 @@ class FeedAdmin extends React.Component {
         })
         console.log(this.props.admin)
         const dbRef = ref(getDatabase());
-        get(child(dbRef, `admins/${this.state.admin}`)).then((snapshot) => {
+        get(child(dbRef, `users/${this.state.user_id}`)).then((snapshot) => {
             if (snapshot.exists()) {
                 this.setState({
-                    first_name: snapshot.val().first_name,
-                    last_name: snapshot.val().last_name,
-                    city: snapshot.val().city,
-                    telephone: snapshot.val().telephone,
-                    address: snapshot.val().address,
                     email: snapshot.val().email,
-                    total_users: parseInt(snapshot.val().total_users)
+                    measurement_counter: parseInt(snapshot.val().measurement_counter),
+                    repeat_time: snapshot.val().repeat_time,
+                    // allow_notifications: snapshot.val().allow_notifications
                 })
-                if (snapshot.val().users === undefined) {
+                if (snapshot.val().allow_notifications === "false") {
                     this.setState({
-                        users: []
+                        allow_notifications: "Disabled"
                     })
                 }
                 else {
                     this.setState({
-                        users: snapshot.val().users
+                        allow_notifications: "Enabled"
                     })
-                    if (snapshot.val().users.includes(this.props.user_id)) {
-                        var button = document.getElementById([this.state.admin]);
-                        var buttonState = button.dataset.buttonState;
-                        var buttonText;
-                        var buttonState;
-                        buttonText = "Remove Professional";
-                        buttonState = "close";
-                        button.className = "btn_teo2"
-                        button.innerHTML = buttonText;
-                        button.dataset.buttonState = buttonState;
-                    }
-                    console.log(snapshot.val().users)
                 }
+                // else {
+                //     this.setState({
+                //         users: snapshot.val().users
+                //     })
+                //     if (snapshot.val().users.includes(this.props.user_id)) {
+                //         var button = document.getElementById([this.state.admin]);
+                //         var buttonState = button.dataset.buttonState;
+                //         var buttonText;
+                //         var buttonState;
+                //         buttonText = "Remove Professional";
+                //         buttonState = "close";
+                //         button.className = "btn_teo2"
+                //         button.innerHTML = buttonText;
+                //         button.dataset.buttonState = buttonState;
+                //     }
+                //     console.log(snapshot.val().users)
+                // }
             }
             else {
                 console.log("No data available");
@@ -166,29 +163,24 @@ class FeedAdmin extends React.Component {
                 <div className="box_of_question">
                     <div className='left_side'>
                         <div className="title_of_question1">
-                            <img src={doctor} className="image_search2" alt={doctor} />
-                            {this.state.first_name}&nbsp;{this.state.last_name}
-                        </div>
-
-                        <div className="infos">
-                            <img src={address} className="image_search" alt={address} />
-
-                            {this.state.address}&nbsp;{this.state.city}
-                        </div>
-                        <div className="infos">
-                            <img src={email} className="image_search" alt={email} />
-
+                            <img src={user} className="image_search2" alt={user} />
                             {this.state.email}
                         </div>
-                        <div className="infos">
-                            <img src={telephone} className="image_search" alt={telephone} />
 
-                            {this.state.telephone}
+                        <div className="infos">
+                            <img src={notification} className="image_search" alt={notification} />
+
+                            Notifications: {this.state.allow_notifications}
                         </div>
                         <div className="infos">
-                            <img src={total_users} className="image_search" alt={total_users} />
+                            <img src={repeat_time} className="image_search" alt={repeat_time} />
 
-                            {this.state.total_users}
+                            Repeat every: {this.state.repeat_time} hours
+                        </div>
+                        <div className="infos">
+                            <img src={watch} className="image_search" alt={watch} />
+
+                            Number of measurements: {this.state.measurement_counter}
                         </div>
                         {/* <div className="flex">
                             {this.state.keywords.map(keyword =>
@@ -221,4 +213,4 @@ class FeedAdmin extends React.Component {
         )
     }
 }
-export default FeedAdmin;
+export default FeedUser;
