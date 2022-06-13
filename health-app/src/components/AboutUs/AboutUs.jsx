@@ -16,7 +16,7 @@ class AboutUs extends React.Component {
                 <div className='page-title'>
                     <b>About us</b>
                 </div>
-
+                
                 <ChoicesBoxesLoggedIn />
 
             </div>

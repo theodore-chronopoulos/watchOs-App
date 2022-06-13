@@ -113,7 +113,8 @@ export class AdditionalInfo extends React.Component {
                         address: address,
                         city: city,
                         telephone: telephone,
-                        email: email
+                        email: email,
+                        total_users: 0
                     })
                         .then(() => {
                             // Data saved successfully!

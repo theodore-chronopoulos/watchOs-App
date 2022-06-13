@@ -137,7 +137,67 @@
     padding-bottom: 1rem;
     border: 1.5px solid $darkBlue;
     border-radius: 8px;
-    display: block;
+    // display: inline-block;
+    display: flex;
     font-family: 'Public Sans', sans-serif;
+}
+.left_side{
+    display: block;
+    width: 60%;
+    margin-right: 2rem;
+}
+.right_side{
+    width: 40%;
 
 }
+//Button
+.btn_teo {
+    font-size: 21px;
+    margin: 40px;
+    margin-top: 3.8rem;
+    width: 240px;
+    height: 50px;
+    padding: 5px 20px;
+    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    // background-color: #2a4cd3;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+      opacity:80%;
+      // background-color: #2a4cd3;
+      background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+  
+    }
+    // &:focus {
+    // //   outline: none;
+    //   outline: red auto 5px; 
+    // }
+  }
+  .btn_teo2 {
+    font-size: 21px;
+    margin: 40px;
+    margin-top: 3.8rem;
+    width: 240px;
+    height: 50px;
+    padding: 5px 20px;
+    background: linear-gradient(120deg, rgb(202, 15, 46) 20%, rgb(26, 23, 23) 120%);
+    // background-color: #2a4cd3;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+      opacity:80%;
+      // background-color: #2a4cd3;
+      background: linear-gradient(120deg, rgb(202, 15, 46) 20%, rgb(26, 23, 23) 120%);
+  
+    }
+    // &:focus {
+    // //   outline: none;
+    //   outline: red auto 5px; 
+    // }
+  }
