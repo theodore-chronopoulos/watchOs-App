@@ -18,7 +18,7 @@ class ProfileUser extends React.Component {
     this.up_repeat = this.up_repeat.bind(this);
     this.down_repeat = this.down_repeat.bind(this);
     this.toggleChanged = this.toggleChanged.bind(this);
-
+    this.onDropdownSelected = this.onDropdownSelected.bind(this);
     // this.document.querySelector = this.document.querySelector.bind(this);
 
     this.state = {
@@ -27,8 +27,11 @@ class ProfileUser extends React.Component {
       allow_notifications: "",
       measurement_counter: 0,
       repeat_time: "",
+      selected_type: "",
       labels: [],
       heartRatesData: [],
+      measurement_types: [],
+      activity_types:[]
       // checked: ""
     };
   }
@@ -46,7 +49,6 @@ class ProfileUser extends React.Component {
         get(child(dbRef, `users/${uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
-              console.log(snapshot.val());
               this.setState({
                 email: snapshot.val().email,
                 measurement_counter: parseInt(
@@ -55,8 +57,16 @@ class ProfileUser extends React.Component {
                 repeat_time: snapshot.val().repeat_time,
                 allow_notifications: snapshot.val().allow_notifications,
               });
+              console.log("We are going to test");
+              for (let el in snapshot.val()) {
+                if (el == "heartRate" || el == "oxygen") {
+                  this.state.measurement_types.push(el);
+                }
+              }
+              console.log(this.state.measurement_types);
               const { heartRate } = snapshot.val();
               for (let el in heartRate) {
+                this.state.activity_types.push(el);
                 //el for activity type
                 this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
                 this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
@@ -86,20 +96,39 @@ class ProfileUser extends React.Component {
   }
 
   createSelectItems() {
+
     let items = [];
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i < this.state.measurement_types.length; i++) {
       items.push(
-        <option key={i} value={i}>
-          {i.toString() + "ASDASD"}
+        <option
+          key={this.state.measurement_types[i]}
+          value={this.state.measurement_types[i]}
+        >
+          {this.state.measurement_types[i]}
+        </option>
+      );
+    }
+    return items;
+  }
+  createSelectItemsActivities() {
+
+    let items = [];
+    for (let i = 0; i < this.state.activity_types.length; i++) {
+      items.push(
+        <option
+          key={this.state.activity_types[i]}
+          value={this.state.activity_types[i]}
+        >
+          {this.state.activity_types[i]}
         </option>
       );
     }
     return items;
   }
 
-  onDropdownSelected(e) {
-    console.log("THE VAL", e.target.value);
-    //here you will see the current selected value of the select input
+  onDropdownSelected(e) {  
+    this.state.selected_type = e.target.value;
+    console.log(this.state.selected_type);
   }
 
   up_repeat() {
@@ -308,10 +337,10 @@ class ProfileUser extends React.Component {
 
           <Form.Select
             className="measurement-select"
-            onChange={this.onDropdownSelected}
+            onChange={this.createSelectItemsActivities}
             aria-label="Default select example"
           >
-            {this.createSelectItems()}
+            {this.createSelectItemsActivities()}
           </Form.Select>
         </div>
 
