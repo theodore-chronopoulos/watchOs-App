@@ -3,3 +3,37 @@
 @import "animations";
 @import "globals";
 @import "hero";
+.ChartContent {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    .ChartWrapper {
+        display: block;
+        width: 65%;
+        margin-top: 36px;
+    }
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+.dropdowns-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.measurement-select {
+    width: 200px;
+    height: 40px;
+    text-align: center;
+}
