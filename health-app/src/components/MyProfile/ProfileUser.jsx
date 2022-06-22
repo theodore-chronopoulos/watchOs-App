@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import profile_pic from "../../logos/profile-icon2.png";
 import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
 import LineChart from "../Charts/LineChart";
+import DoughnutChart from "../Charts/DoughnutChart";
 
 import Form from "react-bootstrap/Form";
 
@@ -19,6 +20,7 @@ class ProfileUser extends React.Component {
     this.down_repeat = this.down_repeat.bind(this);
     this.toggleChanged = this.toggleChanged.bind(this);
     this.onDropdownSelected = this.onDropdownSelected.bind(this);
+    // this.fetch_data = this.fetch_data.bind(this);
     // this.document.querySelector = this.document.querySelector.bind(this);
 
     this.state = {
@@ -27,11 +29,16 @@ class ProfileUser extends React.Component {
       allow_notifications: "",
       measurement_counter: 0,
       repeat_time: "",
-      selected_type: "",
+      selected_type: "heartRate",
       labels: [],
       heartRatesData: [],
+      oxygenData: [],
+      oxygenlabels: [],
       measurement_types: [],
-      activity_types:[]
+      activity_types: [],
+      show: false,
+      aveOxygen: 0,
+      userid: "",
       // checked: ""
     };
   }
@@ -49,6 +56,7 @@ class ProfileUser extends React.Component {
         get(child(dbRef, `users/${uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
+              this.state.userid = user.uid;
               this.setState({
                 email: snapshot.val().email,
                 measurement_counter: parseInt(
@@ -63,13 +71,17 @@ class ProfileUser extends React.Component {
                   this.state.measurement_types.push(el);
                 }
               }
-              console.log(this.state.measurement_types);
-              const { heartRate } = snapshot.val();
-              for (let el in heartRate) {
-                this.state.activity_types.push(el);
-                //el for activity type
-                this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+              if (this.state.selected_type == "heartRate") {
+                const { heartRate } = snapshot.val();
+
+                for (let el in heartRate) {
+                  this.state.activity_types.push(el);
+                  //el for activity type
+                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                }
+              } else {
+                console.log("NO DATA HEARTEDDDE");
               }
             } else {
               console.log("No data available");
@@ -96,7 +108,6 @@ class ProfileUser extends React.Component {
   }
 
   createSelectItems() {
-
     let items = [];
     for (let i = 0; i < this.state.measurement_types.length; i++) {
       items.push(
@@ -111,7 +122,6 @@ class ProfileUser extends React.Component {
     return items;
   }
   createSelectItemsActivities() {
-
     let items = [];
     for (let i = 0; i < this.state.activity_types.length; i++) {
       items.push(
@@ -126,9 +136,70 @@ class ProfileUser extends React.Component {
     return items;
   }
 
-  onDropdownSelected(e) {  
-    this.state.selected_type = e.target.value;
-    console.log(this.state.selected_type);
+  onDropdownSelected(e) {
+    this.setState({ selected_type: e.target.value });
+    this.fetch_data();
+  }
+
+  fetch_data() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${uid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              if (this.state.selected_type == "heartRate") {
+                const { heartRate } = snapshot.val();
+
+                for (let el in heartRate) {
+                  this.state.activity_types.push(el);
+                  //el for activity type
+                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                }
+              }
+              if (this.state.selected_type == "oxygen") {
+                const { oxygen } = snapshot.val();
+                this.state.activity_types = [];
+                const temp_labels = [];
+                const temp_data = [];
+                for (let el in oxygen) {
+                  //el for activity type
+                  this.state.activity_types.push(el);
+                  this.state.oxygenlabels = [...Object.keys(oxygen[el])]; //left part for timestamp
+                  this.state.oxygenData = [...Object.values(oxygen[el])]; // for values
+                }
+                console.log("Here are oxygen average");
+                const average =
+                  this.state.oxygenData.reduce((a, b) => a + b, 0) /
+                  this.state.oxygenData.length;
+                this.state.aveOxygen = average;
+                this.setState({ aveOxygen: average });
+              }
+            } else {
+              console.log("No data available");
+              window.location.href = "/profile_admin";
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        // User is signed out
+        Swal.fire({
+          title: "Not authenticated",
+          text: "Please sign in",
+          icon: "info",
+          customClass: "swal_ok_button",
+          confirmButtonColor: "#2a4cd3",
+        }).then(function () {
+          window.location.href = "/";
+          console.log("error here");
+        });
+      }
+    });
   }
 
   up_repeat() {
@@ -326,7 +397,7 @@ class ProfileUser extends React.Component {
           </div>
         </section>
         {/* <ChoicesBoxesLoggedIn /> */}
-        <div class="dropdowns-div">
+        <div className="dropdowns-div">
           <Form.Select
             className="measurement-select"
             onChange={this.onDropdownSelected}
@@ -344,12 +415,23 @@ class ProfileUser extends React.Component {
           </Form.Select>
         </div>
 
-        {this.state.heartRatesData && this.state.labels && (
+        {(this.state.selected_type == "heartRate" &&
+          this.state.heartRatesData &&
+          this.state.labels && (
+            <main className="ChartContent">
+              <div className="ChartWrapper">
+                <LineChart
+                  heartrate={this.state.heartRatesData}
+                  labels={this.state.labels}
+                />
+              </div>
+            </main>
+          )) || (
           <main className="ChartContent">
             <div className="ChartWrapper">
               <LineChart
-                heartrate={this.state.heartRatesData}
-                labels={this.state.labels}
+                heartrate={this.state.oxygenData}
+                labels={this.state.oxygenlabels}
               />
             </div>
           </main>

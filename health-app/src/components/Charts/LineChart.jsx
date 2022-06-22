@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,7 +23,6 @@ ChartJS.register(
 );
 
 export default function LineChart({ heartrate, labels }) {
-  console.log(heartrate, labels);
   const options = {
     responsive: true,
     plugins: {
@@ -46,6 +46,7 @@ export default function LineChart({ heartrate, labels }) {
       },
     ],
   };
+  
 
   return <Line options={options} data={data} />;
 }
