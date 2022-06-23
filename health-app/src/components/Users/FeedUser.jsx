@@ -15,7 +15,6 @@ class FeedUser extends React.Component {
     constructor(props) {
         super(props);
         this.change = this.change.bind(this);
-
         this.state = {
             click: true,
             admin: "",
@@ -27,7 +26,7 @@ class FeedUser extends React.Component {
         };
     }
     async componentDidMount() {
-        console.log(this.props)
+        console.log(this.props.user_id)
         await this.setState({
             admin: this.props.admin,
             user_id: this.props.user_id
@@ -52,23 +51,6 @@ class FeedUser extends React.Component {
                         allow_notifications: "Enabled"
                     })
                 }
-                // else {
-                //     this.setState({
-                //         users: snapshot.val().users
-                //     })
-                //     if (snapshot.val().users.includes(this.props.user_id)) {
-                //         var button = document.getElementById([this.state.admin]);
-                //         var buttonState = button.dataset.buttonState;
-                //         var buttonText;
-                //         var buttonState;
-                //         buttonText = "Remove Professional";
-                //         buttonState = "close";
-                //         button.className = "btn_teo2"
-                //         button.innerHTML = buttonText;
-                //         button.dataset.buttonState = buttonState;
-                //     }
-                //     console.log(snapshot.val().users)
-                // }
             }
             else {
                 console.log("No data available");
@@ -77,50 +59,15 @@ class FeedUser extends React.Component {
         }).catch((error) => {
             console.error(error);
         });
-        console.log(this.state.users)
     }
     change() {
         const auth = getAuth();
 
-        var button = document.getElementById([this.state.admin]);
+        var button = document.getElementById([this.state.user_id]);
         var buttonState = button.dataset.buttonState;
-        var buttonText;
-        var buttonState;
         // var button.className;
 
-        if (buttonState === 'report') {
-            buttonText = "Remove Professional";
-            buttonState = "close";
-            button.className = "btn_teo2"
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    // User is signed in, see docs for a list of available properties
-                    // https://firebase.google.com/docs/reference/js/firebase.User
-                    const uid = user.uid;
-                    const db = getDatabase();
-                    const fullname = this.state.first_name + " " + this.state.last_name;
-                    const new_users = [...this.state.users, uid];
-                    const new_total_users = this.state.total_users + 1
-                    this.setState({
-                        total_users: this.state.total_users + 1,
-                        users: [...this.state.users, uid]
-                    })
-                    update(ref(db, 'users/' + uid + '/professionals/'), {
-                        [this.state.admin]: fullname,
-                    });
-                    update(ref(db, 'admins/' + this.state.admin), {
-                        total_users: new_total_users,
-                        users: new_users
-                    });
-                } else {
-                    // User is signed out
-                    // ...
-                }
-            });
-        } else {
-            buttonText = "Add Professional";
-            buttonState = "report"
-            button.className = "btn_teo"
+        if (buttonState === 'remove') {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
@@ -150,65 +97,52 @@ class FeedUser extends React.Component {
                 }
             });
         }
-        console.log(this.state.total_users)
-
-        button.innerHTML = buttonText;
-        button.dataset.buttonState = buttonState;
     }
 
     render() {
         return (
             <div>
-                {/* <Link to={{ pathname: "/admin", state: this.state.admin.first_name }}> */}
-                <div className="box_of_question">
-                    <div className='left_side'>
-                        <div className="title_of_question1">
-                            <img src={user} className="image_search2" alt={user} />
-                            {this.state.email}
-                        </div>
+                <Link to={{
+                    pathname: "/profile_user",
+                    query: { the: 'query' }
+                }}
+                // params={{ testvalue: "hello" }}
+                >
+                    <div className="box_of_question">
+                        <div className='left_side'>
+                            <div className="title_of_question1">
+                                <img src={user} className="image_search2" alt={user} />
+                                {this.state.email}
+                            </div>
 
-                        <div className="infos">
-                            <img src={notification} className="image_search" alt={notification} />
+                            <div className="infos">
+                                <img src={notification} className="image_search" alt={notification} />
 
-                            Notifications: {this.state.allow_notifications}
-                        </div>
-                        <div className="infos">
-                            <img src={repeat_time} className="image_search" alt={repeat_time} />
+                                Notifications: {this.state.allow_notifications}
+                            </div>
+                            <div className="infos">
+                                <img src={repeat_time} className="image_search" alt={repeat_time} />
 
-                            Repeat every: {this.state.repeat_time} hours
-                        </div>
-                        <div className="infos">
-                            <img src={watch} className="image_search" alt={watch} />
+                                Repeat every: {this.state.repeat_time} hours
+                            </div>
+                            <div className="infos">
+                                <img src={watch} className="image_search" alt={watch} />
 
-                            Number of measurements: {this.state.measurement_counter}
+                                Number of measurements: {this.state.measurement_counter}
+                            </div>
                         </div>
-                        {/* <div className="flex">
-                            {this.state.keywords.map(keyword =>
-                                <div className="keyword_display" key={Math.random()}>
-                                    <p>{keyword}</p>
-                                </div>
-                            )}
-                        </div> */}
-                        {/* <div className="those">
-                        <div className="num_of_answers">
-                            <img src={address} className="image_search" alt={address} />
-                            Answers: {this.state.address}
+                        <div className='right_side'>
+                            <button id={this.state.user_id}
+                                type="button"
+                                className="btn_teo4"
+                                onClick={this.change}
+                                data-button-state="remove"
+                            >
+                                Remove User
+                            </button>
                         </div>
-                    </div> */}
                     </div>
-                    <div className='right_side'>
-                        <button id={this.state.admin}
-                            // onclick="change()"
-                            type="button"
-                            className="btn_teo"
-                            onClick={this.change}
-                            data-button-state="report"
-                        >
-                            Add Professional
-                        </button>
-                    </div>
-                </div>
-                {/* </Link> */}
+                </Link>
             </div>
         )
     }

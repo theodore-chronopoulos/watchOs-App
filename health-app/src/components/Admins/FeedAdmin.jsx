@@ -190,19 +190,6 @@ class FeedAdmin extends React.Component {
 
                             {this.state.total_users}
                         </div>
-                        {/* <div className="flex">
-                            {this.state.keywords.map(keyword =>
-                                <div className="keyword_display" key={Math.random()}>
-                                    <p>{keyword}</p>
-                                </div>
-                            )}
-                        </div> */}
-                        {/* <div className="those">
-                        <div className="num_of_answers">
-                            <img src={address} className="image_search" alt={address} />
-                            Answers: {this.state.address}
-                        </div>
-                    </div> */}
                     </div>
                     <div className='right_side'>
                         <button id={this.state.admin}

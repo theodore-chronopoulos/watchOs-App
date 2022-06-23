@@ -2,6 +2,8 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+// import { createBrowserHistory } from 'history';
+
 import './App.css';
 import Home from './components/Home'
 import HomeAdmin from './components/HomeAdmin'
@@ -38,6 +40,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// const history = createBrowserHistory();
+
 
 
 function App() {

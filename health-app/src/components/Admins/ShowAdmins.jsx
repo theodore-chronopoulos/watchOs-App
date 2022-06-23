@@ -43,9 +43,13 @@ class ShowAdmins extends React.Component {
             console.log(this.state.admins)
             this.state.admins.forEach(admin => console.log(admin))
             this.state.admins.map(admin => console.log(admin.address))
+            var no_users = document.getElementById("not_found");
+            no_users.className = "notfound "
           }
           else {
             console.log("No data available");
+            var no_users = document.getElementById("not_found");
+            no_users.className = "visible"
             // window.location.href = '/';
           }
         }).catch((error) => {
@@ -67,7 +71,7 @@ class ShowAdmins extends React.Component {
       }
     });
   }
-  
+
   closeMobileMenu = () => this.setState({ click: false });
   changeState = async (event) => {
     // this.state.admins.map(admin => console.log(admin))
@@ -83,7 +87,10 @@ class ShowAdmins extends React.Component {
         for (let el in admins) {
           console.log(admins[el].last_name);
           const last_name_lower = admins[el].last_name.toLowerCase()
-          if (last_name_lower.includes(search_word_lower)){
+          const first_name_lower = admins[el].first_name.toLowerCase()
+          const full_name = first_name_lower + " " + last_name_lower
+
+          if (full_name.includes(search_word_lower)) {
             myArray.push(el)
           }
         }
@@ -91,6 +98,15 @@ class ShowAdmins extends React.Component {
         this.setState({
           admins: myArray
         })
+        if (myArray.length == 0) {
+          console.log("here")
+          var no_users = document.getElementById("not_found");
+          no_users.className = "visible"
+        }
+        else {
+          var no_users = document.getElementById("not_found");
+          no_users.className = "notfound"
+        }
         // console.log(this.state.admins)
         // this.state.admins.forEach(admin => console.log(admin))
         // this.state.admins.map(admin => console.log(admin.address))
@@ -110,8 +126,8 @@ class ShowAdmins extends React.Component {
         <div className="answer_title"><b>Professionals</b></div>
         <div className="wrap">
           <div className="search">
-            <input type="text" className="searchTerm" id="key_search" placeholder="Search by last name..." 
-            onChange={(e) => { this.setState({ searchword: e.target.value})}} />
+            <input type="text" className="searchTerm" id="key_search" placeholder="Search a proffesional by name..."
+              onChange={(e) => { this.setState({ searchword: e.target.value }) }} />
             <button type="submit" className="searchButton"
               onClick={this.changeState}>
               <img src={search} className="image_search" alt={search} />
@@ -121,10 +137,12 @@ class ShowAdmins extends React.Component {
         <div className="ppp">
           {this.state.admins.map(admin =>
             <div key={admin}>
-              <FeedAdmin admin={admin} user_id={this.state.user_id}/>
+              <FeedAdmin admin={admin} user_id={this.state.user_id} />
             </div>
           )}
         </div>
+        <div id="not_found" style={{ display: "visible" }}>No professionals found..</div>
+
       </div>
     );
   }

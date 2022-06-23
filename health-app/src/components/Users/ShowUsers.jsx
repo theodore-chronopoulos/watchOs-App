@@ -13,7 +13,8 @@ class ShowUsers extends React.Component {
       click: true,
       admin: "",
       searchword: "",
-      users: []
+      users: [],
+      data: true
     };
   }
   async componentDidMount() {
@@ -32,11 +33,20 @@ class ShowUsers extends React.Component {
             const users = snapshot.val();
             console.log(users)
             this.setState({
-              users: users
+              users: users,
             })
+            var no_users = document.getElementById("not_found");
+            // console.log(no_users)
+            no_users.className = "notfound"
+
+            // let styleObj2 = {display: "none"}
+
+            // no_users.style = { styleObj2} 
           }
           else {
             console.log("No data available");
+            var no_users = document.getElementById("not_found");
+            no_users.className = "visible"
             // window.location.href = '/';
           }
         }).catch((error) => {
@@ -58,48 +68,83 @@ class ShowUsers extends React.Component {
       }
     });
   }
-  
+
   closeMobileMenu = () => this.setState({ click: false });
   changeState = async (event) => {
     // this.state.admins.map(admin => console.log(admin))
     console.log(this.state.searchword)
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `admins`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        const admins = snapshot.val();
-        console.log(admins)
-        var myArray = []
-        const search_word_lower = this.state.searchword.toLowerCase()
-        for (let el in admins) {
-          console.log(admins[el].last_name);
-          const last_name_lower = admins[el].last_name.toLowerCase()
-          if (last_name_lower.includes(search_word_lower)){
-            myArray.push(el)
+    if (this.state.searchword === "") {
+      get(child(dbRef, `admins/${this.state.admin}/users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const users = snapshot.val();
+          console.log(users)
+          this.setState({
+            users: users
+          })
+          var no_users = document.getElementById("not_found");
+          no_users.className = "notfound"
+        }
+        else {
+          console.log("No data available");
+          var no_users = document.getElementById("not_found");
+          no_users.className = "visible"
+
+          // window.location.href = '/';
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+    else {
+      get(child(dbRef, `users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          const users = snapshot.val();
+          console.log(users)
+          var myArray = []
+          const search_word_lower = this.state.searchword.toLowerCase()
+          for (let el in users) {
+            console.log(users[el].email);
+            const email_lower = users[el].email.toLowerCase()
+            if (email_lower.includes(search_word_lower) && this.state.users.includes(el)) {
+              myArray.push(el)
+            }
+          }
+          console.log(myArray)
+          this.setState({
+            users: myArray
+          })
+          if (myArray.length == 0) {
+            console.log("here")
+            var no_users = document.getElementById("not_found");
+            no_users.className = "visible"
+          }
+          else {
+            var no_users = document.getElementById("not_found");
+            no_users.className = "notfound"
           }
         }
-        console.log(myArray)
-        this.setState({
-          admins: myArray
-        })
-      }
-      else {
-        console.log("No data available");
-        // window.location.href = '/';
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+        else {
+          console.log("No data available");
+          var no_users = document.getElementById("not_found");
+          no_users.className = "visible"
+          // window.location.href = '/';
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
   }
 
   render() {
     return (
-      <div>
+      <div className='general'>
         <div className="answer_title"><b>Users</b></div>
         <div className="wrap">
           <div className="search">
-            <input type="text" className="searchTerm" id="key_search" placeholder="Search user by email..." 
-            onChange={(e) => { this.setState({ searchword: e.target.value})}} />
+            <input type="text" className="searchTerm" id="key_search" placeholder="Search user by email..."
+              onChange={(e) => { this.setState({ searchword: e.target.value }) }} />
             <button type="submit" className="searchButton"
               onClick={this.changeState}>
               <img src={search} className="image_search" alt={search} />
@@ -109,10 +154,11 @@ class ShowUsers extends React.Component {
         <div className="ppp">
           {this.state.users.map(user =>
             <div key={user}>
-              <FeedUser admin={this.state.admin} user_id={user}/>
+              <FeedUser admin={this.state.admin} user_id={user} />
             </div>
           )}
         </div>
+        <div id="not_found" style={{ display: "visible" }}>No users found..</div>
       </div>
     );
   }

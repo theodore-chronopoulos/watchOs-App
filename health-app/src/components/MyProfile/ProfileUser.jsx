@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./scss/style.scss";
 import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -38,73 +37,127 @@ class ProfileUser extends React.Component {
       activity_types: [],
       show: false,
       aveOxygen: 0,
-      userid: "",
+      id_user: "",
       // checked: ""
     };
   }
   async componentDidMount() {
+    // const { history, location } = this.props;
     if (this.state === undefined) {
       return;
     }
+    // await console.log(this.props.location.query)
+    // console.log(this.context.router)
+    var uid = this.props.user_id
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const dbRef = ref(getDatabase());
-        get(child(dbRef, `users/${uid}`))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              this.state.userid = user.uid;
-              this.setState({
-                email: snapshot.val().email,
-                measurement_counter: parseInt(
-                  snapshot.val().measurement_counter
-                ),
-                repeat_time: snapshot.val().repeat_time,
-                allow_notifications: snapshot.val().allow_notifications,
-              });
-              console.log("We are going to test");
-              for (let el in snapshot.val()) {
-                if (el == "heartRate" || el == "oxygen") {
-                  this.state.measurement_types.push(el);
+    if (this.props.user_id === undefined) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log("user to see his profile")
+          console.log(typeof user.uid)
+          this.setState({
+            id_user: user.uid
+          })
+          console.log(this.state.id_user);
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const dbRef = ref(getDatabase());
+          get(child(dbRef, `users/${user.uid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                this.setState({
+                  email: snapshot.val().email,
+                  measurement_counter: parseInt(snapshot.val().measurement_counter),
+                  repeat_time: snapshot.val().repeat_time,
+                  allow_notifications: snapshot.val().allow_notifications,
+                });
+                console.log("We are going to test");
+                for (let el in snapshot.val()) {
+                  if (el == "heartRate" || el == "oxygen") {
+                    this.state.measurement_types.push(el);
+                  }
                 }
-              }
-              if (this.state.selected_type == "heartRate") {
-                const { heartRate } = snapshot.val();
+                if (this.state.selected_type == "heartRate") {
+                  const { heartRate } = snapshot.val();
 
-                for (let el in heartRate) {
-                  this.state.activity_types.push(el);
-                  //el for activity type
-                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                  for (let el in heartRate) {
+                    this.state.activity_types.push(el);
+                    //el for activity type
+                    this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                    this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                  }
+                } else {
+                  console.log("NO DATA HEARTEDDDE");
                 }
               } else {
-                console.log("NO DATA HEARTEDDDE");
+                console.log("No data available");
+                // window.location.href = "/profile_admin";
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          // User is signed out
+          Swal.fire({
+            title: "Not authenticated",
+            text: "Please sign in",
+            icon: "info",
+            customClass: "swal_ok_button",
+            confirmButtonColor: "#2a4cd3",
+          }).then(function () {
+            window.location.href = "/";
+            console.log("error here");
+          });
+        }
+      });
+    }
+    else {
+      const dbRef = ref(getDatabase());
+      console.log("fuck")
+      // change the next Element
+      get(child(dbRef, `users/${this.props.user_id}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot)
+            this.state.id_user = this.props.user_id;
+            // change the last Element
+            this.setState({
+              email: snapshot.val().email,
+              measurement_counter: parseInt(snapshot.val().measurement_counter),
+              repeat_time: snapshot.val().repeat_time,
+              allow_notifications: snapshot.val().allow_notifications,
+              id_user: this.props.user_id
+            });
+            console.log("We are going to test");
+            for (let el in snapshot.val()) {
+              if (el == "heartRate" || el == "oxygen") {
+                this.state.measurement_types.push(el);
+              }
+            }
+            if (this.state.selected_type == "heartRate") {
+              const { heartRate } = snapshot.val();
+
+              for (let el in heartRate) {
+                this.state.activity_types.push(el);
+                //el for activity type
+                this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
               }
             } else {
-              console.log("No data available");
-              window.location.href = "/profile_admin";
+              console.log("NO DATA HEARTEDDDE");
             }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
-        // User is signed out
-        Swal.fire({
-          title: "Not authenticated",
-          text: "Please sign in",
-          icon: "info",
-          customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3",
-        }).then(function () {
-          window.location.href = "/";
-          console.log("error here");
+          } else {
+            console.log("No data available");
+            // window.location.href = "/profile_admin";
+          }
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
-    });
+    }
+    console.log(this.state.id_user)
+
   }
 
   createSelectItems() {
@@ -146,6 +199,7 @@ class ProfileUser extends React.Component {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
+
         const dbRef = ref(getDatabase());
         get(child(dbRef, `users/${uid}`))
           .then((snapshot) => {
@@ -203,26 +257,17 @@ class ProfileUser extends React.Component {
   }
 
   up_repeat() {
+    console.log(this.state.id_user)
+
     var temp = this.state.repeat_time;
     if (temp < 24) {
       this.setState({
         repeat_time: temp + 1,
       });
     }
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const db = getDatabase();
-        update(ref(db, "users/" + uid), {
-          repeat_time: this.state.repeat_time,
-        });
-      } else {
-        // User is signed out
-        // ...
-      }
+    const db = getDatabase();
+    update(ref(db, "users/" + this.state.id_user), {
+      repeat_time: this.state.repeat_time,
     });
   }
 
@@ -233,20 +278,9 @@ class ProfileUser extends React.Component {
         repeat_time: temp - 1,
       });
     }
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const db = getDatabase();
-        update(ref(db, "users/" + uid), {
-          repeat_time: this.state.repeat_time,
-        });
-      } else {
-        // User is signed out
-        // ...
-      }
+    const db = getDatabase();
+    update(ref(db, "users/" + this.state.id_user), {
+      repeat_time: this.state.repeat_time,
     });
   }
   up_counter() {
@@ -256,20 +290,9 @@ class ProfileUser extends React.Component {
         measurement_counter: temp + 5,
       });
     }
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const db = getDatabase();
-        update(ref(db, "users/" + uid), {
-          measurement_counter: this.state.measurement_counter,
-        });
-      } else {
-        // User is signed out
-        // ...
-      }
+    const db = getDatabase();
+    update(ref(db, "users/" + this.state.id_user), {
+      measurement_counter: this.state.measurement_counter,
     });
   }
 
@@ -280,20 +303,9 @@ class ProfileUser extends React.Component {
         measurement_counter: temp - 5,
       });
     }
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const db = getDatabase();
-        update(ref(db, "users/" + uid), {
-          measurement_counter: this.state.measurement_counter,
-        });
-      } else {
-        // User is signed out
-        // ...
-      }
+    const db = getDatabase();
+    update(ref(db, "users/" + this.state.id_user), {
+      measurement_counter: this.state.measurement_counter,
     });
   }
   toggleChanged() {
@@ -387,10 +399,10 @@ class ProfileUser extends React.Component {
               <p id="repeat_time">
                 Repeat notification every: <b>{this.state.repeat_time}</b>
               </p>
-              <button className="up_down_button" onClick={this.up_repeat}>
+              <button className="up_down_button" onClick={this.up_repeat.bind(this)}>
                 +
               </button>
-              <button className="up_down_button" onClick={this.down_repeat}>
+              <button className="up_down_button" onClick={this.down_repeat.bind(this)}>
                 -
               </button>
             </div>
@@ -427,15 +439,15 @@ class ProfileUser extends React.Component {
               </div>
             </main>
           )) || (
-          <main className="ChartContent">
-            <div className="ChartWrapper">
-              <LineChart
-                heartrate={this.state.oxygenData}
-                labels={this.state.oxygenlabels}
-              />
-            </div>
-          </main>
-        )}
+            <main className="ChartContent">
+              <div className="ChartWrapper">
+                <LineChart
+                  heartrate={this.state.oxygenData}
+                  labels={this.state.oxygenlabels}
+                />
+              </div>
+            </main>
+          )}
       </div>
     );
   }
