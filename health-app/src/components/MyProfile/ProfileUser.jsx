@@ -50,112 +50,66 @@ class ProfileUser extends React.Component {
     // console.log(this.context.router)
     var uid = this.props.user_id
     const auth = getAuth();
-    if (this.props.user_id === undefined) {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log("user to see his profile")
-          console.log(typeof user.uid)
-          this.setState({
-            id_user: user.uid
-          })
-          console.log(this.state.id_user);
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          const dbRef = ref(getDatabase());
-          get(child(dbRef, `users/${user.uid}`))
-            .then((snapshot) => {
-              if (snapshot.exists()) {
-                this.setState({
-                  email: snapshot.val().email,
-                  measurement_counter: parseInt(snapshot.val().measurement_counter),
-                  repeat_time: snapshot.val().repeat_time,
-                  allow_notifications: snapshot.val().allow_notifications,
-                });
-                console.log("We are going to test");
-                for (let el in snapshot.val()) {
-                  if (el == "heartRate" || el == "oxygen") {
-                    this.state.measurement_types.push(el);
-                  }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("user to see his profile")
+        this.setState({
+          id_user: user.uid
+        })
+        console.log(this.state.id_user);
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${user.uid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              this.setState({
+                email: snapshot.val().email,
+                measurement_counter: parseInt(snapshot.val().measurement_counter),
+                repeat_time: snapshot.val().repeat_time,
+                allow_notifications: snapshot.val().allow_notifications,
+              });
+              console.log("We are going to test");
+              for (let el in snapshot.val()) {
+                if (el == "heartRate" || el == "oxygen") {
+                  this.state.measurement_types.push(el);
                 }
-                if (this.state.selected_type == "heartRate") {
-                  const { heartRate } = snapshot.val();
+              }
+              if (this.state.selected_type == "heartRate") {
+                const { heartRate } = snapshot.val();
 
-                  for (let el in heartRate) {
-                    this.state.activity_types.push(el);
-                    //el for activity type
-                    this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                    this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
-                  }
-                } else {
-                  console.log("NO DATA HEARTEDDDE");
+                for (let el in heartRate) {
+                  this.state.activity_types.push(el);
+                  //el for activity type
+                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
                 }
               } else {
-                console.log("No data available");
-                // window.location.href = "/profile_admin";
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        } else {
-          // User is signed out
-          Swal.fire({
-            title: "Not authenticated",
-            text: "Please sign in",
-            icon: "info",
-            customClass: "swal_ok_button",
-            confirmButtonColor: "#2a4cd3",
-          }).then(function () {
-            window.location.href = "/";
-            console.log("error here");
-          });
-        }
-      });
-    }
-    else {
-      const dbRef = ref(getDatabase());
-      console.log("fuck")
-      // change the next Element
-      get(child(dbRef, `users/${this.props.user_id}`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log(snapshot)
-            this.state.id_user = this.props.user_id;
-            // change the last Element
-            this.setState({
-              email: snapshot.val().email,
-              measurement_counter: parseInt(snapshot.val().measurement_counter),
-              repeat_time: snapshot.val().repeat_time,
-              allow_notifications: snapshot.val().allow_notifications,
-              id_user: this.props.user_id
-            });
-            console.log("We are going to test");
-            for (let el in snapshot.val()) {
-              if (el == "heartRate" || el == "oxygen") {
-                this.state.measurement_types.push(el);
-              }
-            }
-            if (this.state.selected_type == "heartRate") {
-              const { heartRate } = snapshot.val();
-
-              for (let el in heartRate) {
-                this.state.activity_types.push(el);
-                //el for activity type
-                this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                console.log("NO DATA HEARTEDDDE");
               }
             } else {
-              console.log("NO DATA HEARTEDDDE");
+              console.log("No data available");
+              // window.location.href = "/profile_admin";
             }
-          } else {
-            console.log("No data available");
-            // window.location.href = "/profile_admin";
-          }
-        })
-        .catch((error) => {
-          console.error(error);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        // User is signed out
+        Swal.fire({
+          title: "Not authenticated",
+          text: "Please sign in",
+          icon: "info",
+          customClass: "swal_ok_button",
+          confirmButtonColor: "#2a4cd3",
+        }).then(function () {
+          window.location.href = "/";
+          console.log("error here");
         });
-    }
+      }
+    });
+    
     console.log(this.state.id_user)
 
   }

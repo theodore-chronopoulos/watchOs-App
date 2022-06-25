@@ -103,7 +103,7 @@ class FeedUser extends React.Component {
         return (
             <div>
                 <Link to={{
-                    pathname: "/profile_user",
+                    pathname: "/user",
                     query: { the: 'query' }
                 }}
                 // params={{ testvalue: "hello" }}

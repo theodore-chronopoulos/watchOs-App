@@ -16,6 +16,7 @@ import AboutUs from './components/AboutUs/AboutUs'
 import Footer from './components/Footer/Footer';
 import ShowAdmins from './components/Admins/ShowAdmins';
 import ShowUsers from './components/Users/ShowUsers';
+import User from './components/Users/User';
 
 
 // Import the functions you need from the SDKs you need
@@ -71,6 +72,8 @@ function App() {
         {<ShowAdmins/>} />
         <Route path='/users' element =
         {<ShowUsers/>} />
+        <Route path='/user' element =
+        {<User/>} />
       </Routes>
       <Footer/>
       </Router>
