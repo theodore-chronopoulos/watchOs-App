@@ -3,12 +3,23 @@ import "./scss/style.scss";
 import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
-import profile_pic from "../../logos/profile-icon2.png";
+import profile_pic from "../../logos/teliko.png";
 import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
 import LineChart from "../Charts/LineChart";
 import DoughnutChart from "../Charts/DoughnutChart";
 
 import Form from "react-bootstrap/Form";
+
+
+import watch from '../../logos/watch.png';
+import repeat_time from '../../logos/repeat_time.png';
+import notification from '../../logos/notification.png';
+import user from '../../logos/users.png';
+import email from '../../logos/email.png';
+
+
+
+
 
 class ProfileUser extends React.Component {
   constructor(props) {
@@ -102,14 +113,14 @@ class ProfileUser extends React.Component {
           text: "Please sign in",
           icon: "info",
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3",
+          confirmButtonColor: "#6a98ce",
         }).then(function () {
           window.location.href = "/";
           console.log("error here");
         });
       }
     });
-    
+
     console.log(this.state.id_user)
 
   }
@@ -201,7 +212,7 @@ class ProfileUser extends React.Component {
           text: "Please sign in",
           icon: "info",
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3",
+          confirmButtonColor: "#6a98ce",
         }).then(function () {
           window.location.href = "/";
           console.log("error here");
@@ -296,115 +307,116 @@ class ProfileUser extends React.Component {
 
   closeMobileMenu = () => this.setState({ click: false });
 
-  render() {
-    return (
-      <div>
-        <script
-          type="text/javascript"
-          src="https://code.jquery.com/jquery-1.7.1.min.js"
-        ></script>
-        <section className="hero">
-          <div className="hero__background">
-            <div className="banner">
-              <img src={profile_pic} className="myimage" />
-            </div>
-            <div className="hero__title">
-              <h3> Profile Info </h3>
-            </div>
-            <div className="hero__info">
-              <div className="circle">
-                <div className="circle__one"></div>
-              </div>
-              <p id="email">
-                Email: <b>{this.state.email}</b>
-              </p>
-            </div>
-            <div className="hero__info">
-              <div className="circle">
-                <div className="circle__one"></div>
-              </div>
-              <p id="allow_notifications">
-                Allow notifications:{" "}
-                <b>{this.state.allow_notifications.toString()}</b>
-              </p>
-              <label className="switch">
-                {/* <input type="checkbox" onChange={this.toggleChanged} id ='toggle'/>
-                                <span className="slider round"></span> */}
-              </label>
-            </div>
-            <div className="hero__info">
-              <div className="circle">
-                <div className="circle__one"></div>
-              </div>
-              <p id="measurement_counter">
-                Ammount of measurements: <b>{this.state.measurement_counter}</b>
-              </p>
-              <button className="up_down_button" onClick={this.up_counter}>
-                +
-              </button>
-              <button className="up_down_button" onClick={this.down_counter}>
-                -
-              </button>
-            </div>
-            <div className="hero__info">
-              <div className="circle">
-                <div className="circle__one"></div>
-              </div>
-              <p id="repeat_time">
-                Repeat notification every: <b>{this.state.repeat_time}</b>
-              </p>
-              <button className="up_down_button" onClick={this.up_repeat.bind(this)}>
-                +
-              </button>
-              <button className="up_down_button" onClick={this.down_repeat.bind(this)}>
-                -
-              </button>
-            </div>
+
+
+
+render() {
+  return (
+    <div>
+      <script
+        type="text/javascript"
+        src="https://code.jquery.com/jquery-1.7.1.min.js"
+      ></script>
+      <section className="hero">
+        <div className="hero__background">
+          <div className="banner">
+            <img src={profile_pic} className="myimage" />
           </div>
-        </section>
-        {/* <ChoicesBoxesLoggedIn /> */}
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelected}
-            aria-label="Default select example"
-          >
-            {this.createSelectItems()}
-          </Form.Select>
+          <div className="hero__title">
+            <h3> Profile Info </h3>
+          </div>
+          <div className="hero__info">
+            <img src={email} className="image_search" alt={email} />
 
-          <Form.Select
-            className="measurement-select"
-            onChange={this.createSelectItemsActivities}
-            aria-label="Default select example"
-          >
-            {this.createSelectItemsActivities()}
-          </Form.Select>
+            <p id="email">
+              Email: <b>{this.state.email}</b>
+            </p>
+          </div>
+          <div className="hero__info">
+            <img src={notification} className="image_search" alt={notification} />
+
+            <p id="allow_notifications">
+              Allow notifications:{" "}
+              <b>{this.state.allow_notifications.toString()}</b>
+            </p>
+            <label className="switch">
+              {/* <input type="checkbox" onChange={this.toggleChanged} id ='toggle'/>
+                                <span className="slider round"></span> */}
+            </label>
+          </div>
+          <div className="hero__info">
+            <img src={watch} className="image_search" alt={watch} />
+
+            <p id="measurement_counter">
+              Ammount of measurements: <b>{this.state.measurement_counter}</b>
+            </p>
+            <button className="up_down_button" onClick={this.up_counter}>
+              +
+            </button>
+            <button className="up_down_button" onClick={this.down_counter}>
+              -
+            </button>
+          </div>
+          <div className="hero__info">
+            <img src={repeat_time} className="image_search" alt={repeat_time} />
+
+            <p id="repeat_time">
+              Repeat notification every: <b>{this.state.repeat_time}</b>
+            </p>
+            <button className="up_down_button" onClick={this.up_repeat.bind(this)}>
+              +
+            </button>
+            <button className="up_down_button" onClick={this.down_repeat.bind(this)}>
+              -
+            </button>
+          </div>
         </div>
+      </section>
+      {/* <ChoicesBoxesLoggedIn /> */}
+      <div className="dropdowns-div">
+        <Form.Select
+          className="measurement-select"
+          onChange={this.onDropdownSelected}
+          aria-label="Default select example"
+        >
+          {this.createSelectItems()}
+        </Form.Select>
 
-        {(this.state.selected_type == "heartRate" &&
-          this.state.heartRatesData &&
-          this.state.labels && (
-            <main className="ChartContent">
-              <div className="ChartWrapper">
-                <LineChart
-                  heartrate={this.state.heartRatesData}
-                  labels={this.state.labels}
-                />
-              </div>
-            </main>
-          )) || (
-            <main className="ChartContent">
-              <div className="ChartWrapper">
-                <LineChart
-                  heartrate={this.state.oxygenData}
-                  labels={this.state.oxygenlabels}
-                />
-              </div>
-            </main>
-          )}
+        <Form.Select
+          className="measurement-select"
+          onChange={this.createSelectItemsActivities}
+          aria-label="Default select example"
+        >
+          {this.createSelectItemsActivities()}
+        </Form.Select>
       </div>
-    );
-  }
+
+      {(this.state.selected_type == "heartRate" &&
+        this.state.heartRatesData &&
+        this.state.labels && (
+          <main className="ChartContent">
+            <div className="ChartWrapper">
+              <LineChart
+                heartrate={this.state.heartRatesData}
+                labels={this.state.labels}
+              />
+            </div>
+          </main>
+        )) || (
+          <main className="ChartContent">
+            <div className="ChartWrapper">
+              <LineChart
+                heartrate={this.state.oxygenData}
+                labels={this.state.oxygenlabels}
+              />
+            </div>
+          </main>
+        )}
+    </div>
+  );
+}
 }
 
 export default ProfileUser;
+
+

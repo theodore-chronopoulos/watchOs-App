@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+
 class ShowUsers extends React.Component {
   constructor(props) {
     super(props);
@@ -38,10 +39,6 @@ class ShowUsers extends React.Component {
             var no_users = document.getElementById("not_found");
             // console.log(no_users)
             no_users.className = "notfound"
-
-            // let styleObj2 = {display: "none"}
-
-            // no_users.style = { styleObj2} 
           }
           else {
             console.log("No data available");
@@ -60,7 +57,7 @@ class ShowUsers extends React.Component {
           text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3"
+          confirmButtonColor: "#6a98ce"
         }).then(function () {
           window.location.href = '/';
           console.log("error here");
@@ -79,6 +76,7 @@ class ShowUsers extends React.Component {
         if (snapshot.exists()) {
           const users = snapshot.val();
           console.log(users)
+          console.log(users.length)
           this.setState({
             users: users
           })
@@ -154,7 +152,7 @@ class ShowUsers extends React.Component {
         <div className="ppp">
           {this.state.users.map(user =>
             <div key={user}>
-              <FeedUser admin={this.state.admin} user_id={user} />
+              <FeedUser admin={this.state.admin} user_id={user} total_users={this.state.users.length} users={this.state.users}/>
             </div>
           )}
         </div>

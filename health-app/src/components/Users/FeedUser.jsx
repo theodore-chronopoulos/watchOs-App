@@ -14,7 +14,7 @@ import user from '../../logos/users.png';
 class FeedUser extends React.Component {
     constructor(props) {
         super(props);
-        this.change = this.change.bind(this);
+        this.remove = this.remove.bind(this);
         this.state = {
             click: true,
             admin: "",
@@ -23,13 +23,17 @@ class FeedUser extends React.Component {
             allow_notifications: "",
             measurement_counter: 0,
             repeat_time: "",
+            total_users: "",
+            users: []
         };
     }
     async componentDidMount() {
-        console.log(this.props.user_id)
+        console.log(this.props)
         await this.setState({
             admin: this.props.admin,
-            user_id: this.props.user_id
+            user_id: this.props.user_id,
+            total_users: this.props.total_users,
+            users: this.props.users
         })
         console.log(this.props.admin)
         const dbRef = ref(getDatabase());
@@ -60,7 +64,7 @@ class FeedUser extends React.Component {
             console.error(error);
         });
     }
-    change() {
+    remove() {
         const auth = getAuth();
 
         var button = document.getElementById([this.state.user_id]);
@@ -72,26 +76,26 @@ class FeedUser extends React.Component {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
                     // https://firebase.google.com/docs/reference/js/firebase.User
-                    const uid = user.uid;
                     const db = getDatabase();
-                    const fullname = this.state.first_name + " " + this.state.last_name;
                     const new_total_users = this.state.total_users - 1
                     const array = this.state.users
-                    const index = array.indexOf(uid);
+                    const index = array.indexOf(this.state.user_id);
                     if (index > -1) {
                         array.splice(index, 1); // 2nd parameter means remove one item only
                     }
+                    
                     this.setState({
                         total_users: this.state.total_users - 1,
                         users: array
                     })
-                    remove(ref(db, 'users/' + uid + '/professionals/' + this.state.admin), {
+                    remove(ref(db, 'users/' + this.state.user_id + '/professionals/' + this.state.admin), {
                         // [this.state.admin]: fullname,
                     });
                     update(ref(db, 'admins/' + this.state.admin), {
                         total_users: new_total_users,
                         users: array
                     });
+                    window.location.href = '/users';
                 } else {
                     // User is signed out
                 }
@@ -111,9 +115,6 @@ class FeedUser extends React.Component {
                 <Link
                     to={{
                         pathname: "/user",
-                        // search: this.state.user_id,
-                        // hash: this.state.user_id,
-                        // state: { string: this.state.user_id }
                     }}
                     state={{user_id: this.state.user_id}}
                 >
@@ -145,7 +146,7 @@ class FeedUser extends React.Component {
                             <button id={this.state.user_id}
                                 type="button"
                                 className="btn_teo4"
-                                onClick={this.change}
+                                onClick={this.remove}
                                 data-button-state="remove"
                             >
                                 Remove User
@@ -158,3 +159,4 @@ class FeedUser extends React.Component {
     }
 }
 export default FeedUser;
+

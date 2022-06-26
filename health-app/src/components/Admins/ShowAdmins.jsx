@@ -63,7 +63,7 @@ class ShowAdmins extends React.Component {
           text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3"
+          confirmButtonColor: "#6a98ce"
         }).then(function () {
           window.location.href = '/';
           console.log("error here");

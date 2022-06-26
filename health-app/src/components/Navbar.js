@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 // import getCookie from '../functions/getCookie.js'
 import Swal from 'sweetalert2'
-import logoImg from "../logos/66.png";
+import logoImg from "../logos/newlogo.png";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, child, get, onValue } from "firebase/database";
 
@@ -37,7 +37,7 @@ function Navbar() {
         text: 'Logout successful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#2a4cd3"
+        confirmButtonColor: "#6a98ce"
       }).then(function () {
         setValidated(false);
         window.location.href = '/';
@@ -49,7 +49,7 @@ function Navbar() {
         text: 'Logout unsuccessful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#2a4cd3"
+        confirmButtonColor: "#6a98ce"
       })
     });
   }
@@ -266,7 +266,7 @@ function Navbar() {
           text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3"
+          confirmButtonColor: "#6a98ce"
         })
         // User is signed out
         // ...

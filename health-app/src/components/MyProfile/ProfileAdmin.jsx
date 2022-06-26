@@ -4,8 +4,15 @@ import './scss/style.scss';
 import { getDatabase, ref, child, get, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Swal from 'sweetalert2'
-import profile_pic from "../../logos/profile-icon2.png";
+import profile_pic from "../../logos/teliko.png";
 import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
+
+import address from '../../logos/address.png';
+import telephone from '../../logos/telephone.png';
+import doctor from '../../logos/doctor.png';
+import total_users from '../../logos/total_users.png';
+import email from '../../logos/email.png';
+
 
 class ProfileAdmin extends React.Component {
     constructor(props) {
@@ -16,7 +23,9 @@ class ProfileAdmin extends React.Component {
             last_name: "",
             address: "",
             city: "",
-            telephone: ""
+            telephone: "",
+            email: "",
+            total_users: ""
         };
     }
     async componentDidMount() {
@@ -36,7 +45,9 @@ class ProfileAdmin extends React.Component {
                             last_name: snapshot.val().last_name,
                             city: snapshot.val().city,
                             telephone: snapshot.val().telephone,
-                            address: snapshot.val().address
+                            address: snapshot.val().address,
+                            email: snapshot.val().email,
+                            total_users: snapshot.val().total_users
                         })
                     }
                     else {
@@ -55,7 +66,7 @@ class ProfileAdmin extends React.Component {
                     text: 'Please sign in',
                     icon: 'info',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#2a4cd3"
+                    confirmButtonColor: "#6a98ce"
                 }).then(function () {
                     window.location.href = '/';
                     console.log("error here");
@@ -67,65 +78,53 @@ class ProfileAdmin extends React.Component {
 
     closeMobileMenu = () => this.setState({ click: false });
 
-    render() {
-        return (
-            <div>
-                <section className="hero">
-                    <div className="hero__background">
-                        <div className="banner"  >
-                            <img src={profile_pic} className="myimage" />
-                        </div>
-                        <div className="hero__title">
-                            <h3> Profile Info </h3>
-                        </div>
-                        <div className="hero__info">
-                            <div className="circle">
-                                <div className="circle__one">
 
-                                </div>
-                            </div>
-                            <p id="first_name">First name: <b>{this.state.first_name}</b></p>
-                        </div>
-                        <div className="hero__info">
-                            <div className="circle">
-                                <div className="circle__one">
 
-                                </div>
-                            </div>
-                            <p id="last_name">Last name: <b>{this.state.last_name}</b></p>
-                        </div>
-                        <div className="hero__info">
-                            <div className="circle">
-                                <div className="circle__one">
 
-                                </div>
-                            </div>
-                            <p id="address">Address: <b>{this.state.address}</b></p>
-                        </div>
-                        <div className="hero__info">
-                            <div className="circle">
-                                <div className="circle__one">
+render() {
+    return (
+        <div>
+            <section className="hero">
+                <div className="hero__background">
 
-                                </div>
-                            </div>
-                            <p id="city">City: <b>{this.state.city}</b></p>
-                        </div>
-
-                        <div className="hero__info">
-                            <div className="circle">
-                                <div className="circle__one">
-
-                                </div>
-                            </div>
-                            <p id="telephone">Telephone: <b>{this.state.telephone}</b></p>
-                        </div>
-
+                    <div className="banner"  >
+                        <img src={profile_pic} className="myimage" />
                     </div>
-                </section>
-                {/* <ChoicesBoxesLoggedIn /> */}
-            </div>
-        );
-    }
+
+                    <div className="hero__title">
+                        <h3> Profile Info </h3>
+                    </div>
+
+                    <div className="hero__info">
+                        <img src={doctor} className="image_search" alt={doctor} />
+                        <p id="first_name">Name: <b>{this.state.first_name} {this.state.last_name}</b></p>
+                    </div>
+
+                    <div className="hero__info">
+                        <img src={address} className="image_search" alt={address} />
+                        <p id="address">Address: <b>{this.state.address}, {this.state.city}</b></p>
+                    </div>
+
+                    <div className="hero__info">
+                        <img src={telephone} className="image_search" alt={telephone} />
+                        <p id="telephone">Telephone: <b>{this.state.telephone}</b></p>
+                    </div>
+
+                    <div className="hero__info">
+                    <img src={email} className="image_search" alt={email} />
+                        <p id="email">Email: <b>{this.state.email}</b></p>
+                    </div>
+
+                    <div className="hero__info">
+                    <img src={total_users} className="image_search" alt={total_users} />
+                        <p id="total_users">Total users: <b>{this.state.total_users}</b></p>
+                    </div>
+                </div>
+            </section >
+            {/* <ChoicesBoxesLoggedIn /> */}
+        </div >
+    );
+}
 }
 
 export default ProfileAdmin;

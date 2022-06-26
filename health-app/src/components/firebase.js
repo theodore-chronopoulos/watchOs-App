@@ -65,7 +65,7 @@ signInWithEmailAndPassword(auth, email, password)
             text: "result.msg",
             icon: 'success',
             customClass: "swal_ok_button",
-            confirmButtonColor: "#242424"
+            confirmButtonColor: "#6a98ce"
         }).then(function () {
             // document.cookie = "charge_evolution_token=" + result.token;
             window.location.href = '/';

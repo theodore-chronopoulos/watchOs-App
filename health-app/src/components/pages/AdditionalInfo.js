@@ -16,7 +16,7 @@ export class AdditionalInfo extends React.Component {
                         <div className="base.container">
                             <div style={styleObj2}>
                                 <div className="image">
-                                    <img src={loginImg} />
+                                    <img src={loginImg} className="cyrclethat"/>
                                 </div>
                                 <div style={styleObj2} className="form">
                                     <div className="text-login">
@@ -60,7 +60,7 @@ export class AdditionalInfo extends React.Component {
                                 </div>
                                 <div style={styleObj2} className="form">
                                     <div className="text-login">
-                                        <label htmlFor="password"> <b>Contact email</b></label>
+                                        <label htmlFor="password"> <b>Email</b></label>
                                     </div>
                                     <div className="input-login">
                                         <input className="input_field" type="email" name="email" placeholder="email" id="email" />
@@ -95,7 +95,7 @@ export class AdditionalInfo extends React.Component {
                 text: 'Please complete all the fields.',
                 icon: 'info',
                 customClass: "swal_ok_button",
-                confirmButtonColor: "#2a4cd3"
+                confirmButtonColor: "#6a98ce"
             })
         }
         else {
@@ -123,7 +123,7 @@ export class AdditionalInfo extends React.Component {
                                 text: "Registretion is complete!",
                                 icon: 'success',
                                 customClass: "swal_ok_button",
-                                confirmButtonColor: "#2a4cd3"
+                                confirmButtonColor: "#6a98ce"
                             }).then(function () {
                                 window.location.href = '/homeadmin';
                                 console.log("new admin");
@@ -140,7 +140,7 @@ export class AdditionalInfo extends React.Component {
                                 text: 'Please try again.',
                                 icon: 'info',
                                 customClass: "swal_ok_button",
-                                confirmButtonColor: "#2a4cd3"
+                                confirmButtonColor: "#6a98ce"
                             })
                         });
                 }
@@ -151,7 +151,7 @@ export class AdditionalInfo extends React.Component {
                         text: 'You have to register first',
                         icon: 'info',
                         customClass: "swal_ok_button",
-                        confirmButtonColor: "#2a4cd3"
+                        confirmButtonColor: "#6a98ce"
                     })
                 }
             });
