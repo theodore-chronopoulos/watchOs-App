@@ -100,14 +100,24 @@ class FeedUser extends React.Component {
     }
 
     render() {
+        const backUrl = '/some/other/value'
+        const newTo = {
+            pathname: "/user",
+            param1: "Par1"
+        };
+
         return (
             <div>
-                <Link to={{
-                    pathname: "/user",
-                    query: { the: 'query' }
-                }}
-                // params={{ testvalue: "hello" }}
+                <Link
+                    to={{
+                        pathname: "/user",
+                        // search: this.state.user_id,
+                        // hash: this.state.user_id,
+                        // state: { string: this.state.user_id }
+                    }}
+                    state={{user_id: this.state.user_id}}
                 >
+
                     <div className="box_of_question">
                         <div className='left_side'>
                             <div className="title_of_question1">

@@ -72,7 +72,7 @@ function App() {
         {<ShowAdmins/>} />
         <Route path='/users' element =
         {<ShowUsers/>} />
-        <Route path='/user' element =
+        <Route path="/user" element =
         {<User/>} />
       </Routes>
       <Footer/>
