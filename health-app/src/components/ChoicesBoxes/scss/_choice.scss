@@ -67,24 +67,28 @@
 
     }
     &__title {
-        color: $darkBlue;
+        // color: $darkBlue;
+        color: rgb(48,48,48);
+
         font-size: 1.0625rem;
         line-height: 1.2;
         margin-bottom: 1rem;
 
     }
     &__description {
-        color: $grayishBlue;
+        color: rgb(48,48,48);
+
         font-size: 0.81rem;
 
     }
    
 }
 .welcome_title{
-    color: $darkBlue;
+    // color: $darkBlue;
+    color: rgb(48,48,48);
+
     font-size: 1.3625rem;
     line-height: 1.2;
     // margin-left: 2rem;
     margin-bottom: 3rem;
-    margin-top: 3rem;
 }

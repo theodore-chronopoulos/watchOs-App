@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import profile_pic from "../../logos/profile-icon2.png";
 import LineChart from "../Charts/LineChart";
@@ -9,6 +9,11 @@ import { getDatabase, ref, child, get, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function User() {
+    // const [click, setClick] = useState(false);
+
+    // const handleClick = () => setClick(!click);
+    // const closeMobileMenu = () => setClick(false);
+
     let location = useLocation();
     console.log(location);
     // console.log(props)
@@ -16,12 +21,15 @@ function User() {
     console.log(user_id)
 
     const dbRef = ref(getDatabase());
-    var email = ""
-    var measurement_counter = 0
-    var repeat_time = ""
-    var allow_notifications = ""
-    var measurement_types = []
-    var selected_type = "heartRate"
+    const [email, setEmail] = useState("");
+    var [measurement_counter, setMeCounter] = useState(0);
+    var [repeat_time, setRepeatTime] = useState("");
+    const [allow_notifications, setAllowNotifications] = useState("");
+    const [selected_type, setSelectedType] = useState("heartRate");
+    // var [email, setEmail] = useState("");
+    // var [email, setEmail] = useState("");
+    // var [email, setEmail] = useState("");
+
     var labels = []
     var heartRatesData = []
     var oxygenData = []
@@ -35,10 +43,12 @@ function User() {
         .then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val())
-                email = snapshot.val().email
-                measurement_counter = parseInt(snapshot.val().measurement_counter)
-                repeat_time = snapshot.val().repeat_time
-                allow_notifications = snapshot.val().allow_notifications
+
+                setEmail(snapshot.val().email)
+                setAllowNotifications(snapshot.val().allow_notifications)
+                setMeCounter(parseInt(snapshot.val().measurement_counter))
+                setRepeatTime(snapshot.val().repeat_time)
+
                 console.log("We are going to test");
                 for (let el in snapshot.val()) {
                     if (el == "heartRate" || el == "oxygen") {
@@ -73,7 +83,8 @@ function User() {
 
         var temp = repeat_time;
         if (temp < 24) {
-            repeat_time = temp + 1
+            // setRepeatTime(temp + 1)
+            // repeat_time = temp + 1
         }
         const db = getDatabase();
         update(ref(db, "users/" + user_id), {
@@ -84,7 +95,7 @@ function User() {
     function down_repeat() {
         var temp = repeat_time;
         if (temp > 0) {
-            repeat_time = temp - 1
+            // setRepeatTime(temp - 1)
         }
         const db = getDatabase();
         update(ref(db, "users/" + user_id), {

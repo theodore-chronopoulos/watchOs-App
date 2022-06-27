@@ -5,7 +5,7 @@ import { getDatabase, ref, child, get, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Swal from 'sweetalert2'
 import profile_pic from "../../logos/teliko.png";
-import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
+import ChoicesBoxesBottom from "../ChoicesBoxesBottom/ChoicesBoxesBottom";
 
 import address from '../../logos/address.png';
 import telephone from '../../logos/telephone.png';
@@ -121,7 +121,7 @@ render() {
                     </div>
                 </div>
             </section >
-            {/* <ChoicesBoxesLoggedIn /> */}
+            <ChoicesBoxesBottom />
         </div >
     );
 }

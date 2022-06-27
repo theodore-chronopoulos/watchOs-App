@@ -78,7 +78,9 @@ export class Login extends React.Component {
                             customClass: "swal_ok_button",
                             confirmButtonColor: "#6a98ce"
                         }).then(function () {
-                            window.location.href = '/homeadmin';
+                            // window.location.href = '/homeadmin';
+                            window.location.href = '/';
+
                         });
                     }
                     else {
@@ -90,7 +92,8 @@ export class Login extends React.Component {
                             customClass: "swal_ok_button",
                             confirmButtonColor: "#6a98ce"
                         }).then(function () {
-                            window.location.href = '/homeuser';
+                            // window.location.href = '/homeuser';
+                            window.location.href = '/';
                         });
                     }
                 }).catch((error) => {

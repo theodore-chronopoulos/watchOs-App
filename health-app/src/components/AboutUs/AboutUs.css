@@ -5,7 +5,8 @@
     margin-top: 2%;
 }
 .page-title {
-    color: hsl(233, 26%, 24%);
+    /* color: hsl(233, 26%, 24%); */
+    color: rgb(48,48,48);
     font-size: 1.8rem;
     line-height: 1.2;
     margin-bottom: 3%;
@@ -14,12 +15,15 @@
     margin-top: 2%;
 }
 .section_title{
-    color: hsl(233, 26%, 24%);
+    /* color: hsl(233, 26%, 24%);*/
+    color: rgb(48,48,48);
     font-size: 1.3rem;
     margin-bottom: 1%;
 }
 .section-text {
-    color: hsl(200, 26%, 24%);
+    /* color: hsl(200, 26%, 24%); */
+    color: rgb(48,48,48);
+
     width: 65%;
     text-align: justify;  /* For Edge */
     text-align-last: justify;
