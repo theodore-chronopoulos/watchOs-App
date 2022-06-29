@@ -10,7 +10,7 @@ export class Register extends React.Component {
             <div className="base.container">
                 <div style={styleObj2}>
                     <div className="image">
-                        <img src={loginImg} />
+                        <img src={loginImg} className="cyrclethat" />
                     </div>
                     <div style={styleObj2} className="form">
                         <div className="text-login">
@@ -65,14 +65,16 @@ export class Register extends React.Component {
                     text: "Succesful register!",
                     icon: 'success',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#2a4cd3"
+                    confirmButtonColor: "#6a98ce"
                 }).then(function () {
                     if (role == "admin") {
                         window.location.href = '/additionalinfo';
                         console.log("new amdin");
                     }
                     else {
-                        window.location.href = '/homeuser';
+                        // window.location.href = '/homeuser';
+                        window.location.href = '/';
+
                         console.log("new user");
                     }
                 });
@@ -87,7 +89,7 @@ export class Register extends React.Component {
                     text: errorMessage,
                     icon: 'error',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#2a4cd3"
+                    confirmButtonColor: "#6a98ce"
                 })
             });
     }

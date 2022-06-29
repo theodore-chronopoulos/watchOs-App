@@ -6,8 +6,6 @@ import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 
 import './App.css';
 import Home from './components/Home'
-import HomeAdmin from './components/HomeAdmin'
-import HomeUser from './components/HomeUser'
 import LoginRegister from './components/pages/LoginRegister'
 import AdditionalInfo from './components/pages/AdditionalInfo'
 import ProfileAdmin from './components/MyProfile/ProfileAdmin'
@@ -56,10 +54,10 @@ function App() {
         {<LoginRegister/>}/>
         <Route path='/' element =
         {<Home/>} />
-        <Route path='/homeadmin' element =
+        {/* <Route path='/homeadmin' element =
         {<HomeAdmin/>} />
         <Route path='/homeuser' element =
-        {<HomeUser/>} />
+        {<HomeUser/>} /> */}
         <Route path='/profile_admin' element =
         {<ProfileAdmin/>} />
         <Route path='/profile_user' element =
@@ -72,7 +70,7 @@ function App() {
         {<ShowAdmins/>} />
         <Route path='/users' element =
         {<ShowUsers/>} />
-        <Route path='/user' element =
+        <Route path="/user" element =
         {<User/>} />
       </Routes>
       <Footer/>

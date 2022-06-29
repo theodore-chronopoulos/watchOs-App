@@ -109,10 +109,10 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         
-        //        getOxygenLevel { x,_ in
-        //            self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
-        //            print(x ?? "0")
-        //        }
+                getOxygenLevel { x,_ in
+                    self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
+                    print(x ?? "0")
+                }
         
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { continue }
@@ -131,32 +131,33 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                         
                         self.heartCounter += 1
                         if (self.heartCounter == Int(self.measurement_counter)) {
+                            let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
                             let even = Dictionary(uniqueKeysWithValues: zip(self.heartTimesArray, self.heartRate))
-                            self.ref.child("users/\(self.userID ?? "N/A")/heartRate/\(self.activityString)").setValue(even)
-                            if (self.oxygenCounter == Int(self.measurement_counter)) {
+                            self.ref.child("users/\(self.userID ?? "N/A")/heartRate/\(self.activityString)/\(lastminute)").setValue(even)
+                            if (self.oxygenCounter == 1) {
                                 self.end()
                             }
                         }
                     }
-                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
-                    if (self.hrvCounter != Int(self.measurement_counter)) {
-                        let ms = HKUnit.secondUnit(with: .milli)
-                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
-                        
-                        let today = Date()
-                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
-                        self.hrvRate.append(self.lastHRV)
-                        
-                        self.hrvCounter += 1
-                        if (self.hrvCounter == Int(self.measurement_counter)) {
-                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
-                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
-                            if (self.heartCounter == Int(self.measurement_counter)) {
-                                self.end()
-                            }
-                        }
-                    }
+//                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
+//                    if (self.hrvCounter != Int(self.measurement_counter)) {
+//                        let ms = HKUnit.secondUnit(with: .milli)
+//                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+//                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
+//
+//                        let today = Date()
+//                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
+//                        self.hrvRate.append(self.lastHRV)
+//
+//                        self.hrvCounter += 1
+//                        if (self.hrvCounter == Int(self.measurement_counter)) {
+//                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
+//                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
+//                            if (self.heartCounter == Int(self.measurement_counter)) {
+//                                self.end()
+//                            }
+//                        }
+//                    }
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
@@ -196,7 +197,7 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             print("fuck")
                             return
                         }
-                        if (self.oxygenCounter != Int(self.measurement_counter)) {
+                        if (self.oxygenCounter != 1) {
                             print("Quantity : ", sum)   // It prints 97 % and I need 97 only
                             
                             let measureUnit0 = HKUnit(from: "%")
@@ -205,15 +206,16 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             let today = Date()
                             self.oxygenTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
                             self.oxygen.append(count0 * 100.0)
+//                            self.oxygen.append(98.0)
                             self.oxygenCounter += 1
-                            if (self.oxygenCounter == Int(self.measurement_counter)) {
-                                let oxygenfinal = Dictionary(uniqueKeysWithValues: zip(self.oxygenTimesArray, self.oxygen))
-                                self.ref.child("users/\(self.userID ?? "N/A")/oxygen/\(self.activityString)").setValue(oxygenfinal)
-                                if (self.heartCounter == Int(self.measurement_counter)) {
-                                    self.end()
-                                }
+                            let oxygenfinal = Dictionary(uniqueKeysWithValues: zip(self.oxygenTimesArray, self.oxygen))
+                            let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
+
+                            self.ref.child("users/\(self.userID ?? "N/A")/oxygen/\(self.activityString)/\(lastminute)").setValue(oxygenfinal)
+                            if (self.heartCounter == Int(self.measurement_counter)) {
+                                self.end()
                             }
-                            
+                        
                             completion(count0 * 100.0, nil)
                         }
                     }

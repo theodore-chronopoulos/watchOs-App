@@ -1,5 +1,7 @@
 .answer_title{
-    color: hsl(233, 26%, 24%);
+    // color: hsl(233, 26%, 24%);
+    color: rgb(48,48,48);
+
     font-size: 1.8rem;
     line-height: 1.2;
     margin-bottom: 3%;
@@ -34,7 +36,9 @@
     margin-bottom: 3rem;
     border-radius: 15px 0 0 15px;
     outline: none;
-    color: #333;
+    // color: #333;
+    color: rgb(48,48,48);
+
     cursor: pointer;
     &:hover {
       opacity:100%;
@@ -67,7 +71,9 @@
     width: 40px;
     height: 50px;
     border: 1px solid #2a4cd3;
-    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
     text-align: center;
     color: #fff;
     border-radius: 0 15px 15px 0;
@@ -101,7 +107,7 @@
 }
 .infos{
     font-size: $font-med;
-    color: $darkBlue;
+    color: rgb(48,48,48);
     margin-top: 2%;
     display: flex;
     margin-left: 2rem;
@@ -158,7 +164,9 @@
     width: 240px;
     height: 50px;
     padding: 5px 20px;
-    background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
     // background-color: #2a4cd3;
     color: #fff;
     border: 0px;
@@ -168,7 +176,9 @@
     &:hover {
       opacity:90%;
       // background-color: #2a4cd3;
-      background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
   
     }
     // &:focus {

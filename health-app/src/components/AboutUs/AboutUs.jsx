@@ -4,7 +4,7 @@ import watch from "../../logos/apple-watch-series-7.webp";
 import sensors from "../../logos/sensors.png";
 import profile from "../../logos/profile.jpeg";
 import users from "../../logos/users.jpeg";
-import ChoicesBoxesLoggedIn from "../ChoicesBoxesLoggedIn/ChoicesBoxesLoggedIn";
+import ChoicesBoxesBottom from "../ChoicesBoxesBottom/ChoicesBoxesBottom";
 
 
 import { Link } from 'react-router-dom';
@@ -122,7 +122,7 @@ class AboutUs extends React.Component {
                         <b>Σχετικά με εμάς</b>
                     </div>
                 </div> */}
-                <ChoicesBoxesLoggedIn />
+                <ChoicesBoxesBottom />
 
             </div>
         );

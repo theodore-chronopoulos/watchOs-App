@@ -27,7 +27,7 @@ export class Login extends React.Component {
 
                 <div style={styleObj2}>
                     <div className="image">
-                        <img src={loginImg} />
+                        <img src={loginImg} className="cyrclethat"/>
                     </div>
                     <div style={styleObj2} className="form">
                         <div className="text-login">
@@ -76,9 +76,11 @@ export class Login extends React.Component {
                             text: "Succesful login!",
                             icon: 'success',
                             customClass: "swal_ok_button",
-                            confirmButtonColor: "#2a4cd3"
+                            confirmButtonColor: "#6a98ce"
                         }).then(function () {
-                            window.location.href = '/homeadmin';
+                            // window.location.href = '/homeadmin';
+                            window.location.href = '/';
+
                         });
                     }
                     else {
@@ -88,9 +90,10 @@ export class Login extends React.Component {
                             text: "Succesful login!",
                             icon: 'success',
                             customClass: "swal_ok_button",
-                            confirmButtonColor: "#2a4cd3"
+                            confirmButtonColor: "#6a98ce"
                         }).then(function () {
-                            window.location.href = '/homeuser';
+                            // window.location.href = '/homeuser';
+                            window.location.href = '/';
                         });
                     }
                 }).catch((error) => {
@@ -105,7 +108,7 @@ export class Login extends React.Component {
                     text: errorMessage,
                     icon: 'error',
                     customClass: "swal_ok_button",
-                    confirmButtonColor: "#2a4cd3"
+                    confirmButtonColor: "#6a98ce"
                 })
             });
     }

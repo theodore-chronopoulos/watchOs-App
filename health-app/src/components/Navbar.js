@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 // import getCookie from '../functions/getCookie.js'
 import Swal from 'sweetalert2'
-import logoImg from "../logos/66.png";
+import logoImg from "../logos/newlogo.png";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, child, get, onValue } from "firebase/database";
 
@@ -37,7 +37,7 @@ function Navbar() {
         text: 'Logout successful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#2a4cd3"
+        confirmButtonColor: "#6a98ce"
       }).then(function () {
         setValidated(false);
         window.location.href = '/';
@@ -49,7 +49,7 @@ function Navbar() {
         text: 'Logout unsuccessful',
         icon: 'success',
         customClass: "swal_ok_button",
-        confirmButtonColor: "#2a4cd3"
+        confirmButtonColor: "#6a98ce"
       })
     });
   }
@@ -60,7 +60,8 @@ function Navbar() {
       <>
         <nav className='navbar'>
           <div className='navbar-container'>
-            <Link to='/homeuser' className='navbar-logo' onClick={closeMobileMenu}>
+            {/* <Link to='/homeuser' className='navbar-logo' onClick={closeMobileMenu}> */}
+            <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
               <img src={logoImg} className="logo-img" />
               &nbsp;MyHealth
             </Link>
@@ -69,7 +70,8 @@ function Navbar() {
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item'>
-                <Link to='/homeuser' className='nav-links' onClick={closeMobileMenu}>
+                {/* <Link to='/homeuser' className='nav-links' onClick={closeMobileMenu}> */}
+                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
@@ -126,7 +128,8 @@ function Navbar() {
       <>
         <nav className='navbar'>
           <div className='navbar-container'>
-            <Link to='/homeadmin' className='navbar-logo' onClick={closeMobileMenu}>
+            {/* <Link to='/homeadmin' className='navbar-logo' onClick={closeMobileMenu}> */}
+            <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
               <img src={logoImg} className="logo-img" />
               &nbsp;MyHealth
             </Link>
@@ -135,7 +138,8 @@ function Navbar() {
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item'>
-                <Link to='/homeadmin' className='nav-links' onClick={closeMobileMenu}>
+                {/* <Link to='/homeadmin' className='nav-links' onClick={closeMobileMenu}> */}
+                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
@@ -266,7 +270,7 @@ function Navbar() {
           text: 'Please sign in',
           icon: 'info',
           customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3"
+          confirmButtonColor: "#6a98ce"
         })
         // User is signed out
         // ...
