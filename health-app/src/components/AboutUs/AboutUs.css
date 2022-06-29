@@ -23,7 +23,6 @@
 .section-text {
     /* color: hsl(200, 26%, 24%); */
     color: rgb(48,48,48);
-
     width: 65%;
     text-align: justify;  /* For Edge */
     text-align-last: justify;

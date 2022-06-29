@@ -75,7 +75,7 @@ function User() {
         .catch((error) => {
             console.error(error);
         });
-        console.log(email)
+    console.log(email)
 
 
     function up_repeat() {

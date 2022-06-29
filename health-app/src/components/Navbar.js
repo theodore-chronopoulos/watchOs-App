@@ -150,6 +150,7 @@ function Navbar() {
               </li>
               <li className='nav-item'>
                 <Link
+                  // to='/contactuser'
                   to='/statistics'
                   className='nav-links'
                   onClick={closeMobileMenu}

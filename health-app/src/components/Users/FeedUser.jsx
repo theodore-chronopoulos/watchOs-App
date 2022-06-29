@@ -83,7 +83,7 @@ class FeedUser extends React.Component {
                     if (index > -1) {
                         array.splice(index, 1); // 2nd parameter means remove one item only
                     }
-                    
+
                     this.setState({
                         total_users: this.state.total_users - 1,
                         users: array
@@ -116,7 +116,7 @@ class FeedUser extends React.Component {
                     to={{
                         pathname: "/user",
                     }}
-                    state={{user_id: this.state.user_id}}
+                    state={{ user_id: this.state.user_id }}
                 >
 
                     <div className="box_of_question">
@@ -143,6 +143,14 @@ class FeedUser extends React.Component {
                             </div>
                         </div>
                         <div className='right_side'>
+                            <Link
+                                to={{ pathname: "/contactuser" }}
+                                state={{ admin_id: this.state.admin, user_email: this.state.email }}
+                            >
+                                <button type="button" className="btn_teo3" data-button-state="remove">
+                                    Contact User
+                                </button>
+                            </Link>
                             <button id={this.state.user_id}
                                 type="button"
                                 className="btn_teo4"
@@ -151,7 +159,11 @@ class FeedUser extends React.Component {
                             >
                                 Remove User
                             </button>
+
                         </div>
+
+
+
                     </div>
                 </Link>
             </div>

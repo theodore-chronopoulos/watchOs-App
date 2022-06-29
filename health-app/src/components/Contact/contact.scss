@@ -1,0 +1,104 @@
+.page-title-form {
+    /* color: hsl(233, 26%, 24%); */
+    color: rgb(48,48,48);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: 3%;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2%;
+    font-family: "Public Sans", sans-serif;
+
+}
+
+//Button
+.btn_teo3form {
+    font-size: 21px;
+    margin-left: 15%;
+    margin-right: 40px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 240px;
+    height: 50px;
+    padding: 5px 20px;
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+    // background-color: #2a4cd3;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+      opacity:90%;
+      // background-color: #2a4cd3;
+    //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+      background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+  
+    }
+  }
+
+.elementform{
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.sectionform {
+    margin-bottom: 5%;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2%;
+    line-height: 2rem;
+
+
+    border: 3px solid #6a98ce;
+    border-radius: 20px;
+}
+
+.section_title_form{
+    /* color: hsl(233, 26%, 24%);*/
+    margin-left: 2rem;
+    color: rgb(48,48,48);
+    font-size: 1.3rem;
+    margin-bottom: 1%;
+    text-align: left;
+    width: 11%;
+    // width:10rem;
+}
+
+
+.contactinput {
+    // margin: 10px;
+    padding-left : 15px;
+    height:33px;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 70%;
+    color: rgb(48,48,48);
+
+    // max-width: fit-content;
+  }
+
+.contacttext{
+    padding-left : 15px;
+    padding-top : 10px;
+    height:10rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 70%;
+    color: rgb(48,48,48);
+    font-family: "Public Sans", sans-serif;
+
+}
+
+  .contactinputtext{
+    padding-left : 15px;
+    height:10rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 70%;
+  }

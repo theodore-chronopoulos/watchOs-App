@@ -66,7 +66,7 @@ class FeedAdmin extends React.Component {
                         var buttonState;
                         buttonText = "Remove Professional";
                         buttonState = "close";
-                        button.className = "btn_teo2"
+                        button.className = "btn_teo22"
                         button.innerHTML = buttonText;
                         button.dataset.buttonState = buttonState;
                     }
@@ -94,7 +94,7 @@ class FeedAdmin extends React.Component {
         if (buttonState === 'report') {
             buttonText = "Remove Professional";
             buttonState = "close";
-            button.className = "btn_teo2"
+            button.className = "btn_teo22"
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
@@ -123,7 +123,7 @@ class FeedAdmin extends React.Component {
         } else {
             buttonText = "Add Professional";
             buttonState = "report"
-            button.className = "btn_teo"
+            button.className = "btn_teo33"
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
@@ -162,7 +162,6 @@ class FeedAdmin extends React.Component {
     render() {
         return (
             <div>
-                {/* <Link to={{ pathname: "/admin", state: this.state.admin.first_name }}> */}
                 <div className="box_of_question">
                     <div className='left_side'>
                         <div className="title_of_question1">
@@ -192,10 +191,18 @@ class FeedAdmin extends React.Component {
                         </div>
                     </div>
                     <div className='right_side'>
+                        <Link
+                            to={{ pathname: "/contactadmin" }}
+                            state={{ user_id: this.state.user_id, admin_email: this.state.email,
+                                admin_first_name: this.state.first_name, admin_last_name: this.state.last_name}}
+                        >
+                            <button type="button" className="btn_teo" data-button-state="remove">
+                                Contact Professional
+                            </button>
+                        </Link>
                         <button id={this.state.admin}
-                            // onclick="change()"
                             type="button"
-                            className="btn_teo"
+                            className="btn_teo33"
                             onClick={this.change}
                             data-button-state="report"
                         >
@@ -203,7 +210,6 @@ class FeedAdmin extends React.Component {
                         </button>
                     </div>
                 </div>
-                {/* </Link> */}
             </div>
         )
     }

@@ -158,9 +158,8 @@
 .btn_teo {
     font-size: 21px;
     margin-right: 40px;
-    margin-bottom: 40px;
     margin-left: 40px;
-    margin-top: 5rem;
+    margin-top: 2.5rem;
     width: 240px;
     height: 50px;
     padding: 5px 20px;
@@ -181,17 +180,41 @@
 
   
     }
-    // &:focus {
-    // //   outline: none;
-    //   outline: red auto 5px; 
-    // }
   }
-  .btn_teo2 {
+
+
+//Button
+.btn_teo33 {
     font-size: 21px;
     margin-right: 40px;
-    margin-bottom: 40px;
     margin-left: 40px;
-    margin-top: 5rem;
+    margin-top: 0rem;
+    width: 240px;
+    height: 50px;
+    padding: 5px 20px;
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+    // background-color: #2a4cd3;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+      opacity:90%;
+      // background-color: #2a4cd3;
+    //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+  
+    }
+  }
+  .btn_teo22 {
+    font-size: 21px;
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-top: 0rem;
     width: 240px;
     height: 50px;
     padding: 5px 20px;
@@ -208,10 +231,7 @@
       background: linear-gradient(120deg, rgb(202, 15, 46) 20%, rgb(26, 23, 23) 120%);
   
     }
-    // &:focus {
-    // //   outline: none;
-    //   outline: red auto 5px; 
-    // }
+
   }
 
   .visible{
