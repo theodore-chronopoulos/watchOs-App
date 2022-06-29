@@ -10,6 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -21,15 +22,17 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 export default function DoughnutChart ({oxygen}){
+  
 const data = {
-  labels: ["I", "II", "III", "IIII"],
+  labels: ['${100 - oxygen }', "Oxygen percentage"],
   datasets: [
     {
-      data: [500, 500, 500, 500],
+      data: [100-oxygen, oxygen],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       borderWidth: 2

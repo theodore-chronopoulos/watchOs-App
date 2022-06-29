@@ -10,6 +10,7 @@ import DoughnutChart from "../Charts/DoughnutChart";
 
 import Form from "react-bootstrap/Form";
 
+
 class ProfileUser extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +20,10 @@ class ProfileUser extends React.Component {
     this.down_repeat = this.down_repeat.bind(this);
     this.toggleChanged = this.toggleChanged.bind(this);
     this.onDropdownSelected = this.onDropdownSelected.bind(this);
-    // this.fetch_data = this.fetch_data.bind(this);
+    this.onDropdownSelectedActivity = this.onDropdownSelectedActivity.bind(this);
+    this.onDropdownSelectedTime = this.onDropdownSelectedTime.bind(this);
+    this.fetch_data = this.fetch_data.bind(this);
+    this.plotgraphs =this.plotgraphs.bind(this);
     // this.document.querySelector = this.document.querySelector.bind(this);
 
     this.state = {
@@ -29,12 +33,15 @@ class ProfileUser extends React.Component {
       measurement_counter: 0,
       repeat_time: "",
       selected_type: "heartRate",
+      selected_activity: "",
+      selected_time: "",
       labels: [],
       heartRatesData: [],
       oxygenData: [],
       oxygenlabels: [],
       measurement_types: [],
       activity_types: [],
+      time_options : ["This Month","Last Measurement"],
       show: false,
       aveOxygen: 0,
       id_user: "",
@@ -48,24 +55,27 @@ class ProfileUser extends React.Component {
     }
     // await console.log(this.props.location.query)
     // console.log(this.context.router)
-    var uid = this.props.user_id
+    var uid = this.props.user_id;
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user to see his profile")
+        console.log("user to see his profile");
         this.setState({
-          id_user: user.uid
-        })
+          id_user: user.uid,
+        });
         console.log(this.state.id_user);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const dbRef = ref(getDatabase());
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
+            this.state.activity_types = []
             if (snapshot.exists()) {
               this.setState({
                 email: snapshot.val().email,
-                measurement_counter: parseInt(snapshot.val().measurement_counter),
+                measurement_counter: parseInt(
+                  snapshot.val().measurement_counter
+                ),
                 repeat_time: snapshot.val().repeat_time,
                 allow_notifications: snapshot.val().allow_notifications,
               });
@@ -77,12 +87,15 @@ class ProfileUser extends React.Component {
               }
               if (this.state.selected_type == "heartRate") {
                 const { heartRate } = snapshot.val();
+                console.log(snapshot.val());
 
                 for (let el in heartRate) {
+                  // el for activity type
                   this.state.activity_types.push(el);
-                  //el for activity type
-                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                  for (let i in el) {
+                    // this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
+                    // this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
+                  }
                 }
               } else {
                 console.log("NO DATA HEARTEDDDE");
@@ -109,9 +122,8 @@ class ProfileUser extends React.Component {
         });
       }
     });
-    
-    console.log(this.state.id_user)
 
+    console.log(this.state.id_user);
   }
 
   createSelectItems() {
@@ -127,6 +139,21 @@ class ProfileUser extends React.Component {
       );
     }
     return items;
+  }
+  createSelectItemsTime(){
+    let items = [];
+    for (let i = 0; i < this.state.time_options.length; i++) {
+        items.push(
+          <option
+            key={this.state.time_options[i]}
+            value={this.state.time_options[i]}
+          >
+            {this.state.time_options[i]}
+          </option>
+        );
+      }
+    return items;
+    
   }
   createSelectItemsActivities() {
     let items = [];
@@ -145,73 +172,100 @@ class ProfileUser extends React.Component {
 
   onDropdownSelected(e) {
     this.setState({ selected_type: e.target.value });
-    this.fetch_data();
+    this.state.selected_type = e.target.value;
+  }
+  onDropdownSelectedActivity(e){
+      this.setState({selected_activity: e.target.value});
+      this.state.selected_activity = e.target.value;
+
+  
+  }
+
+  onDropdownSelectedTime(e){
+      this.setState({selected_time :e.target.value});
+      this.state.selected_time = e.target.value;
+
+
+  }
+  plotgraphs(){
+    this.fetch_data()
   }
 
   fetch_data() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
+    console.log(this.state.selected_type,this.state.selected_activity,this.state.selected_time)
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${this.state.id_user}/${this.state.selected_type}/${this.state.selected_activity}`)).then(
+        (snapshot) => {
+          if (snapshot.exists()) {
+            if(this.state.selected_time == "Last Measurement"){
+              var timestamps = []
+              var averages = []
+              var valuesarray = []
+              const index = Object.keys(snapshot.val()).length;
+              const measurement = Object.keys(snapshot.val())[index-1];
+              get(child(dbRef, `users/${this.state.id_user}/${this.state.selected_type}/${this.state.selected_activity}/${measurement}`)).then(
+                (snapshot) => {
+                  var values = Object.values(snapshot.val())
+                  var keys = Object.keys(snapshot.val())
+                  values.forEach((value,index)=> {
+                  valuesarray.push(value)
+                  })
+                  keys.forEach((value,index)=> {
+                    timestamps.push(value)
+                    })
+                    var average = values.reduce((a, b) => a + b, 0) / values.length;
+                    console.log(average)
+                    this.setState({heartRatesData:valuesarray})
+                    this.setState({labels:timestamps})
+                    this.setState({aveOxygen:average})
+                    
 
-        const dbRef = ref(getDatabase());
-        get(child(dbRef, `users/${uid}`))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              if (this.state.selected_type == "heartRate") {
-                const { heartRate } = snapshot.val();
 
-                for (let el in heartRate) {
-                  this.state.activity_types.push(el);
-                  //el for activity type
-                  this.state.labels = [...Object.keys(heartRate[el])]; //left part for timestamp
-                  this.state.heartRatesData = [...Object.values(heartRate[el])]; // for values
                 }
-              }
-              if (this.state.selected_type == "oxygen") {
-                const { oxygen } = snapshot.val();
-                this.state.activity_types = [];
-                const temp_labels = [];
-                const temp_data = [];
-                for (let el in oxygen) {
-                  //el for activity type
-                  this.state.activity_types.push(el);
-                  this.state.oxygenlabels = [...Object.keys(oxygen[el])]; //left part for timestamp
-                  this.state.oxygenData = [...Object.values(oxygen[el])]; // for values
+              )
+          }
+          if(this.state.selected_time == "This Month"){
+            var today = new Date();
+            var current_month = today.getMonth() + 1;
+            console.log(current_month);
+            var timestamps = []
+            var averages = []
+            var valuesarray = []
+            this.state.heartRatesData = [] 
+            this.state.labels = []
+            for(let el in snapshot.val()){
+              console.log(el)
+              var month = parseInt(el[5]+el[6]);
+              if(month == current_month){
+                get(child(dbRef, `users/${this.state.id_user}/${this.state.selected_type}/${this.state.selected_activity}/${el}`)).then(
+                (snapshot) => {
+                  this.state.labels.push(el)
+                  var values = Object.values(snapshot.val())
+                  values.forEach((value,index)=> {
+                  valuesarray.push(value)
+                  })
+                  var average = values.reduce((a, b) => a + b, 0) / values.length;
+                  averages.push(average);
+                  var average_oxygen = averages.reduce((a, b) => a + b, 0) / averages.length;
+                  console.log(this.state.heartRatesData)
+                  this.setState({heartRatesData: averages})
+                  this.setState({aveOxygen: average_oxygen})                  
+  
                 }
-                console.log("Here are oxygen average");
-                const average =
-                  this.state.oxygenData.reduce((a, b) => a + b, 0) /
-                  this.state.oxygenData.length;
-                this.state.aveOxygen = average;
-                this.setState({ aveOxygen: average });
+              )
               }
-            } else {
-              console.log("No data available");
-              window.location.href = "/profile_admin";
             }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
-        // User is signed out
-        Swal.fire({
-          title: "Not authenticated",
-          text: "Please sign in",
-          icon: "info",
-          customClass: "swal_ok_button",
-          confirmButtonColor: "#2a4cd3",
-        }).then(function () {
-          window.location.href = "/";
-          console.log("error here");
-        });
-      }
-    });
+        }
+        console.log(this.state.heartRatesData)
+        console.log(this.state.labels)
+          }
+        }
+      );
+        
   }
 
   up_repeat() {
-    console.log(this.state.id_user)
+    console.log(this.state.id_user);
 
     var temp = this.state.repeat_time;
     if (temp < 24) {
@@ -353,10 +407,16 @@ class ProfileUser extends React.Component {
               <p id="repeat_time">
                 Repeat notification every: <b>{this.state.repeat_time}</b>
               </p>
-              <button className="up_down_button" onClick={this.up_repeat.bind(this)}>
+              <button
+                className="up_down_button"
+                onClick={this.up_repeat.bind(this)}
+              >
                 +
               </button>
-              <button className="up_down_button" onClick={this.down_repeat.bind(this)}>
+              <button
+                className="up_down_button"
+                onClick={this.down_repeat.bind(this)}
+              >
                 -
               </button>
             </div>
@@ -367,18 +427,38 @@ class ProfileUser extends React.Component {
           <Form.Select
             className="measurement-select"
             onChange={this.onDropdownSelected}
-            aria-label="Default select example"
+            aria-label="Select measurement type"
           >
+            <option selected disabled> Select measurement</option>
             {this.createSelectItems()}
           </Form.Select>
 
           <Form.Select
             className="measurement-select"
-            onChange={this.createSelectItemsActivities}
-            aria-label="Default select example"
+            onChange={this.onDropdownSelectedActivity}
+            aria-label="Select activity"
+            label = "Select activity"
+            placeholder="Select activity"
           >
+            <option selected disabled> Select activity</option>
             {this.createSelectItemsActivities()}
           </Form.Select>
+
+          <Form.Select
+            className="measurement-select"
+            onChange={this.onDropdownSelectedTime}
+            aria-label="Select activity"
+          >
+             <option selected disabled> Select time </option>
+            {this.createSelectItemsTime()}
+          </Form.Select>
+          
+          <button
+          className= "plot"
+          onClick={this.plotgraphs}
+          placeholder="Plot graph"> 
+          Plot Graph
+          </button>
         </div>
 
         {(this.state.selected_type == "heartRate" &&
@@ -393,15 +473,15 @@ class ProfileUser extends React.Component {
               </div>
             </main>
           )) || (
-            <main className="ChartContent">
-              <div className="ChartWrapper">
-                <LineChart
-                  heartrate={this.state.oxygenData}
-                  labels={this.state.oxygenlabels}
-                />
-              </div>
-            </main>
-          )}
+          <main className="DoughnutChartContent">
+            <div className="DoughnutChartWrapper">
+              <DoughnutChart 
+              oxygen={this.state.aveOxygen}
+                // labels={this.state.oxygenlabels}
+              />
+            </div>
+          </main>
+        )}
       </div>
     );
   }
