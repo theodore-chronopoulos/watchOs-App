@@ -34,8 +34,6 @@ class ProfileUser extends React.Component {
         this.onDropdownSelectedTime = this.onDropdownSelectedTime.bind(this);
         this.fetch_data = this.fetch_data.bind(this);
         this.plotgraphs = this.plotgraphs.bind(this);
-        // this.fetch_data = this.fetch_data.bind(this);
-        // this.document.querySelector = this.document.querySelector.bind(this);
 
         this.state = {
             click: true,
@@ -97,6 +95,7 @@ class ProfileUser extends React.Component {
                             }
                             if (this.state.selected_type == "heartRate") {
                                 const { heartRate } = snapshot.val();
+                                console.log(heartRate)
 
                                 for (let el in heartRate) {
                                     this.state.activity_types.push(el);
@@ -368,7 +367,7 @@ class ProfileUser extends React.Component {
                             <img src={profile_pic} className="myimage" />
                         </div>
                         <div className="hero__title">
-                            <h3> Profile Info </h3>
+                            <h3> Personal Information </h3>
                         </div>
                         <div className="hero__info">
                             <img src={email} className="image_search" alt={email} />
@@ -417,16 +416,15 @@ class ProfileUser extends React.Component {
                         </div>
                     </div>
                 </section>
-                {/* <ChoicesBoxesLoggedIn /> */}
                 <div className="dropdowns-div">
-                    <Form.Select
+                    {/* <Form.Select
                         className="measurement-select"
                         onChange={this.onDropdownSelected}
                         aria-label="Select measurement type"
                     >
                         <option selected disabled> Select measurement</option>
                         {this.createSelectItems()}
-                    </Form.Select>
+                    </Form.Select> */}
 
                     <Form.Select
                         className="measurement-select"
@@ -449,14 +447,16 @@ class ProfileUser extends React.Component {
                     </Form.Select>
 
                     <button
-                        className="plot"
+                        className="plot_btn"
                         onClick={this.plotgraphs}
                         placeholder="Plot graph">
                         Plot Graph
                     </button>
                 </div>
-
-                {(this.state.selected_type == "heartRate" &&
+                <div className='plot-title'>
+                    <b>Heartrate</b>
+                </div>
+                {(
                     this.state.heartRatesData &&
                     this.state.labels && (
                         <main className="ChartContent">
@@ -464,19 +464,24 @@ class ProfileUser extends React.Component {
                                 <LineChart
                                     heartrate={this.state.heartRatesData}
                                     labels={this.state.labels}
+                                    timestamp={this.state.selected_time}
                                 />
                             </div>
                         </main>
-                    )) || (
-                        <main className="DoughnutChartContent">
-                            <div className="DoughnutChartWrapper">
-                                <DoughnutChart
-                                    oxygen={this.state.aveOxygen}
-                                // labels={this.state.oxygenlabels}
-                                />
-                            </div>
-                        </main>
-                    )}
+                    ))}
+                <div className='plot-title'>
+                    <b>Oxygen level</b>
+                </div>
+                {(
+                    <main className="DoughnutChartContent">
+                        <div className="DoughnutChartWrapper">
+                            <DoughnutChart
+                                oxygen={this.state.aveOxygen}
+                            // labels={this.state.oxygenlabels}
+                            />
+                        </div>
+                    </main>
+                )}
                 <ChoicesBoxesBottom />
 
             </div>

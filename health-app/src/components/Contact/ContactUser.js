@@ -114,7 +114,7 @@ function ContactUser() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="user_email" name="user_email"
-                                className='contactinput' disabled="disabled" value={user_email} />
+                                className='contactinput' readonly="readonly" value={user_email} />
                         </div>
 
                     </div>
@@ -126,7 +126,7 @@ function ContactUser() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="admin_email" name="admin_email"
-                                className='contactinput' disabled="disabled" value={admin_email} />
+                                className='contactinput' readonly="readonly" value={admin_email} />
                         </div>
 
 
@@ -138,7 +138,7 @@ function ContactUser() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="admin_name" name="admin_name"
-                                className='contactinput' disabled="disabled" value={admin_name} />
+                                className='contactinput' readonly="readonly" value={admin_name} />
                         </div>
 
 

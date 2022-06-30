@@ -162,7 +162,7 @@ class FeedAdmin extends React.Component {
     render() {
         return (
             <div>
-                <div className="box_of_question">
+                <div className="box_of_admin">
                     <div className='left_side'>
                         <div className="title_of_question1">
                             <img src={doctor} className="image_search2" alt={doctor} />

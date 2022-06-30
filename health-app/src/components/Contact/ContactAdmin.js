@@ -70,6 +70,7 @@ function ContactAdmin() {
             const serviceID = "service_zwvhrk9";
             const templateID = "template_jgx7m0m";
             const publicKey = "0aTYBDsvVzReKIY0o"
+            console.log(form.current)
 
             emailjs.sendForm(serviceID, templateID, form.current, publicKey)
                 .then((result) => {
@@ -111,7 +112,7 @@ function ContactAdmin() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="admin_name" name="admin_name"
-                                className='contactinput' disabled="disabled" value={admin_name} />
+                                className='contactinput' readonly="readonly" value={admin_name} />
                         </div>
                     </div>
 
@@ -121,7 +122,7 @@ function ContactAdmin() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="admin_email" name="admin_email"
-                                className='contactinput' disabled="disabled" value={admin_email} />
+                                className='contactinput' readonly="readonly" value={admin_email} />
                         </div>
                     </div>
 
@@ -131,7 +132,7 @@ function ContactAdmin() {
                         </div>
                         <div className='contactinput'>
                             <input type="text" id="user_email" name="user_email"
-                                className='contactinput' disabled="disabled" value={user_email} />
+                                className='contactinput' readonly="readonly" value={user_email} />
                         </div>
                     </div>
 

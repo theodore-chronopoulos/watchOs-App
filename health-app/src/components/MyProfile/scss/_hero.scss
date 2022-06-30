@@ -22,7 +22,7 @@
         border: 3px solid $limeBlue;
         width: 100%;
         box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
-        border-radius: 0.3125rem;
+        border-radius: 1rem;
         //padding-bottom: 0.8rem;
         
     }
@@ -39,7 +39,7 @@
             flex: 20;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
-            font-size: 1.7rem;
+            font-size: 1rem;
             color: $limeBlue;
             align-self: start;
             justify-content: start;
@@ -190,3 +190,106 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+
+  .ChartContent {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    .ChartWrapper {
+        display: block;
+        width: 65%;
+        margin-top: 1rem;
+        // margin-bottom: rem;
+    }
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+.dropdowns-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 5rem;
+  margin-left: 11%;
+  margin-right: 11%;
+  
+  }
+
+.measurement-select {
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 3px solid $limeBlue;
+    border-radius: 0.5rem;
+
+}
+
+.plot {
+    width: 200px;
+    height: 40px;
+}
+
+.DoughnutChartContent {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    .DoughnutChartWrapper {
+        display: block;
+        width: 35%;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+}
+
+
+//Button
+.plot_btn {
+  font-size: 21px;
+  margin-right: 40px;
+  margin-left: 40px;
+  margin-top: 0rem;
+  width: 200px;
+  height: 50px;
+  padding: 5px 20px;
+  // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+  background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+  // background-color: #2a4cd3;
+  color: #fff;
+  border: 0px;
+  border-radius: 10px;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    opacity:90%;
+    // background-color: #2a4cd3;
+  //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+  background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+
+
+  }
+}
+.plot-title{
+  color: rgb(48,48,48);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2rem;
+    text-align: center;
+}

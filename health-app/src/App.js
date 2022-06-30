@@ -56,10 +56,6 @@ function App() {
         {<LoginRegister/>}/>
         <Route path='/' element =
         {<Home/>} />
-        {/* <Route path='/homeadmin' element =
-        {<HomeAdmin/>} />
-        <Route path='/homeuser' element =
-        {<HomeUser/>} /> */}
         <Route path='/profile_admin' element =
         {<ProfileAdmin/>} />
         <Route path='/profile_user' element =

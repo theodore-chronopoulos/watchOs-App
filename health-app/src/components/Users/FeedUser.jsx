@@ -113,10 +113,14 @@ class FeedUser extends React.Component {
         return (
             <div>
                 <Link
-                    to={{
-                        pathname: "/user",
-                    }}
-                    state={{ user_id: this.state.user_id }}
+                    to={{pathname: "/user"}}
+                    state={{ 
+                        user_id: this.state.user_id,
+                        email: this.state.email,
+                        allow_notifications: this.state.allow_notifications,
+                        measurement_counter: this.state.measurement_counter,
+                        repeat_time: this.state.repeat_time,
+                        }}
                 >
 
                     <div className="box_of_question">

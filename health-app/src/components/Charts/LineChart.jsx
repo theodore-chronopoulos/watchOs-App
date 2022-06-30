@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export default function LineChart({ heartrate, labels }) {
+export default function LineChart({ heartrate, labels, timestamp }) {
   const options = {
     responsive: true,
     plugins: {
@@ -31,7 +31,7 @@ export default function LineChart({ heartrate, labels }) {
       },
       title: {
         display: true,
-        text: "Chart.js Line Chart",
+        text: timestamp,
       },
     },
   };
@@ -41,8 +41,8 @@ export default function LineChart({ heartrate, labels }) {
       {
         label: "Dataset 1",
         data: [...heartrate],
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "#36A2EB",
+        backgroundColor: "rgb(48,48,48)",
       },
     ],
   };

@@ -29,12 +29,13 @@ ChartJS.register(
 export default function DoughnutChart ({oxygen}){
   
 const data = {
-  labels: ['${100 - oxygen }', "Oxygen percentage"],
+  labels: ['Non oxygen percentage', "Oxygen percentage"],
   datasets: [
     {
       data: [100-oxygen, oxygen],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      // backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      backgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
+      hoverBackgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
       borderWidth: 2
     }
   ]
