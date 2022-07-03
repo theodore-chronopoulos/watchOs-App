@@ -25,16 +25,18 @@ class ProfileUser extends React.Component {
     this.down_repeat = this.down_repeat.bind(this);
     this.toggleChanged = this.toggleChanged.bind(this);
     this.onDropdownSelected = this.onDropdownSelected.bind(this);
-    this.onDropdownSelectedActivity =
-      this.onDropdownSelectedActivity.bind(this);
-    this.onDropdownSelectedActivityCustom =
-      this.onDropdownSelectedActivityCustom.bind(this);
+    this.onDropdownSelectedTimeOx = this.onDropdownSelectedTimeOx.bind(this);
+    this.onDropdownSelectedActivity = this.onDropdownSelectedActivity.bind(this);
+    this.onDropdownSelectedActivityCustom = this.onDropdownSelectedActivityCustom.bind(this);
     this.onDropdownSelectedTime = this.onDropdownSelectedTime.bind(this);
-    this.onDropdownSelectedDateCustom =
-      this.onDropdownSelectedDateCustom.bind(this);
+    this.onDropdownSelectedDateCustom = this.onDropdownSelectedDateCustom.bind(this);
+    this.onDropdownSelectedDateCustomOx = this.onDropdownSelectedDateCustomOx.bind(this);
     this.fetch_data = this.fetch_data.bind(this);
     this.plotgraphs = this.plotgraphs.bind(this);
     this.plotgraphscustom = this.plotgraphscustom.bind(this);
+    this.plotgraphs_ox = this.plotgraphs_ox.bind(this);
+    this.plotgraphscustom_ox = this.plotgraphscustom_ox.bind(this);
+    // this.plotgraphs_ox_custom = this.plotgraphs_ox_custom.bind(this);
 
     this.state = {
       click: true,
@@ -55,11 +57,15 @@ class ProfileUser extends React.Component {
       measurement_types: [],
       activity_types: [],
       dates_dropdown: [],
+      dates_dropdown_ox: [],
       show: false,
-      aveOxygen: 0,
+      slected_custom_date_ox:"",
+      aveOxygen: 0.5,
+      aveOxygen_custom: 0.5,
       id_user: "",
       selected_activity: "",
       selected_time: "",
+      selected_time_ox: "",
       time_options: ["This Month", "Last Measurement"],
 
       // checked: ""
@@ -177,6 +183,32 @@ class ProfileUser extends React.Component {
     }
     return items;
   }
+
+  createSelectItemsTimeCustomOx() {
+    const dbRef = ref(getDatabase());
+    var datesarray = [];
+    get(child(dbRef,`users/${this.state.id_user}/oxygen/`))
+    .then((snapshot) => {
+      var keys = Object.keys(snapshot.val())
+      keys.forEach((keys, index) => {
+        datesarray.push(keys);
+      });
+      this.setState({dates_dropdown_ox: datesarray})
+    }
+    )
+    let items = [];
+    for (let i = 0; i < this.state.dates_dropdown_ox.length; i++) {
+      items.push(
+        <option
+          key={this.state.dates_dropdown_ox[i]}
+          value={this.state.dates_dropdown_ox[i]}
+        >
+          {this.state.dates_dropdown_ox[i]}
+        </option>
+      );
+    }
+    return items;
+  }
   createSelectItemsActivities() {
     let items = [];
     for (let i = 0; i < this.state.activity_types.length; i++) {
@@ -200,6 +232,10 @@ class ProfileUser extends React.Component {
   onDropdownSelectedDateCustom(e) {
     this.setState({ slected_custom_date: e.target.value });
     this.state.slected_custom_date = e.target.value;
+  }
+  onDropdownSelectedDateCustomOx(e) {
+    this.setState({ slected_custom_date_ox: e.target.value });
+    this.state.slected_custom_date_ox = e.target.value;
   }
   onDropdownSelectedActivityCustom(e) {
     this.setState({ selected_custom_activity: e.target.value });
@@ -230,6 +266,14 @@ class ProfileUser extends React.Component {
     this.setState({ selected_time: e.target.value });
     this.state.selected_time = e.target.value;
   }
+  onDropdownSelectedTimeOx(e) {
+    this.setState({ selected_time_ox: e.target.value });
+    this.state.selected_time_ox = e.target.value;
+  }
+  plotgraphs() {
+    this.fetch_data();
+  }
+
   plotgraphs() {
     this.fetch_data();
   }
@@ -237,13 +281,72 @@ class ProfileUser extends React.Component {
   plotgraphscustom() {
     this.fetch_custom_data();
   }
+  plotgraphscustom_ox() {
+    this.fetch_custom_data_ox();
+  }
+
+  plotgraphs_ox() {
+    this.fetch_data_ox();
+  }
+
+  fetch_custom_data_ox(){
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${this.state.id_user}/oxygen/${this.state.slected_custom_date_ox}`)).then(
+      (snapshot) => {
+        this.setState({aveOxygen_custom: Object.values(snapshot.val())})
+      })
+    
+  }
+
+  fetch_data_ox() {
+    const dbRef = ref(getDatabase());
+    if (this.state.selected_time_ox == "Last Measurement") {
+      get(child(dbRef, `users/${this.state.id_user}/oxygen/`)).then(
+        (snapshot) => {
+          const index = Object.keys(snapshot.val()).length;
+          const measurement = Object.keys(snapshot.val())[index - 1];
+          get(
+            child(dbRef, `users/${this.state.id_user}/oxygen/${measurement}`)
+          ).then((snapshot) => {
+            console.log(snapshot.val());
+            this.setState({ aveOxygen: Object.values(snapshot.val()) });
+            console.log(this.state.aveOxygen);
+          });
+        }
+      );
+    }
+    if (this.state.selected_time_ox == "This Month") {
+      var today = new Date();
+      var current_month = today.getMonth() + 1;
+      get(child(dbRef, `users/${this.state.id_user}/oxygen/`)).then(
+        (snapshot) => {
+          var oxygenmonthdata = [];
+          for (let el in snapshot.val()) {
+            var month = parseInt(el[5] + el[6]);
+            if (month == current_month) {
+              get(
+                child(dbRef, `users/${this.state.id_user}/oxygen/${el}`)
+              ).then((snapshot) => {
+                var temp = Object.values(snapshot.val());
+                oxygenmonthdata.push(temp[0]);
+                var average =
+                  oxygenmonthdata.reduce((a, b) => a + b, 0) /
+                  oxygenmonthdata.length;
+                this.setState({ aveOxygen: average });
+              });
+            }
+          }
+        }
+      );
+    }
+  }
 
   fetch_custom_data() {
     const dbRef = ref(getDatabase());
     get(
       child(
         dbRef,
-        `users/${this.state.id_user}/${this.state.selected_type}/${this.state.selected_custom_activity}/${this.state.slected_custom_date}`
+        `users/${this.state.id_user}/heartRate/${this.state.selected_custom_activity}/${this.state.slected_custom_date}`
       )
     ).then((snapshot) => {
       if (snapshot.exists()) {
@@ -300,23 +403,6 @@ class ProfileUser extends React.Component {
               this.setState({ heartRatesData: valuesarray });
               this.setState({ labels: timestamps });
             });
-            //for oxygen last measurement
-            get(child(dbRef, `users/${this.state.id_user}/oxygen/`)).then(
-              (snapshot) => {
-                const index = Object.keys(snapshot.val()).length;
-                const measurement = Object.keys(snapshot.val())[index - 1];
-                get(
-                  child(
-                    dbRef,
-                    `users/${this.state.id_user}/oxygen/${measurement}`
-                  )
-                ).then((snapshot) => {
-                  console.log(snapshot.val());
-                  this.setState({ aveOxygen: Object.values(snapshot.val()) });
-                  console.log(this.state.aveOxygen);
-                });
-              }
-            );
           }
           if (this.state.selected_time == "This Month") {
             var today = new Date();
@@ -348,26 +434,6 @@ class ProfileUser extends React.Component {
                 });
               }
             }
-            get(child(dbRef, `users/${this.state.id_user}/oxygen/`)).then(
-              (snapshot) => {
-                var oxygenmonthdata = [];
-                for (let el in snapshot.val()) {
-                  var month = parseInt(el[5] + el[6]);
-                  if (month == current_month) {
-                    get(
-                      child(dbRef, `users/${this.state.id_user}/oxygen/${el}`)
-                    ).then((snapshot) => {
-                      var temp = Object.values(snapshot.val());
-                      oxygenmonthdata.push(temp[0]);
-                      var average =
-                        oxygenmonthdata.reduce((a, b) => a + b, 0) /
-                        oxygenmonthdata.length;
-                      this.setState({ aveOxygen: average });
-                    });
-                  }
-                }
-              }
-            );
           }
         }
       })
@@ -537,15 +603,6 @@ class ProfileUser extends React.Component {
           </div>
         </section>
         <div className="dropdowns-div">
-          {/* <Form.Select
-                        className="measurement-select"
-                        onChange={this.onDropdownSelected}
-                        aria-label="Select measurement type"
-                    >
-                        <option selected disabled> Select measurement</option>
-                        {this.createSelectItems()}
-                    </Form.Select> */}
-
           <Form.Select
             className="measurement-select"
             onChange={this.onDropdownSelectedActivity}
@@ -597,6 +654,28 @@ class ProfileUser extends React.Component {
         <div className="plot-title">
           <b>Oxygen level</b>
         </div>
+        <div className="dropdowns-div">
+          <Form.Select
+            className="measurement-select"
+            onChange={this.onDropdownSelectedTimeOx}
+            aria-label="Select activity"
+          >
+            <option selected disabled>
+              {" "}
+              Select time{" "}
+            </option>
+            {this.createSelectItemsTime()}
+          </Form.Select>
+
+          <button
+            className="plot_btn"
+            onClick={this.plotgraphs_ox}
+            placeholder="Plot graph"
+          >
+            Plot Graph
+          </button>
+        </div>
+
         {
           <main className="DoughnutChartContent">
             <div className="DoughnutChartWrapper">
@@ -607,6 +686,7 @@ class ProfileUser extends React.Component {
             </div>
           </main>
         }
+
         <div className="dropdowns-div">
           <Form.Select
             className="measurement-select"
@@ -656,11 +736,32 @@ class ProfileUser extends React.Component {
         <div className="plot-title">
           <b>Oxygen level</b>
         </div>
+        <div className="dropdowns-div">
+        <Form.Select
+            className="measurement-select"
+            aria-label="Select Date"
+            onChange={this.onDropdownSelectedDateCustomOx}
+          >
+            <option selected disabled>
+              {" "}
+              Select Date{" "}
+            </option>
+            {this.createSelectItemsTimeCustomOx()}
+          </Form.Select>
+          <button
+            className="plot_btn"
+            onClick={this.plotgraphscustom_ox}
+            placeholder="Plot graph"
+          >
+            Plot Graph
+          </button>
+        </div>
+
         {
           <main className="DoughnutChartContent">
             <div className="DoughnutChartWrapper">
               <DoughnutChart
-                oxygen={this.state.aveOxygen}
+                oxygen={this.state.aveOxygen_custom}
                 // labels={this.state.oxygenlabels}
               />
             </div>
