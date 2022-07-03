@@ -16,7 +16,7 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     var heartTimesArray = [String]()
     var heartCounter = 0
     
-    var hrvRate = [Double]()
+    var hrvRate = [Int]()
     var hrvTimesArray = [String]()
     var hrvCounter = 0
     
@@ -109,10 +109,20 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         
-                getOxygenLevel { x,_ in
-                    self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
-                    print(x ?? "0")
-                }
+        if (self.oxygenCounter == 0)   {
+            getOxygenLevel { x,_ in
+                self.lastOxygenSaturation = x ?? self.lastOxygenSaturation
+                print(x ?? "0")
+            }
+        }
+        if (self.hrvCounter == 0) {
+            getHRVSampleQuery {x,_ in
+                self.lastHRV = x ?? self.lastHRV
+
+                print(x ?? "0")
+            }
+        }
+        
         
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { continue }
@@ -139,25 +149,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             }
                         }
                     }
-//                case HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN):
-//                    if (self.hrvCounter != Int(self.measurement_counter)) {
-//                        let ms = HKUnit.secondUnit(with: .milli)
-//                        //                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
-//                        self.lastHRV = statistics.mostRecentQuantity()?.doubleValue(for: ms) ?? 0
-//
-//                        let today = Date()
-//                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
-//                        self.hrvRate.append(self.lastHRV)
-//
-//                        self.hrvCounter += 1
-//                        if (self.hrvCounter == Int(self.measurement_counter)) {
-//                            let even = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
-//                            self.ref.child("users/\(self.userID ?? "N/A")/HRV/\(self.activityString)").setValue(even)
-//                            if (self.heartCounter == Int(self.measurement_counter)) {
-//                                self.end()
-//                            }
-//                        }
-//                    }
                 default:
                     let value = statistics.sumQuantity()?.doubleValue(for: .meter())
                     self.totalDistance = value ?? 0
@@ -168,6 +159,59 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             }
         }
     }
+    func getHRVSampleQuery(completion: @escaping (Double?, Error?) -> Void) {
+        guard let HRVType = HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN) else {
+            fatalError("*** Unable to get oxygen saturation on this device ***")
+        }
+        
+        HKHealthStore().requestAuthorization(toShare: nil, read: [HRVType]) { (success, error) in
+            
+            guard error == nil, success == true else {
+                completion(nil, error)
+                return
+            }
+            print("mpikame hrv")
+            
+            
+            let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
+            let query = HKStatisticsQuery(quantityType: HRVType,
+                                          quantitySamplePredicate: predicate,
+                                          options: .mostRecent) { query, result, error in
+                DispatchQueue.main.async {
+                    if(error == nil) {
+                        guard let level = result, let sum = level.mostRecentQuantity() else {
+                            completion(nil, error)
+                            print("fuck")
+                            return
+                        }
+                        print("Startdate")
+                        print(sum)
+                        let myresult = sum.doubleValue(for: HKUnit.secondUnit(with: .milli))
+                        print(myresult)
+                        
+                        let today = Date()
+                        self.hrvTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss"))
+                        self.hrvRate.append(Int(myresult))
+                        self.hrvCounter = 1
+                        
+                        
+                        let hrvfinal = Dictionary(uniqueKeysWithValues: zip(self.hrvTimesArray, self.hrvRate))
+                        let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
+                        
+                        self.ref.child("users/\(self.userID ?? "N/A")/hrv/\(lastminute)").setValue(hrvfinal)
+                        if (self.heartCounter == Int(self.measurement_counter)) {
+                            self.end()
+                        }
+                        
+                        completion(myresult,nil)
+                    }
+                }
+            }
+            HKHealthStore().execute(query)
+            
+        }
+    }
+    
     public func getOxygenLevel(completion: @escaping (Double?, Error?) -> Void) {
         
         guard let oxygenQuantityType = HKQuantityType.quantityType(forIdentifier: .oxygenSaturation) else {
@@ -197,7 +241,7 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             print("fuck")
                             return
                         }
-                        if (self.oxygenCounter != 1) {
+                        if (self.oxygenCounter == 0) {
                             print("Quantity : ", sum)   // It prints 97 % and I need 97 only
                             
                             let measureUnit0 = HKUnit(from: "%")
@@ -206,16 +250,16 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             let today = Date()
                             self.oxygenTimesArray.append(today.toString(dateFormat: "yyyy-MM-dd-HH:mm:ss:SSS"))
                             self.oxygen.append(count0 * 100.0)
-//                            self.oxygen.append(98.0)
-                            self.oxygenCounter += 1
+                            //                            self.oxygen.append(98.0)
+                            self.oxygenCounter = 1
                             let oxygenfinal = Dictionary(uniqueKeysWithValues: zip(self.oxygenTimesArray, self.oxygen))
                             let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
-
-                            self.ref.child("users/\(self.userID ?? "N/A")/oxygen/\(self.activityString)/\(lastminute)").setValue(oxygenfinal)
+                            
+                            self.ref.child("users/\(self.userID ?? "N/A")/oxygen/\(lastminute)").setValue(oxygenfinal)
                             if (self.heartCounter == Int(self.measurement_counter)) {
                                 self.end()
                             }
-                        
+                            
                             completion(count0 * 100.0, nil)
                         }
                     }

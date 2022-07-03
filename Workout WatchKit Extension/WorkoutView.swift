@@ -41,12 +41,12 @@ struct WorkoutView: View {
                     Text(heartRateValue() + " bpm")
                 }
                 HStack {
-                    Text("HRV:")
+                    Text("Last HRV:")
                     Spacer()
                     Text(hrvValue() + " ms")
                 }
                 HStack {
-                    Text("Oxygen:")
+                    Text("Last Oxygen:")
                     Spacer()
                     Text(oxygenValue() + " %")
                 }
