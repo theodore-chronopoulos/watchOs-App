@@ -41,12 +41,51 @@ function User() {
     const [oxygenlabels, setOxygenlabels] = useState([]);
     const [measurement_types, setMeasurementTypes] = useState([]);
     const [activity_types, setActivityTypes] = useState([]);
+    const [selected_custom_activity, setSelectedCustomActivity] = useState("");
+    const [selected_custom_date, setSelectedCustomDate] = useState("");
+    const [custom_data, setCustomData] = useState([]);
+    const [custom_labels, setCustomLabels] = useState([]);
+    const [custom_aveOxygen, setCustomAveOxygen] = useState(0);
+    const [selected_time_ox, setSelectedTimeOx] = useState("");
+    const [aveOxygen_custom, setAveOxygenCustom] = useState(0.5);
+    const [selected_custom_date_ox, setSelectedCustomDateOx] = useState("");
+    const [dates_dropdown, setDatesDropdown] = useState([]);
+    const [dates_dropdown_ox, setDatesDropdownOx] = useState([]);
 
     const onDropdownSelectedActivity = (e) => {
         setSelectedActivity(e.target.value);
     }
     const onDropdownSelectedTime = (e) => {
         setSelectedTime(e.target.value);
+    }
+    const onDropdownSelectedTimeOx = (e) => {
+        setSelectedTimeOx(e.target.value);
+    }
+    const onDropdownSelectedDateCustomOx = (e) => {
+        setSelectedCustomDateOx(e.target.value);
+    }
+    const onDropdownSelectedDateCustom = (e) => {
+        setSelectedCustomDate(e.target.value);
+    }
+    const onDropdownSelectedActivityCustom = (e) => {
+        setSelectedCustomActivity(e.target.value);
+        // console.log(e)
+        // console.log(selected_custom_activity)
+        const dbRef = ref(getDatabase());
+        var datesarray = [];
+        get(
+            child(
+                dbRef,
+                `users/${user_id}/${selected_type}/${e.target.value}`
+            )
+        ).then((snapshot) => {
+            var values = Object.keys(snapshot.val());
+            values.forEach((keys, index) => {
+                datesarray.push(keys);
+            });
+            console.log(datesarray)
+            setDatesDropdown(datesarray);
+        });
     }
     const fetch_data = () => {
         const dbRef = ref(getDatabase());
@@ -73,7 +112,6 @@ function User() {
                                 console.log(average)
                                 setHeartRatesData(valuesarray);
                                 setLabels(timestamps);
-                                setAveOxygen(average);
                             }
                         )
                     }
@@ -102,11 +140,8 @@ function User() {
                                         })
                                         var average = values.reduce((a, b) => a + b, 0) / values.length;
                                         averages.push(average);
-                                        var average_oxygen = averages.reduce((a, b) => a + b, 0) / averages.length;
                                         console.log(heartRatesData)
                                         setHeartRatesData(averages);
-                                        setAveOxygen(average_oxygen);
-
                                     }
                                 )
                             }
@@ -119,7 +154,90 @@ function User() {
                 console.error(error);
             });
     }
+    const fetch_custom_data = () => {
+        const dbRef = ref(getDatabase());
+        get(
+            child(
+                dbRef,
+                `users/${user_id}/heartRate/${selected_custom_activity}/${selected_custom_date}`
+            )
+        ).then((snapshot) => {
+            if (snapshot.exists()) {
+                var timestamps = [];
+                var valuesarray = [];
+                var values = Object.values(snapshot.val());
+                var keys = Object.keys(snapshot.val());
+                values.forEach((value, index) => {
+                    valuesarray.push(value);
+                });
+                keys.forEach((value, index) => {
+                    timestamps.push(value);
+                });
+                var average = values.reduce((a, b) => a + b, 0) / values.length;
+                console.log(average);
+                setCustomData(valuesarray);
+                setCustomLabels(timestamps);
+                setCustomAveOxygen(average);
+                // this.setState({ custom_data: valuesarray });
+                // this.setState({ custom_labels: timestamps });
+                // this.setState({ custom_aveOxygen: average });
+            }
+        });
+    }
 
+    const fetch_data_ox = () => {
+        const dbRef = ref(getDatabase());
+        if (selected_time_ox == "Last Measurement") {
+            get(child(dbRef, `users/${user_id}/oxygen/`)).then(
+                (snapshot) => {
+                    const index = Object.keys(snapshot.val()).length;
+                    const measurement = Object.keys(snapshot.val())[index - 1];
+                    get(
+                        child(dbRef, `users/${user_id}/oxygen/${measurement}`)
+                    ).then((snapshot) => {
+                        console.log(snapshot.val());
+                        setAveOxygen(Object.values(snapshot.val()))
+                        // this.setState({ aveOxygen: Object.values(snapshot.val()) });
+                        console.log(aveOxygen);
+                    });
+                }
+            );
+        }
+        if (selected_time_ox == "This Month") {
+            var today = new Date();
+            var current_month = today.getMonth() + 1;
+            get(child(dbRef, `users/${user_id}/oxygen/`)).then(
+                (snapshot) => {
+                    var oxygenmonthdata = [];
+                    for (let el in snapshot.val()) {
+                        var month = parseInt(el[5] + el[6]);
+                        if (month == current_month) {
+                            get(
+                                child(dbRef, `users/${user_id}/oxygen/${el}`)
+                            ).then((snapshot) => {
+                                var temp = Object.values(snapshot.val());
+                                oxygenmonthdata.push(temp[0]);
+                                var average =
+                                    oxygenmonthdata.reduce((a, b) => a + b, 0) /
+                                    oxygenmonthdata.length;
+                                setAveOxygen(average);
+                                // this.setState({ aveOxygen: average });
+                            });
+                        }
+                    }
+                }
+            );
+        }
+    }
+    const fetch_custom_data_ox = () => {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${user_id}/oxygen/${selected_custom_date_ox}`)).then(
+            (snapshot) => {
+                setAveOxygenCustom(Object.values(snapshot.val()))
+                // this.setState({aveOxygen_custom: Object.values(snapshot.val())})
+            })
+
+    }
 
     const up_repeat = () => {
         console.log(activity_types)
@@ -198,6 +316,16 @@ function User() {
             .catch((error) => {
                 console.error(error);
             });
+        var datesarray = [];
+
+        get(child(dbRef, `users/${user_id}/oxygen/`))
+            .then((snapshot) => {
+                var keys = Object.keys(snapshot.val())
+                keys.forEach((keys, index) => {
+                    datesarray.push(keys);
+                });
+                setDatesDropdownOx(datesarray);
+            })
     }, []);
 
 
@@ -321,6 +449,34 @@ function User() {
             <div className='plot-title'>
                 <b>Oxygen level</b>
             </div>
+            <div className="dropdowns-div">
+                <Form.Select
+                    className="measurement-select"
+                    onChange={onDropdownSelectedTimeOx}
+                    aria-label="Select activity"
+                >
+                    <option selected disabled>
+                        {" "}
+                        Select time{" "}
+                    </option>
+                    {time_options.map(time_option =>
+                        <option
+                            key={time_option}
+                            value={time_option}
+                        >
+                            {time_option}
+                        </option>
+                    )}
+                </Form.Select>
+
+                <button
+                    className="plot_btn"
+                    onClick={fetch_data_ox}
+                    placeholder="Plot graph"
+                >
+                    Plot Graph
+                </button>
+            </div>
             {(
                 <main className="DoughnutChartContent">
                     <div className="DoughnutChartWrapper">
@@ -331,6 +487,110 @@ function User() {
                     </div>
                 </main>
             )}
+
+            <div className="dropdowns-div">
+                <Form.Select
+                    className="measurement-select"
+                    onChange={onDropdownSelectedActivityCustom}
+                    aria-label="Select activity"
+                    label="Select activity"
+                    placeholder="Select activity"
+                >
+                    <option selected disabled>
+                        {" "}
+                        Select activity
+                    </option>
+                    {activity_types.map(activity_type =>
+                        <option
+                            key={activity_type}
+                            value={activity_type}
+                        >
+                            {activity_type}
+                        </option>
+                    )}
+                </Form.Select>
+
+                <Form.Select
+                    className="measurement-select"
+                    aria-label="Select Date"
+                    onChange={onDropdownSelectedDateCustom}
+                >
+                    <option selected disabled>
+                        {" "}
+                        Select Date{" "}
+                    </option>
+                    {dates_dropdown.map(date_dropdown =>
+                        <option
+                            key={date_dropdown}
+                            value={date_dropdown}
+                        >
+                            {date_dropdown}
+                        </option>
+                    )}
+
+                </Form.Select>
+
+                <button
+                    className="plot_btn"
+                    onClick={fetch_custom_data}
+                    placeholder="Plot graph"
+                >
+                    Plot Graph
+                </button>
+            </div>
+            {heartRatesData && labels && (
+                <main className="ChartContent">
+                    <div className="ChartWrapper">
+                        <LineChart
+                            heartrate={custom_data}
+                            labels={custom_labels}
+                            timestamp={selected_time}
+                        />
+                    </div>
+                </main>
+            )}
+            <div className="plot-title">
+                <b>Oxygen level</b>
+            </div>
+            <div className="dropdowns-div">
+                <Form.Select
+                    className="measurement-select"
+                    aria-label="Select Date"
+                    onChange={onDropdownSelectedDateCustomOx}
+                >
+                    <option selected disabled>
+                        {" "}
+                        Select Date{" "}
+                    </option>
+                    {dates_dropdown_ox.map(date_dropdown =>
+                        <option
+                            key={date_dropdown}
+                            value={date_dropdown}
+                        >
+                            {date_dropdown}
+                        </option>
+                    )}
+                    {/* {createSelectItemsTimeCustomOx} */}
+                </Form.Select>
+                <button
+                    className="plot_btn"
+                    onClick={fetch_custom_data_ox}
+                    placeholder="Plot graph"
+                >
+                    Plot Graph
+                </button>
+            </div>
+
+            {
+                <main className="DoughnutChartContent">
+                    <div className="DoughnutChartWrapper">
+                        <DoughnutChart
+                            oxygen={aveOxygen_custom}
+                        // labels={this.state.oxygenlabels}
+                        />
+                    </div>
+                </main>
+            }
             <ChoicesBoxesBottom />
         </div>
     );

@@ -35,7 +35,7 @@ export class Register extends React.Component {
                         <div className="input-login">
                             <select className="input_field2" id="role">
                                 <option value="user">User</option>
-                                <option value="admin">Admin</option>
+                                <option value="admin">Professional</option>
                             </select>
                         </div>
                     </div>

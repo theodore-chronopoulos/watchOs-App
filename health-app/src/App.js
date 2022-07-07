@@ -72,7 +72,7 @@ function App() {
         {<User/>} />
         <Route path="/contactuser" element =
         {<ContactUser/>} />
-        <Route path="/contactadmin" element =
+        <Route path="/contactprofessional" element =
         {<ContactAdmin/>} />
       </Routes>
       <Footer/>

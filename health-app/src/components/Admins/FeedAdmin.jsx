@@ -192,7 +192,7 @@ class FeedAdmin extends React.Component {
                     </div>
                     <div className='right_side'>
                         <Link
-                            to={{ pathname: "/contactadmin" }}
+                            to={{ pathname: "/contactprofessional" }}
                             state={{ user_id: this.state.user_id, admin_email: this.state.email,
                                 admin_first_name: this.state.first_name, admin_last_name: this.state.last_name}}
                         >
