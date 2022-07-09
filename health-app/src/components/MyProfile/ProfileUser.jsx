@@ -28,6 +28,7 @@ class ProfileUser extends React.Component {
     this.onDropdownSelectedTimeOx = this.onDropdownSelectedTimeOx.bind(this);
     this.onDropdownSelectedActivity = this.onDropdownSelectedActivity.bind(this);
     this.onDropdownSelectedActivityCustom = this.onDropdownSelectedActivityCustom.bind(this);
+    this.onDropdownSelectedDateCustomHrv = this.onDropdownSelectedDateCustomHrv.bind(this);
     this.onDropdownSelectedTime = this.onDropdownSelectedTime.bind(this);
     this.onDropdownSelectedDateCustom = this.onDropdownSelectedDateCustom.bind(this);
     this.onDropdownSelectedDateCustomOx = this.onDropdownSelectedDateCustomOx.bind(this);
@@ -36,6 +37,7 @@ class ProfileUser extends React.Component {
     this.plotgraphscustom = this.plotgraphscustom.bind(this);
     this.plotgraphs_ox = this.plotgraphs_ox.bind(this);
     this.plotgraphscustom_ox = this.plotgraphscustom_ox.bind(this);
+    this.plotgraphscustom_hrv = this.plotgraphscustom_hrv.bind(this);
     // this.plotgraphs_ox_custom = this.plotgraphs_ox_custom.bind(this);
 
     this.state = {
@@ -58,14 +60,17 @@ class ProfileUser extends React.Component {
       activity_types: [],
       dates_dropdown: [],
       dates_dropdown_ox: [],
+      dates_dropdown_hrv:[],
       show: false,
       slected_custom_date_ox:"",
+      slected_custom_date_hrv:"",
       aveOxygen: 0.5,
       aveOxygen_custom: 0.5,
       id_user: "",
       selected_activity: "",
       selected_time: "",
       selected_time_ox: "",
+      hrv_custom: 0.5,
       time_options: ["This Month", "Last Measurement"],
 
       // checked: ""
@@ -183,6 +188,32 @@ class ProfileUser extends React.Component {
     }
     return items;
   }
+  createSelectItemsTimeCustomHrv(){
+    const dbRef = ref(getDatabase());
+    var datesarray = [];
+    get(child(dbRef,`users/${this.state.id_user}/hrv/`))
+    .then((snapshot) => {
+      var keys = Object.keys(snapshot.val())
+      keys.forEach((keys, index) => {
+        datesarray.push(keys);
+      });
+      this.setState({dates_dropdown_hrv: datesarray})
+    }
+    )
+    let items = [];
+    for (let i = 0; i < this.state.dates_dropdown_hrv.length; i++) {
+      items.push(
+        <option
+          key={this.state.dates_dropdown_hrv[i]}
+          value={this.state.dates_dropdown_hrv[i]}
+        >
+          {this.state.dates_dropdown_hrv[i]}
+        </option>
+      );
+    }
+    return items;
+
+  }
 
   createSelectItemsTimeCustomOx() {
     const dbRef = ref(getDatabase());
@@ -237,6 +268,10 @@ class ProfileUser extends React.Component {
     this.setState({ slected_custom_date_ox: e.target.value });
     this.state.slected_custom_date_ox = e.target.value;
   }
+  onDropdownSelectedDateCustomHrv(e){
+    this.setState({slected_custom_date_hrv: e.target.value});
+    this.state.slected_custom_date_hrv = e.target.value
+  }
   onDropdownSelectedActivityCustom(e) {
     this.setState({ selected_custom_activity: e.target.value });
     this.state.selected_custom_activity = e.target.value;
@@ -284,11 +319,21 @@ class ProfileUser extends React.Component {
   plotgraphscustom_ox() {
     this.fetch_custom_data_ox();
   }
+  plotgraphscustom_hrv(){
+    this.fetch_custom_data_hrv();
+  }
 
   plotgraphs_ox() {
     this.fetch_data_ox();
   }
 
+  fetch_custom_data_hrv(){
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${this.state.id_user}/hrv/${this.state.slected_custom_date_hrv}`)).then(
+      (snapshot) => {
+        this.setState({hrv_custom: Object.values(snapshot.val())})
+      })
+  }
   fetch_custom_data_ox(){
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${this.state.id_user}/oxygen/${this.state.slected_custom_date_ox}`)).then(
@@ -767,6 +812,39 @@ class ProfileUser extends React.Component {
             </div>
           </main>
         }
+        <div className="plot-title">
+          <b>HRV</b>
+        </div>
+        <div className="dropdowns-div">
+        <Form.Select
+            className="measurement-select"
+            aria-label="Select Date"
+            onChange={this.onDropdownSelectedDateCustomHrv}
+          >
+            <option selected disabled>
+              {" "}
+              Select Date{" "}
+            </option>
+            {this.createSelectItemsTimeCustomHrv()}
+          </Form.Select>
+          <button
+            className="plot_btn"
+            onClick={this.plotgraphscustom_hrv}
+            placeholder="Plot graph"
+          >
+            Plot Graph
+          </button>
+        </div>
+        {
+          <main className="DoughnutChartContent">
+            <div className="DoughnutChartWrapper">
+              <DoughnutChart
+                oxygen={this.state.hrv_custom}
+              />
+            </div>
+          </main>
+        }
+        
       </div>
     );
   }
