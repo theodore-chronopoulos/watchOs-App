@@ -880,6 +880,7 @@ class ProfileUser extends React.Component {
             </div>
           </main>
         }
+        <ChoicesBoxesBottom />
 
       </div>
     );

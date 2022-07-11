@@ -51,12 +51,18 @@ function User() {
     const [selected_custom_date_ox, setSelectedCustomDateOx] = useState("");
     const [dates_dropdown, setDatesDropdown] = useState([]);
     const [dates_dropdown_ox, setDatesDropdownOx] = useState([]);
+    const [selected_custom_date_hrv, setSelectedCustomDateHrv] = useState("");
+    const [hrv_custom, setHrvCustom] = useState(0.5);
+    const [dates_dropdown_hrv, setDatesDropdownHrv] = useState([]);
 
     const onDropdownSelectedActivity = (e) => {
         setSelectedActivity(e.target.value);
     }
     const onDropdownSelectedTime = (e) => {
         setSelectedTime(e.target.value);
+    }
+    const onDropdownSelectedDateCustomHrv = (e) => {
+        setSelectedCustomDateHrv(e.target.value);
     }
     const onDropdownSelectedTimeOx = (e) => {
         setSelectedTimeOx(e.target.value);
@@ -236,7 +242,13 @@ function User() {
                 setAveOxygenCustom(Object.values(snapshot.val()))
                 // this.setState({aveOxygen_custom: Object.values(snapshot.val())})
             })
-
+    }
+    const fetch_custom_data_hrv = () => {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${user_id}/hrv/${selected_custom_date_hrv}`)).then(
+            (snapshot) => {
+                setHrvCustom(Object.values(snapshot.val()))
+            })
     }
 
     const up_repeat = () => {
@@ -326,6 +338,21 @@ function User() {
                 });
                 setDatesDropdownOx(datesarray);
             })
+
+        var datesarray2 = [];
+        get(child(dbRef, `users/${user_id}/hrv/`))
+            .then((snapshot) => {
+                console.log(snapshot.val())
+                var keys = Object.keys(snapshot.val())
+                // console.log(keys)
+                keys.forEach((keys, index) => {
+                    datesarray2.push(keys);
+                });
+                // console.log(datesarray)
+
+                setDatesDropdownHrv(datesarray2)
+            }
+            )
     }, []);
 
 
@@ -387,210 +414,281 @@ function User() {
                     </div>
                 </div>
             </section>
-            <div className="dropdowns-div">
-                <Form.Select
-                    className="measurement-select"
-                    onChange={onDropdownSelectedActivity}
-                    aria-label="Select activity"
-                    label="Select activity"
-                    placeholder="Select activity"
-                >
-                    <option selected disabled> Select activity</option>
-                    {activity_types.map(activity_type =>
-                        <option
-                            key={activity_type}
-                            value={activity_type}
-                        >
-                            {activity_type}
-                        </option>
-                    )}
-                </Form.Select>
-
-                <Form.Select
-                    className="measurement-select"
-                    onChange={onDropdownSelectedTime}
-                    aria-label="Select activity"
-                >
-                    <option selected disabled> Select time </option>
-                    {time_options.map(time_option =>
-                        <option
-                            key={time_option}
-                            value={time_option}
-                        >
-                            {time_option}
-                        </option>
-                    )}
-
-                </Form.Select>
-
-                <button
-                    className="plot_btn"
-                    onClick={fetch_data}
-                    placeholder="Plot graph">
-                    Plot Graph
-                </button>
-            </div>
-            <div className='plot-title'>
+            <div className="plot-title">
                 <b>Heartrate</b>
             </div>
-            {(
-                heartRatesData &&
-                labels && (
-                    <main className="ChartContent">
-                        <div className="ChartWrapper">
-                            <LineChart
-                                heartrate={heartRatesData}
-                                labels={labels}
-                                timestamp={selected_time}
-                            />
-                        </div>
-                    </main>
-                ))}
-            <div className='plot-title'>
-                <b>Oxygen level</b>
-            </div>
-            <div className="dropdowns-div">
-                <Form.Select
-                    className="measurement-select"
-                    onChange={onDropdownSelectedTimeOx}
-                    aria-label="Select activity"
-                >
-                    <option selected disabled>
-                        {" "}
-                        Select time{" "}
-                    </option>
-                    {time_options.map(time_option =>
-                        <option
-                            key={time_option}
-                            value={time_option}
-                        >
-                            {time_option}
-                        </option>
-                    )}
-                </Form.Select>
-
-                <button
-                    className="plot_btn"
-                    onClick={fetch_data_ox}
-                    placeholder="Plot graph"
-                >
-                    Plot Graph
-                </button>
-            </div>
-            {(
-                <main className="DoughnutChartContent">
-                    <div className="DoughnutChartWrapper">
-                        <DoughnutChart
-                            oxygen={aveOxygen}
-                        // labels={this.state.oxygenlabels}
-                        />
+            <div className="pinakas">
+                <div className="stili">
+                    <div className="plot-title3">
+                        <b>Statistics</b>
                     </div>
-                </main>
-            )}
-
-            <div className="dropdowns-div">
-                <Form.Select
-                    className="measurement-select"
-                    onChange={onDropdownSelectedActivityCustom}
-                    aria-label="Select activity"
-                    label="Select activity"
-                    placeholder="Select activity"
-                >
-                    <option selected disabled>
-                        {" "}
-                        Select activity
-                    </option>
-                    {activity_types.map(activity_type =>
-                        <option
-                            key={activity_type}
-                            value={activity_type}
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            onChange={onDropdownSelectedActivity}
+                            aria-label="Select activity"
+                            label="Select activity"
+                            placeholder="Select activity"
                         >
-                            {activity_type}
-                        </option>
-                    )}
-                </Form.Select>
+                            <option selected disabled> Select activity</option>
+                            {activity_types.map(activity_type =>
+                                <option
+                                    key={activity_type}
+                                    value={activity_type}
+                                >
+                                    {activity_type}
+                                </option>
+                            )}
+                        </Form.Select>
 
-                <Form.Select
-                    className="measurement-select"
-                    aria-label="Select Date"
-                    onChange={onDropdownSelectedDateCustom}
-                >
-                    <option selected disabled>
-                        {" "}
-                        Select Date{" "}
-                    </option>
-                    {dates_dropdown.map(date_dropdown =>
-                        <option
-                            key={date_dropdown}
-                            value={date_dropdown}
+                        <Form.Select
+                            className="measurement-select"
+                            onChange={onDropdownSelectedTime}
+                            aria-label="Select activity"
                         >
-                            {date_dropdown}
-                        </option>
-                    )}
+                            <option selected disabled> Select time </option>
+                            {time_options.map(time_option =>
+                                <option
+                                    key={time_option}
+                                    value={time_option}
+                                >
+                                    {time_option}
+                                </option>
+                            )}
 
-                </Form.Select>
+                        </Form.Select>
 
-                <button
-                    className="plot_btn"
-                    onClick={fetch_custom_data}
-                    placeholder="Plot graph"
-                >
-                    Plot Graph
-                </button>
-            </div>
-            {heartRatesData && labels && (
-                <main className="ChartContent">
-                    <div className="ChartWrapper">
-                        <LineChart
-                            heartrate={custom_data}
-                            labels={custom_labels}
-                            timestamp={selected_time}
-                        />
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_data}
+                            placeholder="Plot graph">
+                            Plot Graph
+                        </button>
                     </div>
-                </main>
-            )}
+
+                    {(
+                        heartRatesData &&
+                        labels && (
+                            <main className="ChartContent">
+                                <div className="ChartWrapper">
+                                    <LineChart
+                                        heartrate={heartRatesData}
+                                        labels={labels}
+                                        timestamp={selected_time}
+                                    />
+                                </div>
+                            </main>
+                        ))}
+                </div>
+                <div className="stili">
+                    <div className="plot-title3">
+                        <b>Measurements</b>
+                    </div>
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            onChange={onDropdownSelectedActivityCustom}
+                            aria-label="Select activity"
+                            label="Select activity"
+                            placeholder="Select activity"
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select activity
+                            </option>
+                            {activity_types.map(activity_type =>
+                                <option
+                                    key={activity_type}
+                                    value={activity_type}
+                                >
+                                    {activity_type}
+                                </option>
+                            )}
+                        </Form.Select>
+
+                        <Form.Select
+                            className="measurement-select"
+                            aria-label="Select Date"
+                            onChange={onDropdownSelectedDateCustom}
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select Date{" "}
+                            </option>
+                            {dates_dropdown.map(date_dropdown =>
+                                <option
+                                    key={date_dropdown}
+                                    value={date_dropdown}
+                                >
+                                    {date_dropdown}
+                                </option>
+                            )}
+
+                        </Form.Select>
+
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_custom_data}
+                            placeholder="Plot graph"
+                        >
+                            Plot Graph
+                        </button>
+                    </div>
+                    {heartRatesData && labels && (
+                        <main className="ChartContent">
+                            <div className="ChartWrapper">
+                                <LineChart
+                                    heartrate={custom_data}
+                                    labels={custom_labels}
+                                    timestamp={selected_time}
+                                />
+                            </div>
+                        </main>
+                    )}
+                </div>
+            </div>
             <div className="plot-title">
                 <b>Oxygen level</b>
             </div>
+            <div className="pinakas">
+                <div className="stili">
+
+                    <div className="plot-title3">
+                        <b>Statistics</b>
+                    </div>
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            onChange={onDropdownSelectedTimeOx}
+                            aria-label="Select activity"
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select time{" "}
+                            </option>
+                            {time_options.map(time_option =>
+                                <option
+                                    key={time_option}
+                                    value={time_option}
+                                >
+                                    {time_option}
+                                </option>
+                            )}
+                        </Form.Select>
+
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_data_ox}
+                            placeholder="Plot graph"
+                        >
+                            Plot Graph
+                        </button>
+                    </div>
+                    {(
+                        <main className="DoughnutChartContent">
+                            <div className="DoughnutChartWrapper">
+                                <DoughnutChart
+                                    oxygen={aveOxygen}
+                                // labels={this.state.oxygenlabels}
+                                />
+                            </div>
+                        </main>
+                    )}
+
+                </div>
+                <div className="stili">
+
+                    <div className="plot-title3">
+                        <b>Measurements</b>
+                    </div>
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            aria-label="Select Date"
+                            onChange={onDropdownSelectedDateCustomOx}
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select Date{" "}
+                            </option>
+                            {dates_dropdown_ox.map(date_dropdown =>
+                                <option
+                                    key={date_dropdown}
+                                    value={date_dropdown}
+                                >
+                                    {date_dropdown}
+                                </option>
+                            )}
+                            {/* {createSelectItemsTimeCustomOx} */}
+                        </Form.Select>
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_custom_data_ox}
+                            placeholder="Plot graph"
+                        >
+                            Plot Graph
+                        </button>
+                    </div>
+
+                    {
+                        <main className="DoughnutChartContent">
+                            <div className="DoughnutChartWrapper">
+                                <DoughnutChart
+                                    oxygen={aveOxygen_custom}
+                                // labels={this.state.oxygenlabels}
+                                />
+                            </div>
+                        </main>
+                    }
+                </div>
+            </div>
+
+            <div className="plot-title">
+                <b>HRV</b>
+            </div>
+            <div className="plot-title3">
+                <b>Measurements</b>
+            </div>
             <div className="dropdowns-div">
                 <Form.Select
                     className="measurement-select"
                     aria-label="Select Date"
-                    onChange={onDropdownSelectedDateCustomOx}
+                    onChange={onDropdownSelectedDateCustomHrv}
                 >
                     <option selected disabled>
                         {" "}
                         Select Date{" "}
                     </option>
-                    {dates_dropdown_ox.map(date_dropdown =>
+                    {dates_dropdown_hrv.map(date_dropdown_hrv =>
+
                         <option
-                            key={date_dropdown}
-                            value={date_dropdown}
+                            key={date_dropdown_hrv}
+                            value={date_dropdown_hrv}
                         >
-                            {date_dropdown}
+                            {date_dropdown_hrv}
                         </option>
                     )}
-                    {/* {createSelectItemsTimeCustomOx} */}
                 </Form.Select>
                 <button
                     className="plot_btn"
-                    onClick={fetch_custom_data_ox}
+                    onClick={fetch_custom_data_hrv}
                     placeholder="Plot graph"
                 >
                     Plot Graph
                 </button>
             </div>
-
             {
                 <main className="DoughnutChartContent">
                     <div className="DoughnutChartWrapper">
                         <DoughnutChart
-                            oxygen={aveOxygen_custom}
-                        // labels={this.state.oxygenlabels}
+                            oxygen={hrv_custom}
                         />
                     </div>
                 </main>
             }
+
+
+
             <ChoicesBoxesBottom />
         </div>
     );
