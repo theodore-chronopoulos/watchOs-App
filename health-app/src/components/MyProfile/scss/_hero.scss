@@ -200,9 +200,9 @@
     align-items: center;
     .ChartWrapper {
         display: block;
-        width: 65%;
+        width: 95%;
         margin-top: 1rem;
-        // margin-bottom: rem;
+        margin-bottom: 2rem;
     }
 }
 
@@ -220,10 +220,9 @@ html {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    margin-top: 5rem;
-  margin-left: 11%;
-  margin-right: 11%;
-  
+    margin-top: 3rem;
+  margin-left: 5%;
+  margin-right: 5%;
   }
 
 .measurement-select {
@@ -250,8 +249,8 @@ html {
     align-items: center;
     .DoughnutChartWrapper {
         display: block;
-        width: 35%;
-        margin-top: 2rem;
+        // width: 35%;
+        margin-top: 1rem;
         margin-bottom: 2rem;
     }
 }
@@ -260,8 +259,8 @@ html {
 //Button
 .plot_btn {
   font-size: 21px;
-  margin-right: 40px;
-  margin-left: 40px;
+  // margin-right: 20px;
+  // margin-left: 20px;
   margin-top: 0rem;
   width: 200px;
   height: 50px;
@@ -292,4 +291,23 @@ html {
     margin-right: 11%;
     margin-top: 2rem;
     text-align: center;
+}
+
+.plot-title3{
+  color: rgb(106, 152, 206);
+    font-size: 1.4rem;
+    line-height: 0.6;
+    margin-left: 11%;
+    margin-right: 11%;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pinakas{
+  display: flex;
+
+}
+.stili{
+width: 50%;
+margin-bottom: 4rem;
 }

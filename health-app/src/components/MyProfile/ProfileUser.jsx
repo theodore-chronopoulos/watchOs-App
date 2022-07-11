@@ -60,10 +60,10 @@ class ProfileUser extends React.Component {
       activity_types: [],
       dates_dropdown: [],
       dates_dropdown_ox: [],
-      dates_dropdown_hrv:[],
+      dates_dropdown_hrv: [],
       show: false,
-      slected_custom_date_ox:"",
-      slected_custom_date_hrv:"",
+      slected_custom_date_ox: "",
+      slected_custom_date_hrv: "",
       aveOxygen: 0.5,
       aveOxygen_custom: 0.5,
       id_user: "",
@@ -143,6 +143,31 @@ class ProfileUser extends React.Component {
           console.log("error here");
         });
       }
+      const dbRef = ref(getDatabase());
+      var datesarray = [];
+      get(child(dbRef, `users/${user.uid}/hrv/`))
+        .then((snapshot) => {
+          console.log(snapshot.val())
+          var keys = Object.keys(snapshot.val())
+          // console.log(keys)
+          keys.forEach((keys, index) => {
+            datesarray.push(keys);
+          });
+          // console.log(datesarray)
+
+          this.setState({ dates_dropdown_hrv: datesarray })
+        }
+        )
+      var datesarray2 = [];
+      get(child(dbRef, `users/${user.uid}/oxygen/`))
+        .then((snapshot) => {
+          var keys = Object.keys(snapshot.val())
+          keys.forEach((keys, index) => {
+            datesarray2.push(keys);
+          });
+          this.setState({ dates_dropdown_ox: datesarray2 })
+        }
+        )
     });
   }
 
@@ -188,19 +213,10 @@ class ProfileUser extends React.Component {
     }
     return items;
   }
-  createSelectItemsTimeCustomHrv(){
-    const dbRef = ref(getDatabase());
-    var datesarray = [];
-    get(child(dbRef,`users/${this.state.id_user}/hrv/`))
-    .then((snapshot) => {
-      var keys = Object.keys(snapshot.val())
-      keys.forEach((keys, index) => {
-        datesarray.push(keys);
-      });
-      this.setState({dates_dropdown_hrv: datesarray})
-    }
-    )
+  createSelectItemsTimeCustomHrv() {
+
     let items = [];
+    // console.log(this.state.dates_dropdown_hrv)
     for (let i = 0; i < this.state.dates_dropdown_hrv.length; i++) {
       items.push(
         <option
@@ -216,17 +232,8 @@ class ProfileUser extends React.Component {
   }
 
   createSelectItemsTimeCustomOx() {
-    const dbRef = ref(getDatabase());
-    var datesarray = [];
-    get(child(dbRef,`users/${this.state.id_user}/oxygen/`))
-    .then((snapshot) => {
-      var keys = Object.keys(snapshot.val())
-      keys.forEach((keys, index) => {
-        datesarray.push(keys);
-      });
-      this.setState({dates_dropdown_ox: datesarray})
-    }
-    )
+    // const dbRef = ref(getDatabase());
+    // console.log(this.state.dates_dropdown_ox)
     let items = [];
     for (let i = 0; i < this.state.dates_dropdown_ox.length; i++) {
       items.push(
@@ -268,8 +275,8 @@ class ProfileUser extends React.Component {
     this.setState({ slected_custom_date_ox: e.target.value });
     this.state.slected_custom_date_ox = e.target.value;
   }
-  onDropdownSelectedDateCustomHrv(e){
-    this.setState({slected_custom_date_hrv: e.target.value});
+  onDropdownSelectedDateCustomHrv(e) {
+    this.setState({ slected_custom_date_hrv: e.target.value });
     this.state.slected_custom_date_hrv = e.target.value
   }
   onDropdownSelectedActivityCustom(e) {
@@ -319,7 +326,7 @@ class ProfileUser extends React.Component {
   plotgraphscustom_ox() {
     this.fetch_custom_data_ox();
   }
-  plotgraphscustom_hrv(){
+  plotgraphscustom_hrv() {
     this.fetch_custom_data_hrv();
   }
 
@@ -327,20 +334,20 @@ class ProfileUser extends React.Component {
     this.fetch_data_ox();
   }
 
-  fetch_custom_data_hrv(){
+  fetch_custom_data_hrv() {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${this.state.id_user}/hrv/${this.state.slected_custom_date_hrv}`)).then(
       (snapshot) => {
-        this.setState({hrv_custom: Object.values(snapshot.val())})
+        this.setState({ hrv_custom: Object.values(snapshot.val()) })
       })
   }
-  fetch_custom_data_ox(){
+  fetch_custom_data_ox() {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `users/${this.state.id_user}/oxygen/${this.state.slected_custom_date_ox}`)).then(
       (snapshot) => {
-        this.setState({aveOxygen_custom: Object.values(snapshot.val())})
+        this.setState({ aveOxygen_custom: Object.values(snapshot.val()) })
       })
-    
+
   }
 
   fetch_data_ox() {
@@ -647,176 +654,205 @@ class ProfileUser extends React.Component {
             </div>
           </div>
         </section>
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelectedActivity}
-            aria-label="Select activity"
-            label="Select activity"
-            placeholder="Select activity"
-          >
-            <option selected disabled>
-              {" "}
-              Select activity
-            </option>
-            {this.createSelectItemsActivities()}
-          </Form.Select>
-
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelectedTime}
-            aria-label="Select activity"
-          >
-            <option selected disabled>
-              {" "}
-              Select time{" "}
-            </option>
-            {this.createSelectItemsTime()}
-          </Form.Select>
-
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphs}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
-        </div>
         <div className="plot-title">
           <b>Heartrate</b>
         </div>
-        {this.state.heartRatesData && this.state.labels && (
-          <main className="ChartContent">
-            <div className="ChartWrapper">
-              <LineChart
-                heartrate={this.state.heartRatesData}
-                labels={this.state.labels}
-                timestamp={this.state.selected_time}
-              />
+        <div className="pinakas">
+          <div className="stili">
+            <div className="plot-title3">
+              <b>Statistics</b>
             </div>
-          </main>
-        )}
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                onChange={this.onDropdownSelectedActivity}
+                aria-label="Select activity"
+                label="Select activity"
+                placeholder="Select activity"
+              >
+                <option selected disabled>
+                  {" "}
+                  Select activity
+                </option>
+                {this.createSelectItemsActivities()}
+              </Form.Select>
+
+              <Form.Select
+                className="measurement-select"
+                onChange={this.onDropdownSelectedTime}
+                aria-label="Select activity"
+              >
+                <option selected disabled>
+                  {" "}
+                  Select time{" "}
+                </option>
+                {this.createSelectItemsTime()}
+              </Form.Select>
+
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphs}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
+            </div>
+            {this.state.heartRatesData && this.state.labels && (
+              <main className="ChartContent">
+                <div className="ChartWrapper">
+                  <LineChart
+                    heartrate={this.state.heartRatesData}
+                    labels={this.state.labels}
+                    timestamp={this.state.selected_time}
+                  />
+                </div>
+              </main>
+            )}
+          </div>
+          <div className="stili">
+            <div className="plot-title3">
+              <b>Measurements</b>
+            </div>
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                onChange={this.onDropdownSelectedActivityCustom}
+                aria-label="Select activity"
+                label="Select activity"
+                placeholder="Select activity"
+              >
+                <option selected disabled>
+                  {" "}
+                  Select activity
+                </option>
+                {this.createSelectItemsActivities()}
+              </Form.Select>
+
+              <Form.Select
+                className="measurement-select"
+                aria-label="Select Date"
+                onChange={this.onDropdownSelectedDateCustom}
+              >
+                <option selected disabled>
+                  {" "}
+                  Select Date{" "}
+                </option>
+                {this.createSelectItemsTimeCustom()}
+              </Form.Select>
+
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphscustom}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
+            </div>
+            {this.state.heartRatesData && this.state.labels && (
+              <main className="ChartContent">
+                <div className="ChartWrapper">
+                  <LineChart
+                    heartrate={this.state.custom_data}
+                    labels={this.state.custom_labels}
+                    timestamp={this.state.selected_time}
+                  />
+                </div>
+              </main>
+            )}
+          </div>
+        </div>
+
+
         <div className="plot-title">
           <b>Oxygen level</b>
         </div>
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelectedTimeOx}
-            aria-label="Select activity"
-          >
-            <option selected disabled>
-              {" "}
-              Select time{" "}
-            </option>
-            {this.createSelectItemsTime()}
-          </Form.Select>
+        <div className="pinakas">
+          <div className="stili">
 
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphs_ox}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
-        </div>
-
-        {
-          <main className="DoughnutChartContent">
-            <div className="DoughnutChartWrapper">
-              <DoughnutChart
-                oxygen={this.state.aveOxygen}
-                // labels={this.state.oxygenlabels}
-              />
+            <div className="plot-title3">
+              <b>Statistics</b>
             </div>
-          </main>
-        }
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                onChange={this.onDropdownSelectedTimeOx}
+                aria-label="Select activity"
+              >
+                <option selected disabled>
+                  {" "}
+                  Select time{" "}
+                </option>
+                {this.createSelectItemsTime()}
+              </Form.Select>
 
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelectedActivityCustom}
-            aria-label="Select activity"
-            label="Select activity"
-            placeholder="Select activity"
-          >
-            <option selected disabled>
-              {" "}
-              Select activity
-            </option>
-            {this.createSelectItemsActivities()}
-          </Form.Select>
-
-          <Form.Select
-            className="measurement-select"
-            aria-label="Select Date"
-            onChange={this.onDropdownSelectedDateCustom}
-          >
-            <option selected disabled>
-              {" "}
-              Select Date{" "}
-            </option>
-            {this.createSelectItemsTimeCustom()}
-          </Form.Select>
-
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphscustom}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
-        </div>
-        {this.state.heartRatesData && this.state.labels && (
-          <main className="ChartContent">
-            <div className="ChartWrapper">
-              <LineChart
-                heartrate={this.state.custom_data}
-                labels={this.state.custom_labels}
-                timestamp={this.state.selected_time}
-              />
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphs_ox}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
             </div>
-          </main>
-        )}
-        <div className="plot-title">
-          <b>Oxygen level</b>
-        </div>
-        <div className="dropdowns-div">
-        <Form.Select
-            className="measurement-select"
-            aria-label="Select Date"
-            onChange={this.onDropdownSelectedDateCustomOx}
-          >
-            <option selected disabled>
-              {" "}
-              Select Date{" "}
-            </option>
-            {this.createSelectItemsTimeCustomOx()}
-          </Form.Select>
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphscustom_ox}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
+
+            {
+              <main className="DoughnutChartContent">
+                <div className="DoughnutChartWrapper">
+                  <DoughnutChart
+                    oxygen={this.state.aveOxygen}
+                  // labels={this.state.oxygenlabels}
+                  />
+                </div>
+              </main>
+            }
+          </div>
+          <div className="stili">
+
+            <div className="plot-title3">
+              <b>Measurements</b>
+            </div>
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                aria-label="Select Date"
+                onChange={this.onDropdownSelectedDateCustomOx}
+              >
+                <option selected disabled>
+                  {" "}
+                  Select Date{" "}
+                </option>
+                {this.createSelectItemsTimeCustomOx()}
+              </Form.Select>
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphscustom_ox}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
+            </div>
+
+            {
+              <main className="DoughnutChartContent">
+                <div className="DoughnutChartWrapper">
+                  <DoughnutChart
+                    oxygen={this.state.aveOxygen_custom}
+                  // labels={this.state.oxygenlabels}
+                  />
+                </div>
+              </main>
+            }
+          </div>
         </div>
 
-        {
-          <main className="DoughnutChartContent">
-            <div className="DoughnutChartWrapper">
-              <DoughnutChart
-                oxygen={this.state.aveOxygen_custom}
-                // labels={this.state.oxygenlabels}
-              />
-            </div>
-          </main>
-        }
+
         <div className="plot-title">
           <b>HRV</b>
         </div>
+        <div className="plot-title3">
+          <b>Measurements</b>
+        </div>
         <div className="dropdowns-div">
-        <Form.Select
+          <Form.Select
             className="measurement-select"
             aria-label="Select Date"
             onChange={this.onDropdownSelectedDateCustomHrv}
@@ -844,7 +880,7 @@ class ProfileUser extends React.Component {
             </div>
           </main>
         }
-        
+
       </div>
     );
   }
