@@ -6,16 +6,15 @@
     padding-left: 1.24rem;
     padding-right: 1.24rem;
     border-radius: 18px;
-
     @include breakpoint-up(medium) {
-        padding: 1rem 2.5rem; 
+        padding: 1rem 2.5rem;
         height: auto;
-        max-width: 700px;;
+        max-width: 700px;
+        ;
         overflow: hidden;
         text-align: center;
         margin-left: auto;
         margin-right: auto;
-
     }
     &__background {
         background-color: $veryLightGray;
@@ -24,17 +23,14 @@
         box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
         border-radius: 1rem;
         //padding-bottom: 0.8rem;
-        
     }
     &__title {
-
-        display: flex; 
+        display: flex;
         .bullet {
             flex: 1;
             margin-left: 0.8rem;
             margin-top: 0.5rem;
         }
-
         h3 {
             flex: 20;
             margin-top: 0.5rem;
@@ -46,30 +42,25 @@
             @include breakpoint-up(large) {
                 font-size: 2.2rem;
             }
-
         }
     }
     &__info {
-
-
-        display: flex; 
+        display: flex;
         align-items: center;
         justify-content: start;
-        margin-left: 2rem; 
+        margin-left: 2rem;
         margin-right: 2rem;
         margin-bottom: 0.6rem;
         .circle {
             flex: 1;
-            &__one{
+            &__one {
                 margin-right: 1.2rem;
                 width: 5px;
                 height: 5px;
                 background: $darkBlue;
                 border-radius: 60%;
             }
-        
         }
-
         p {
             flex: 22;
             margin-left: 0.5rem;
@@ -77,56 +68,49 @@
             font-size: 1.2rem;
             font-family: Arial, Helvetica, sans-serif;
             text-align: left;
-            color: rgb(48,48,48);
+            color: rgb(48, 48, 48);
             @include breakpoint-up(large) {
                 font-size: 1.2rem;
             }
-
         }
-       
     }
-    
 }
 
-.banner{
+.banner {
     width: 100%;
     left: 0px;
     right: 0px;
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 }
 
-.banner img{
+.banner img {
     width: 50%;
     left: 0px;
     right: 0px;
 }
 
-.up_down_button{
+.up_down_button {
     font-size: 21px;
     margin-right: 0.5rem;
     display: block;
     height: 50px;
     padding: 5px 20px;
     border: 0;
-
     width: 50px;
     border-radius: 15px;
     // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
     background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
-
-
     color: #fff;
     transition: all 250ms ease-in-out;
     cursor: pointer;
     &:hover {
-      // background-color: #2a4cd3;
-      // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
-      background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
-
+        // background-color: #2a4cd3;
+        // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+        background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
     }
     &:focus {
-      outline: none;
+        outline: none;
     }
 }
 
@@ -136,15 +120,15 @@
     margin-right: 0.5rem;
     width: 80px;
     height: 40px;
-  }
-  
-  .switch input { 
+}
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -154,9 +138,9 @@
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 30px;
@@ -166,33 +150,34 @@
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked+.slider {
     background-color: #2a4cd3;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus+.slider {
     box-shadow: 0 0 1px #2a4cd3;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked+.slider:before {
     -webkit-transform: translateX(30px);
     -ms-transform: translateX(30px);
     transform: translateX(40px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
+}
 
-
-  .ChartContent {
+.ChartContent {
     display: flex;
     height: 100%;
     width: 100%;
@@ -221,9 +206,9 @@ html {
     align-items: center;
     justify-content: space-evenly;
     margin-top: 3rem;
-  margin-left: 5%;
-  margin-right: 5%;
-  }
+    margin-left: 5%;
+    margin-right: 5%;
+}
 
 .measurement-select {
     width: 200px;
@@ -233,7 +218,6 @@ html {
     font-family: Arial, Helvetica, sans-serif;
     border: 3px solid $limeBlue;
     border-radius: 0.5rem;
-
 }
 
 .plot {
@@ -255,36 +239,48 @@ html {
     }
 }
 
-
-//Button
-.plot_btn {
-  font-size: 21px;
-  // margin-right: 20px;
-  // margin-left: 20px;
-  margin-top: 0rem;
-  width: 200px;
-  height: 50px;
-  padding: 5px 20px;
-  // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
-  background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
-
-  // background-color: #2a4cd3;
-  color: #fff;
-  border: 0px;
-  border-radius: 10px;
-  transition: all 250ms ease-in-out;
-  cursor: pointer;
-  &:hover {
-    opacity:90%;
-    // background-color: #2a4cd3;
-  //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
-  background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
-
-
-  }
+.BarChartContent {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    .BarChartWrapper {
+        display: block;
+        width: 50%;
+        height: 70%;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
 }
-.plot-title{
-  color: rgb(48,48,48);
+
+kdddd //Button
+.plot_btn {
+    font-size: 21px;
+    // margin-right: 20px;
+    // margin-left: 20px;
+    margin-top: 0rem;
+    width: 200px;
+    height: 50px;
+    padding: 5px 20px;
+    // background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+    background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+    // background-color: #2a4cd3;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    &:hover {
+        opacity: 90%;
+        // background-color: #2a4cd3;
+        //   background: linear-gradient(120deg, rgb(42,76,211) 20%, rgb(26, 23, 23) 120%);
+        background: linear-gradient(120deg, rgb(106, 152, 206) 50%, rgb(26, 23, 23) 100%);
+    }
+}
+
+.plot-title {
+    color: rgb(48, 48, 48);
     font-size: 1.8rem;
     line-height: 1.2;
     margin-left: 11%;
@@ -293,8 +289,8 @@ html {
     text-align: center;
 }
 
-.plot-title3{
-  color: rgb(106, 152, 206);
+.plot-title3 {
+    color: rgb(106, 152, 206);
     font-size: 1.4rem;
     line-height: 0.6;
     margin-left: 11%;
@@ -303,11 +299,11 @@ html {
     text-align: center;
 }
 
-.pinakas{
-  display: flex;
-
+.pinakas {
+    display: flex;
 }
-.stili{
-width: 50%;
-margin-bottom: 4rem;
+
+.stili {
+    width: 50%;
+    margin-bottom: 4rem;
 }

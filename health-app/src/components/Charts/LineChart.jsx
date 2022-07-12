@@ -30,7 +30,7 @@ export default function LineChart({ heartrate, labels, timestamp }) {
         position: "top",
       },
       title: {
-        display: true,
+        display: false,
         text: timestamp,
       },
     },

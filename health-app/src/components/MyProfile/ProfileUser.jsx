@@ -7,7 +7,7 @@ import profile_pic from "../../logos/teliko.png";
 import ChoicesBoxesBottom from "../ChoicesBoxesBottom/ChoicesBoxesBottom";
 import LineChart from "../Charts/LineChart";
 import DoughnutChart from "../Charts/DoughnutChart";
-
+import BarChart from "../Charts/BarChart";
 import Form from "react-bootstrap/Form";
 
 import watch from "../../logos/watch.png";
@@ -26,18 +26,26 @@ class ProfileUser extends React.Component {
     this.toggleChanged = this.toggleChanged.bind(this);
     this.onDropdownSelected = this.onDropdownSelected.bind(this);
     this.onDropdownSelectedTimeOx = this.onDropdownSelectedTimeOx.bind(this);
-    this.onDropdownSelectedActivity = this.onDropdownSelectedActivity.bind(this);
-    this.onDropdownSelectedActivityCustom = this.onDropdownSelectedActivityCustom.bind(this);
-    this.onDropdownSelectedDateCustomHrv = this.onDropdownSelectedDateCustomHrv.bind(this);
+    this.onDropdownSelectedActivity =
+      this.onDropdownSelectedActivity.bind(this);
+    this.onDropdownSelectedActivityCustom =
+      this.onDropdownSelectedActivityCustom.bind(this);
+    this.onDropdownSelectedDateCustomHrv =
+      this.onDropdownSelectedDateCustomHrv.bind(this);
+    this.onDropdownSelectedTimeCustomHrv =
+      this.onDropdownSelectedTimeCustomHrv.bind(this);
     this.onDropdownSelectedTime = this.onDropdownSelectedTime.bind(this);
-    this.onDropdownSelectedDateCustom = this.onDropdownSelectedDateCustom.bind(this);
-    this.onDropdownSelectedDateCustomOx = this.onDropdownSelectedDateCustomOx.bind(this);
+    this.onDropdownSelectedDateCustom =
+      this.onDropdownSelectedDateCustom.bind(this);
+    this.onDropdownSelectedDateCustomOx =
+      this.onDropdownSelectedDateCustomOx.bind(this);
     this.fetch_data = this.fetch_data.bind(this);
     this.plotgraphs = this.plotgraphs.bind(this);
     this.plotgraphscustom = this.plotgraphscustom.bind(this);
     this.plotgraphs_ox = this.plotgraphs_ox.bind(this);
     this.plotgraphscustom_ox = this.plotgraphscustom_ox.bind(this);
     this.plotgraphscustom_hrv = this.plotgraphscustom_hrv.bind(this);
+    this.plotgraphstime_hrv = this.plotgraphstime_hrv.bind(this);
     // this.plotgraphs_ox_custom = this.plotgraphs_ox_custom.bind(this);
 
     this.state = {
@@ -54,11 +62,13 @@ class ProfileUser extends React.Component {
       custom_data: [],
       custom_labels: [],
       custom_aveOxygen: 0,
+      hrv_data_time: 0,
       oxygenData: [],
       oxygenlabels: [],
       measurement_types: [],
       activity_types: [],
       dates_dropdown: [],
+      hrv_time: "",
       dates_dropdown_ox: [],
       dates_dropdown_hrv: [],
       show: false,
@@ -145,29 +155,25 @@ class ProfileUser extends React.Component {
       }
       const dbRef = ref(getDatabase());
       var datesarray = [];
-      get(child(dbRef, `users/${user.uid}/hrv/`))
-        .then((snapshot) => {
-          console.log(snapshot.val())
-          var keys = Object.keys(snapshot.val())
-          // console.log(keys)
-          keys.forEach((keys, index) => {
-            datesarray.push(keys);
-          });
-          // console.log(datesarray)
+      get(child(dbRef, `users/${user.uid}/hrv/`)).then((snapshot) => {
+        console.log(snapshot.val());
+        var keys = Object.keys(snapshot.val());
+        // console.log(keys)
+        keys.forEach((keys, index) => {
+          datesarray.push(keys);
+        });
+        // console.log(datesarray)
 
-          this.setState({ dates_dropdown_hrv: datesarray })
-        }
-        )
+        this.setState({ dates_dropdown_hrv: datesarray });
+      });
       var datesarray2 = [];
-      get(child(dbRef, `users/${user.uid}/oxygen/`))
-        .then((snapshot) => {
-          var keys = Object.keys(snapshot.val())
-          keys.forEach((keys, index) => {
-            datesarray2.push(keys);
-          });
-          this.setState({ dates_dropdown_ox: datesarray2 })
-        }
-        )
+      get(child(dbRef, `users/${user.uid}/oxygen/`)).then((snapshot) => {
+        var keys = Object.keys(snapshot.val());
+        keys.forEach((keys, index) => {
+          datesarray2.push(keys);
+        });
+        this.setState({ dates_dropdown_ox: datesarray2 });
+      });
     });
   }
 
@@ -214,7 +220,6 @@ class ProfileUser extends React.Component {
     return items;
   }
   createSelectItemsTimeCustomHrv() {
-
     let items = [];
     // console.log(this.state.dates_dropdown_hrv)
     for (let i = 0; i < this.state.dates_dropdown_hrv.length; i++) {
@@ -228,7 +233,6 @@ class ProfileUser extends React.Component {
       );
     }
     return items;
-
   }
 
   createSelectItemsTimeCustomOx() {
@@ -277,8 +281,13 @@ class ProfileUser extends React.Component {
   }
   onDropdownSelectedDateCustomHrv(e) {
     this.setState({ slected_custom_date_hrv: e.target.value });
-    this.state.slected_custom_date_hrv = e.target.value
+    this.state.slected_custom_date_hrv = e.target.value;
   }
+  onDropdownSelectedTimeCustomHrv(e) {
+    this.setState({ hrv_time: e.target.value });
+    this.state.hrv_time = e.target.value;
+  }
+
   onDropdownSelectedActivityCustom(e) {
     this.setState({ selected_custom_activity: e.target.value });
     this.state.selected_custom_activity = e.target.value;
@@ -329,25 +338,78 @@ class ProfileUser extends React.Component {
   plotgraphscustom_hrv() {
     this.fetch_custom_data_hrv();
   }
+  plotgraphstime_hrv() {
+    this.fetch_time_data_hrv();
+  }
 
   plotgraphs_ox() {
     this.fetch_data_ox();
   }
 
+  fetch_time_data_hrv() {
+    const dbRef = ref(getDatabase());
+    if (this.state.hrv_time == "Last Measurement") {
+      get(child(dbRef, `users/${this.state.id_user}/hrv/`)).then((snapshot) => {
+        console.log(snapshot.val());
+        const index = Object.keys(snapshot.val()).length;
+        const measurement = Object.keys(snapshot.val())[index - 1];
+        console.log(measurement);
+        get(
+          child(dbRef, `users/${this.state.id_user}/hrv/${measurement}`)
+        ).then((snapshot) => {
+          const temp = Object.values(snapshot.val());
+          this.setState({ hrv_data_time: temp[0] });
+          this.state.hrv_data_time = temp[0];
+          console.log(this.state.hrv_data_time);
+        });
+      });
+    }
+    if (this.state.hrv_time == "This Month") {
+      var today = new Date();
+      var current_month = today.getMonth() + 1;
+      get(child(dbRef, `users/${this.state.id_user}/hrv/`)).then(
+        (snapshot) => {
+          var hrvmonthdata = [];
+          for (let el in snapshot.val()) {
+            var month = parseInt(el[5] + el[6]);
+            if (month == current_month) {
+              get(
+                child(dbRef, `users/${this.state.id_user}/hrv/${el}`)
+              ).then((snapshot) => {
+                var temp = Object.values(snapshot.val());
+                hrvmonthdata.push(temp[0]);
+                var average =
+                  hrvmonthdata.reduce((a, b) => a + b, 0) /
+                  hrvmonthdata.length;
+                this.setState({ hrv_data_time: average });
+              });
+            }
+          }
+        }
+      );
+    }
+  }
   fetch_custom_data_hrv() {
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `users/${this.state.id_user}/hrv/${this.state.slected_custom_date_hrv}`)).then(
-      (snapshot) => {
-        this.setState({ hrv_custom: Object.values(snapshot.val()) })
-      })
+    get(
+      child(
+        dbRef,
+        `users/${this.state.id_user}/hrv/${this.state.slected_custom_date_hrv}`
+      )
+    ).then((snapshot) => {
+      this.setState({ hrv_custom: Object.values(snapshot.val()) });
+    });
   }
   fetch_custom_data_ox() {
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `users/${this.state.id_user}/oxygen/${this.state.slected_custom_date_ox}`)).then(
-      (snapshot) => {
-        this.setState({ aveOxygen_custom: Object.values(snapshot.val()) })
-      })
-
+    get(
+      child(
+        dbRef,
+        `users/${this.state.id_user}/oxygen/${this.state.slected_custom_date_ox}`
+      )
+    ).then((snapshot) => {
+      this.setState({ aveOxygen_custom: Object.values(snapshot.val()) });
+    });
   }
 
   fetch_data_ox() {
@@ -762,13 +824,11 @@ class ProfileUser extends React.Component {
           </div>
         </div>
 
-
         <div className="plot-title">
           <b>Oxygen level</b>
         </div>
         <div className="pinakas">
           <div className="stili">
-
             <div className="plot-title3">
               <b>Statistics</b>
             </div>
@@ -799,14 +859,13 @@ class ProfileUser extends React.Component {
                 <div className="DoughnutChartWrapper">
                   <DoughnutChart
                     oxygen={this.state.aveOxygen}
-                  // labels={this.state.oxygenlabels}
+                    // labels={this.state.oxygenlabels}
                   />
                 </div>
               </main>
             }
           </div>
           <div className="stili">
-
             <div className="plot-title3">
               <b>Measurements</b>
             </div>
@@ -836,14 +895,13 @@ class ProfileUser extends React.Component {
                 <div className="DoughnutChartWrapper">
                   <DoughnutChart
                     oxygen={this.state.aveOxygen_custom}
-                  // labels={this.state.oxygenlabels}
+                    // labels={this.state.oxygenlabels}
                   />
                 </div>
               </main>
             }
           </div>
         </div>
-
 
         <div className="plot-title">
           <b>HRV</b>
@@ -872,16 +930,40 @@ class ProfileUser extends React.Component {
           </button>
         </div>
         {
-          <main className="DoughnutChartContent">
-            <div className="DoughnutChartWrapper">
-              <DoughnutChart
-                oxygen={this.state.hrv_custom}
-              />
+          <main className="BarChartContent">
+            <div className="BarChartWrapper">
+              <BarChart oxygen={this.state.hrv_custom} />
+            </div>
+          </main>
+        }
+        <div className="dropdowns-div">
+          <Form.Select
+            className="measurement-select"
+            onChange={this.onDropdownSelectedTimeCustomHrv}
+            aria-label="Select activity"
+          >
+            <option selected disabled>
+              {" "}
+              Select time{" "}
+            </option>
+            {this.createSelectItemsTime()}
+          </Form.Select>
+          <button
+            className="plot_btn"
+            onClick={this.plotgraphstime_hrv}
+            placeholder="Plot graph"
+          >
+            Plot Graph
+          </button>
+        </div>
+        {
+          <main className="BarChartContent">
+            <div className="BarChartWrapper">
+              <BarChart oxygen={this.state.hrv_data_time} />
             </div>
           </main>
         }
         <ChoicesBoxesBottom />
-
       </div>
     );
   }
