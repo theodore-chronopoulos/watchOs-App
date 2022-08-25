@@ -45,15 +45,12 @@ export default function BarChart ({hrv}){
       datasets: [
         {
           data: [hrv],
-          // backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
           backgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
           hoverBackgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
           borderWidth: 1,
           barPercentage: 0.4,
         }
-        
       ],
     };
-    
       return <Bar data={data} />;
     }
