@@ -95,6 +95,7 @@ function User() {
     }
     const fetch_data = () => {
         const dbRef = ref(getDatabase());
+        console.log(dbRef)
         get(child(dbRef, `users/${user_id}/${selected_type}/${selected_activity}`)).then(
             (snapshot) => {
                 if (snapshot.exists()) {

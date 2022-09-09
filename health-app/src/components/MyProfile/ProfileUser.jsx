@@ -88,11 +88,6 @@ class ProfileUser extends React.Component {
   }
   async componentDidMount() {
     // const { history, location } = this.props;
-    if (this.state === undefined) {
-      return;
-    }
-
-    var uid = this.props.user_id;
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -100,8 +95,13 @@ class ProfileUser extends React.Component {
         this.setState({
           id_user: user.uid,
         });
+        var ave = 0;
+        fetch("https://us-central1-healthwatchapp-e636f.cloudfunctions.net/helloWorld?uid=" + user.uid)
+        .then((res) => res.json())
+        .then((data) => console.log(Object.keys(data)[0]));
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
+        console.log(ave);
         const dbRef = ref(getDatabase());
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
@@ -485,6 +485,7 @@ class ProfileUser extends React.Component {
 
   fetch_data() {
     const dbRef = ref(getDatabase());
+    console.log(dbRef)
     get(
       child(
         dbRef,
