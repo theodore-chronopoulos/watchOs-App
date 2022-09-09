@@ -144,6 +144,8 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                             let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
                             let even = Dictionary(uniqueKeysWithValues: zip(self.heartTimesArray, self.heartRate))
                             self.ref.child("users/\(self.userID ?? "N/A")/heartRate/\(self.activityString)/\(lastminute)").setValue(even)
+                            self.ref.child("users/\(self.userID ?? "N/A")/lastType").setValue(self.activityString)
+                            self.ref.child("users/\(self.userID ?? "N/A")/lastTimestamp").setValue(lastminute)
                             if (self.oxygenCounter == 1) {
                                 self.end()
                             }

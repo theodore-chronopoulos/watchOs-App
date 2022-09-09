@@ -8,6 +8,8 @@ import profile_pic from "../../logos/teliko.png";
 import ChoicesBoxesBottom from "../ChoicesBoxesBottom/ChoicesBoxesBottom";
 import LineChart from "../Charts/LineChart";
 import DoughnutChart from "../Charts/DoughnutChart";
+import BarChart from "../Charts/BarChart";
+
 import Form from "react-bootstrap/Form";
 
 
@@ -52,14 +54,23 @@ function User() {
     const [dates_dropdown, setDatesDropdown] = useState([]);
     const [dates_dropdown_ox, setDatesDropdownOx] = useState([]);
     const [selected_custom_date_hrv, setSelectedCustomDateHrv] = useState("");
-    const [hrv_custom, setHrvCustom] = useState(0.5);
+    const [hrv_custom, setHrvCustom] = useState(0);
     const [dates_dropdown_hrv, setDatesDropdownHrv] = useState([]);
+    const [hrv_data_time, setHrvDataTime] = useState(0);
+    const [hrv_time, setHrvTime] = useState("");
+
+
+
+
 
     const onDropdownSelectedActivity = (e) => {
         setSelectedActivity(e.target.value);
     }
     const onDropdownSelectedTime = (e) => {
         setSelectedTime(e.target.value);
+    }
+    const onDropdownSelectedTimeCustomHrv = (e) => {
+        setHrvTime(e.target.value);
     }
     const onDropdownSelectedDateCustomHrv = (e) => {
         setSelectedCustomDateHrv(e.target.value);
@@ -92,6 +103,50 @@ function User() {
             console.log(datesarray)
             setDatesDropdown(datesarray);
         });
+    }
+
+
+    const fetch_time_data_hrv = () => {
+        const dbRef = ref(getDatabase());
+        if (hrv_time == "Last Measurement") {
+            get(child(dbRef, `users/${user_id}/hrv/`)).then((snapshot) => {
+                console.log(snapshot.val());
+                const index = Object.keys(snapshot.val()).length;
+                const measurement = Object.keys(snapshot.val())[index - 1];
+                console.log(measurement);
+                get(
+                    child(dbRef, `users/${user_id}/hrv/${measurement}`)
+                ).then((snapshot) => {
+                    const temp = Object.values(snapshot.val());
+                    setHrvDataTime(temp[0]);
+                    console.log(hrv_data_time);
+                });
+            });
+        }
+        if (hrv_time == "This Month") {
+            var today = new Date();
+            var current_month = today.getMonth() + 1;
+            get(child(dbRef, `users/${user_id}/hrv/`)).then(
+                (snapshot) => {
+                    var hrvmonthdata = [];
+                    for (let el in snapshot.val()) {
+                        var month = parseInt(el[5] + el[6]);
+                        if (month == current_month) {
+                            get(
+                                child(dbRef, `users/${user_id}/hrv/${el}`)
+                            ).then((snapshot) => {
+                                var temp = Object.values(snapshot.val());
+                                hrvmonthdata.push(temp[0]);
+                                var average =
+                                    hrvmonthdata.reduce((a, b) => a + b, 0) /
+                                    hrvmonthdata.length;
+                                setHrvDataTime(average);
+                            });
+                        }
+                    }
+                }
+            );
+        }
     }
     const fetch_data = () => {
         const dbRef = ref(getDatabase());
@@ -647,46 +702,89 @@ function User() {
             <div className="plot-title">
                 <b>HRV</b>
             </div>
-            <div className="plot-title3">
-                <b>Measurements</b>
-            </div>
-            <div className="dropdowns-div">
-                <Form.Select
-                    className="measurement-select"
-                    aria-label="Select Date"
-                    onChange={onDropdownSelectedDateCustomHrv}
-                >
-                    <option selected disabled>
-                        {" "}
-                        Select Date{" "}
-                    </option>
-                    {dates_dropdown_hrv.map(date_dropdown_hrv =>
-
-                        <option
-                            key={date_dropdown_hrv}
-                            value={date_dropdown_hrv}
-                        >
-                            {date_dropdown_hrv}
-                        </option>
-                    )}
-                </Form.Select>
-                <button
-                    className="plot_btn"
-                    onClick={fetch_custom_data_hrv}
-                    placeholder="Plot graph"
-                >
-                    Plot Graph
-                </button>
-            </div>
-            {
-                <main className="DoughnutChartContent">
-                    <div className="DoughnutChartWrapper">
-                        <DoughnutChart
-                            oxygen={hrv_custom}
-                        />
+            <div className="pinakas">
+                <div className="stili">
+                    <div className="plot-title3">
+                        <b>Statistics</b>
                     </div>
-                </main>
-            }
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            onChange={onDropdownSelectedTimeCustomHrv}
+                            aria-label="Select activity"
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select time{" "}
+                            </option>
+                            {time_options.map(time_option =>
+                                <option
+                                    key={time_option}
+                                    value={time_option}
+                                >
+                                    {time_option}
+                                </option>
+                            )}
+                        </Form.Select>
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_time_data_hrv}
+                            placeholder="Plot graph"
+                        >
+                            Plot Graph
+                        </button>
+                    </div>
+                    {
+                        <main className="BarChartContent">
+                            <div className="BarChartWrapper">
+                                <BarChart hrv={hrv_data_time} />
+                            </div>
+                        </main>
+                    }
+                </div>
+
+                <div className="stili">
+
+                    <div className="plot-title3">
+                        <b>Measurements</b>
+                    </div>
+                    <div className="dropdowns-div">
+                        <Form.Select
+                            className="measurement-select"
+                            aria-label="Select Date"
+                            onChange={onDropdownSelectedDateCustomHrv}
+                        >
+                            <option selected disabled>
+                                {" "}
+                                Select Date{" "}
+                            </option>
+                            {dates_dropdown_hrv.map(date_dropdown_hrv =>
+
+                                <option
+                                    key={date_dropdown_hrv}
+                                    value={date_dropdown_hrv}
+                                >
+                                    {date_dropdown_hrv}
+                                </option>
+                            )}
+                        </Form.Select>
+                        <button
+                            className="plot_btn"
+                            onClick={fetch_custom_data_hrv}
+                            placeholder="Plot graph"
+                        >
+                            Plot Graph
+                        </button>
+                    </div>
+                    {
+                        <main className="BarChartContent">
+                            <div className="BarChartWrapper">
+                                <BarChart hrv={hrv_custom} />
+                            </div>
+                        </main>
+                    }
+                </div>
+            </div>
 
 
 

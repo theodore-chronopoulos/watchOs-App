@@ -46,7 +46,5 @@ export default function LineChart({ heartrate, labels, timestamp }) {
       },
     ],
   };
-  
-
   return <Line options={options} data={data} />;
 }

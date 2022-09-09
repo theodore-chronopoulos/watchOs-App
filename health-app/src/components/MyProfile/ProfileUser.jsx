@@ -80,7 +80,7 @@ class ProfileUser extends React.Component {
       selected_activity: "",
       selected_time: "",
       selected_time_ox: "",
-      hrv_custom: 0.5,
+      hrv_custom: 0,
       time_options: ["This Month", "Last Measurement"],
 
       // checked: ""
@@ -860,7 +860,7 @@ class ProfileUser extends React.Component {
                 <div className="DoughnutChartWrapper">
                   <DoughnutChart
                     oxygen={this.state.aveOxygen}
-                    // labels={this.state.oxygenlabels}
+                  // labels={this.state.oxygenlabels}
                   />
                 </div>
               </main>
@@ -896,7 +896,7 @@ class ProfileUser extends React.Component {
                 <div className="DoughnutChartWrapper">
                   <DoughnutChart
                     oxygen={this.state.aveOxygen_custom}
-                    // labels={this.state.oxygenlabels}
+                  // labels={this.state.oxygenlabels}
                   />
                 </div>
               </main>
@@ -907,63 +907,73 @@ class ProfileUser extends React.Component {
         <div className="plot-title">
           <b>HRV</b>
         </div>
-        <div className="plot-title3">
-          <b>Measurements</b>
-        </div>
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            aria-label="Select Date"
-            onChange={this.onDropdownSelectedDateCustomHrv}
-          >
-            <option selected disabled>
-              {" "}
-              Select Date{" "}
-            </option>
-            {this.createSelectItemsTimeCustomHrv()}
-          </Form.Select>
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphscustom_hrv}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
-        </div>
-        {
-          <main className="BarChartContent">
-            <div className="BarChartWrapper">
-              <BarChart oxygen={this.state.hrv_custom} />
+        <div className="pinakas">
+          <div className="stili">
+            <div className="plot-title3">
+              <b>Statistics</b>
             </div>
-          </main>
-        }
-        <div className="dropdowns-div">
-          <Form.Select
-            className="measurement-select"
-            onChange={this.onDropdownSelectedTimeCustomHrv}
-            aria-label="Select activity"
-          >
-            <option selected disabled>
-              {" "}
-              Select time{" "}
-            </option>
-            {this.createSelectItemsTime()}
-          </Form.Select>
-          <button
-            className="plot_btn"
-            onClick={this.plotgraphstime_hrv}
-            placeholder="Plot graph"
-          >
-            Plot Graph
-          </button>
-        </div>
-        {
-          <main className="BarChartContent">
-            <div className="BarChartWrapper">
-              <BarChart oxygen={this.state.hrv_data_time} />
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                onChange={this.onDropdownSelectedTimeCustomHrv}
+                aria-label="Select activity"
+              >
+                <option selected disabled>
+                  {" "}
+                  Select time{" "}
+                </option>
+                {this.createSelectItemsTime()}
+              </Form.Select>
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphstime_hrv}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
             </div>
-          </main>
-        }
+            {
+              <main className="BarChartContent">
+                <div className="BarChartWrapper">
+                  <BarChart hrv={this.state.hrv_data_time} />
+                </div>
+              </main>
+            }
+          </div>
+          <div className="stili">
+            <div className="plot-title3">
+              <b>Measurements</b>
+            </div>
+            <div className="dropdowns-div">
+              <Form.Select
+                className="measurement-select"
+                aria-label="Select Date"
+                onChange={this.onDropdownSelectedDateCustomHrv}
+              >
+                <option selected disabled>
+                  {" "}
+                  Select Date{" "}
+                </option>
+                {this.createSelectItemsTimeCustomHrv()}
+              </Form.Select>
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphscustom_hrv}
+                placeholder="Plot graph"
+              >
+                Plot Graph
+              </button>
+            </div>
+            {
+              <main className="BarChartContent">
+                <div className="BarChartWrapper">
+                  <BarChart hrv={this.state.hrv_custom} />
+                </div>
+              </main>
+            }
+          </div>
+        </div>
+
         <ChoicesBoxesBottom />
       </div>
     );

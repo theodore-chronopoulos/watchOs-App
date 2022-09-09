@@ -72,9 +72,7 @@ export class Register extends React.Component {
                         console.log("new amdin");
                     }
                     else {
-                        // window.location.href = '/homeuser';
                         window.location.href = '/';
-
                         console.log("new user");
                     }
                 });

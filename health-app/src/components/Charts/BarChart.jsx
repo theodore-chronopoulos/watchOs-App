@@ -26,7 +26,7 @@ ChartJS.register(
     ArcElement
   );
 
-export default function BarChart ({oxygen}){
+export default function BarChart ({hrv}){
     const options = {
         responsive: true,
         plugins: {
@@ -41,18 +41,16 @@ export default function BarChart ({oxygen}){
       };
 
     const data = {
-      labels: ['HRV Value'],
+      labels: ['HRV Value (ms)'],
       datasets: [
         {
-          data: [oxygen],
-          // backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+          data: [hrv],
           backgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
           hoverBackgroundColor: ["#303030", "#36A2EB", "#FFCE56"],
           borderWidth: 1,
+          barPercentage: 0.4,
         }
-        
       ],
     };
-    
       return <Bar data={data} />;
     }
