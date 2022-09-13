@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import profile_pic from "../../logos/teliko.png";
 import ChoicesBoxesBottom from "../ChoicesBoxesBottom/ChoicesBoxesBottom";
 import LineChart from "../Charts/LineChart";
+import MultipleLineChart from "../Charts/MultipleLineChart";
+
 import DoughnutChart from "../Charts/DoughnutChart";
 import BarChart from "../Charts/BarChart";
 import Form from "react-bootstrap/Form";
@@ -46,6 +48,7 @@ class ProfileUser extends React.Component {
     this.plotgraphscustom_ox = this.plotgraphscustom_ox.bind(this);
     this.plotgraphscustom_hrv = this.plotgraphscustom_hrv.bind(this);
     this.plotgraphstime_hrv = this.plotgraphstime_hrv.bind(this);
+    this.plotgraphs_last = this.plotgraphs_last.bind(this);
     // this.plotgraphs_ox_custom = this.plotgraphs_ox_custom.bind(this);
 
     this.state = {
@@ -82,6 +85,11 @@ class ProfileUser extends React.Component {
       selected_time_ox: "",
       hrv_custom: 0,
       time_options: ["This Month", "Last Measurement"],
+      last_meas_labels: [],
+      last_meas_data:[],
+      last_meas_ave: 0,
+      last_meas_lower: 0,
+      last_meas_upper: 0,
 
       // checked: ""
     };
@@ -95,13 +103,8 @@ class ProfileUser extends React.Component {
         this.setState({
           id_user: user.uid,
         });
-        var ave = 0;
-        fetch("https://us-central1-healthwatchapp-e636f.cloudfunctions.net/helloWorld?uid=" + user.uid)
-        .then((res) => res.json())
-        .then((data) => console.log(Object.keys(data)[0]));
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        console.log(ave);
         const dbRef = ref(getDatabase());
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
@@ -110,7 +113,7 @@ class ProfileUser extends React.Component {
               this.setState({
                 email: snapshot.val().email,
                 measurement_counter: parseInt(
-                  snapshot.val().measurement_counter
+                snapshot.val().measurement_counter
                 ),
                 repeat_time: snapshot.val().repeat_time,
                 allow_notifications: snapshot.val().allow_notifications,
@@ -345,7 +348,30 @@ class ProfileUser extends React.Component {
   plotgraphs_ox() {
     this.fetch_data_ox();
   }
+  plotgraphs_last(){
+    this.fetch_data_last_meas();
+  }
 
+  fetch_data_last_meas(){
+    fetch("https://us-central1-healthwatchapp-e636f.cloudfunctions.net/helloWorld?uid=" + this.state.id_user)
+    .then((res) => res.json())
+    .then((data) => {
+      this.state.last_meas_ave = Object.values(data)[0];
+      this.state.last_meas_data = Object.values(data)[3];
+      this.state.last_meas_labels = Object.values(data)[4];
+      this.state.last_meas_lower = Object.values(data)[1];
+      this.state.last_meas_upper = Object.values(data)[2];
+      this.setState({
+        last_meas_ave : Object.values(data)[0],
+        last_meas_data : Object.values(data)[3],
+        last_meas_labels : Object.values(data)[4],
+        last_meas_lower : Object.values(data)[1],
+        last_meas_upper : Object.values(data)[2]
+      })
+    });
+    console.log(this.state.last_meas_data)
+    console.log(this.state.last_meas_ave)
+  }
   fetch_time_data_hrv() {
     const dbRef = ref(getDatabase());
     if (this.state.hrv_time == "Last Measurement") {
@@ -968,6 +994,43 @@ class ProfileUser extends React.Component {
               <main className="BarChartContent">
                 <div className="BarChartWrapper">
                   <BarChart hrv={this.state.hrv_custom} />
+                </div>
+              </main>
+            }
+          </div>
+        </div>
+        <div className="plot-title">
+          <b>Last Measurement</b>
+        </div>
+        <div className="pinakas">
+          <div className="stili">
+            <div className="plot-title3">
+              <b>Statistics</b>
+            </div>
+            <div className="dropdowns-div">
+              <button
+                className="plot_btn"
+                onClick={this.plotgraphs_last}
+                placeholder="Plot graph"
+              >
+                Validate
+              </button>
+            </div>
+            {
+              <main className="BarChartContent">
+                <div className="BarChartWrapper">
+                {this.state.heartRatesData && this.state.labels && (
+                   <main className="ChartContent">
+                      <div className="ChartWrapper">
+                    <MultipleLineChart
+                    heartrate={this.state.last_meas_data}
+                    lower = {this.state.last_meas_lower}
+                    upper = {this.state.last_meas_upper}
+                    labels={this.state.last_meas_labels}
+                  />
+                </div>
+              </main>
+            )}
                 </div>
               </main>
             }
