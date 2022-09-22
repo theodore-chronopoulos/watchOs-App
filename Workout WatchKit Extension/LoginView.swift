@@ -86,6 +86,7 @@ struct LoginView: View {
                                 }
                                 defaults.set(email, forKey: "username")
                                 defaults.set(password, forKey: "password")
+//                                defaults.set(false, forKey: "showInvalid")
                                 defaults.synchronize()
                                 mainViewActive = true
                             }

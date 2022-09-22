@@ -15,7 +15,9 @@ struct WorkoutMenuView: View {
         ("Ski", .downhillSkiing),
         ("Snowboard", .snowboarding)
     ]
-    let meaaageString: String = "\n Don't forget to measure your Oxygen levels through Oxygen App, before you begin your measurement."
+    let messageString: String = "\n Don't forget to measure your Oxygen levels through Oxygen App, before you begin your measurement."
+    let measurementString: String = "\n Your last measurement was not in the expected boundaries. Please redo the measurement."
+    
     @State private var alertShouldBeShown = true
     
     
@@ -32,10 +34,31 @@ struct WorkoutMenuView: View {
                         .alert(isPresented: $alertShouldBeShown, content: {
                             
                             Alert(title: Text("Oxygen levels"),
-                                  message: Text(meaaageString),
+                                  message: Text(messageString),
                                   dismissButton: Alert.Button.default(
                                     Text("Dismiss"), action: {
                                         alertShouldBeShown = false
+                                    })
+                            )
+                        })
+                        Button("Begin Measurement")  {
+                            guard HKHealthStore.isHealthDataAvailable() else { return }
+                            
+                            dataManager.activity = activities[selectedActivity].type
+                            dataManager.activityString = activities[selectedActivity].name
+                            dataManager.start()
+                            
+                        }
+                        .alert(isPresented: $dataManager.invalidMeasurement, content: {
+                            
+                            Alert(title: Text("Invalid measurement"),
+                                  message: Text(measurementString),
+                                  dismissButton: Alert.Button.default(
+                                    Text("Dismiss"), action: {
+                                        dataManager.invalidMeasurement = false
+//                                        let defaults = UserDefaults.standard
+//                                        defaults.set(false, forKey: "showInvalid")
+//                                        defaults.synchronize()
                                     })
                             )
                         })
@@ -44,13 +67,13 @@ struct WorkoutMenuView: View {
                             ForEach(0..<activities.count, id:\.self) { i in
                                 Text(activities[i].name)
                             }
-                        }                    }
-                    Button("Begin Measurement")  {
-                        guard HKHealthStore.isHealthDataAvailable() else { return }
-                        
-                        dataManager.activity = activities[selectedActivity].type
-                        dataManager.activityString = activities[selectedActivity].name
-                        dataManager.start()
+                        }
+                        Button("Begin Measurement")  {
+                            guard HKHealthStore.isHealthDataAvailable() else { return }
+                            dataManager.activity = activities[selectedActivity].type
+                            dataManager.activityString = activities[selectedActivity].name
+                            dataManager.start()
+                        }
                     }
                 }
             }

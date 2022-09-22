@@ -38,7 +38,9 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     @Published var lastHRV = 0.0
     @Published var lastOxygenSaturation = 0.0
     @Published var measurement_counter: Float = UserDefaults.standard.float(forKey: "measurement_counter")
-    
+    @Published var invalidMeasurement: Bool = false
+//    @Published var invalidMeasurement: Bool = UserDefaults.standard.bool(forKey: "showInvalid")
+
     func start() {
         let sampleTypes: Set<HKSampleType> = [
             .workoutType(),
@@ -61,7 +63,6 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
         let config = HKWorkoutConfiguration()
         config.activityType = activity
         config.locationType = .outdoor
-        
         do {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: config)
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
@@ -69,8 +70,9 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
             
             workoutSession?.delegate = self
             workoutBuilder?.delegate = self
-            
+
             workoutSession?.startActivity(with: Date())
+
             workoutBuilder?.beginCollection(withStart: Date()) { success, error in
                 guard success else {
                     return
@@ -141,14 +143,24 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
                         
                         self.heartCounter += 1
                         if (self.heartCounter == Int(self.measurement_counter)) {
+//                            self.sendRequest() { data in
+//                                if let data = data {
+//                                    print(data)
+//                                    if (data == "true") {
+//                                        self.invalidMeasurement = false
+//                                        return
+//                                    }
+//                                }
+//                            }
                             let lastminute = today.toString(dateFormat: "yyyy-MM-dd-HH:mm")
                             let even = Dictionary(uniqueKeysWithValues: zip(self.heartTimesArray, self.heartRate))
                             self.ref.child("users/\(self.userID ?? "N/A")/heartRate/\(self.activityString)/\(lastminute)").setValue(even)
                             self.ref.child("users/\(self.userID ?? "N/A")/lastType").setValue(self.activityString)
                             self.ref.child("users/\(self.userID ?? "N/A")/lastTimestamp").setValue(lastminute)
-                            if (self.oxygenCounter == 1) {
-                                self.end()
-                            }
+                            self.end()
+//                            if (self.oxygenCounter == 1) {
+//                                self.end()
+//                            }
                         }
                     }
                 default:
@@ -288,15 +300,53 @@ class DataManager: NSObject, ObservableObject, HKWorkoutSessionDelegate, HKLiveW
     }
     
     private func save() {
-        workoutBuilder?.endCollection(withEnd: Date()) { success, error in
-            self.workoutBuilder?.finishWorkout { workout, error in
-                DispatchQueue.main.async {
-                    self.state = .inactive
+            workoutBuilder?.endCollection(withEnd: Date()) { success, error in
+                self.workoutBuilder?.finishWorkout { workout, error in
+                    DispatchQueue.main.async {
+                        self.sendRequest() { data in
+                            if let data = data {
+                                // do something
+                                print(data)
+                                if (data == "true") {
+//                                    self.invalidMeasurement = true
+//                                    let defaults = UserDefaults.standard
+//                                    defaults.set(true, forKey: "showInvalid")
+//                                    defaults.synchronize()
+                                    self.invalidMeasurement = true
+                                }
+                            }
+                        }
+                        self.state = .inactive
+                    }
+                    
                 }
             }
         }
+        func sendRequest (completion: @escaping (String?)->()){
+            let userIdString: String = String(self.userID ?? "")
+            let urlString = "https://us-central1-healthwatchapp-e636f.cloudfunctions.net/validatemeasurement?uid=" + userIdString
+            if let url = URL(string: urlString) {
+                print(url)
+                URLSession.shared.dataTask(with: url ) { data, response, error in
+                    if error == nil {
+                        if let data = data {
+                            if let jsonString = String(data: data, encoding: .utf8) {
+                                print(jsonString)
+                                return completion(jsonString)
+                            }
+                        }
+                    }else{
+                        print(error ?? "Error")
+                        return completion(nil)
+                    }
+                }.resume()
+            }
+            else {
+                print("skata")
+                return completion(nil)
+            }
+        }
     }
-}
 
 extension Date {
     func toString( dateFormat format  : String ) -> String {

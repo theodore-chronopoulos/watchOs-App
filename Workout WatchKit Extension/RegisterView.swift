@@ -45,6 +45,8 @@ struct RegisterView: View {
                             defaults.set(false, forKey: "notifications")
                             defaults.set(8.0, forKey: "repeat_time")
                             defaults.set(10.0, forKey: "measurement_counter")
+//                            defaults.set(false, forKey: "showInvalid")
+
                             
                             defaults.synchronize()
                             let userID = Auth.auth().currentUser?.uid
